@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/endpoints/store.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>store.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6827029ac823cab7.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-ebce58d0a40c3431.css"><link rel="stylesheet" disabled href="../../../static.files/dark-f23faae4a2daf9a6.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-8af5e100b21cd173.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-5cf2e01a42cc9858.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-c55e1eb52e1886b4.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/endpoints/store.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>store.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html">
                         <img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -138,34 +138,19 @@
 <a href="#137" id="137">137</a>
 <a href="#138" id="138">138</a>
 <a href="#139" id="139">139</a>
-<a href="#140" id="140">140</a>
-<a href="#141" id="141">141</a>
-<a href="#142" id="142">142</a>
-<a href="#143" id="143">143</a>
-<a href="#144" id="144">144</a>
-<a href="#145" id="145">145</a>
-<a href="#146" id="146">146</a>
-<a href="#147" id="147">147</a>
-<a href="#148" id="148">148</a>
-<a href="#149" id="149">149</a>
-<a href="#150" id="150">150</a>
-<a href="#151" id="151">151</a>
-<a href="#152" id="152">152</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Handles event store requests.
 
-</span><span class="kw">use </span>actix::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span>actix_web::{HttpMessage, HttpRequest, HttpResponse};
+</span><span class="kw">use </span>actix_web::http::Method;
+<span class="kw">use </span>actix_web::{App, HttpMessage, HttpRequest, HttpResponse};
 <span class="kw">use </span>bytes::{Bytes, BytesMut};
-<span class="kw">use </span>futures01::Future;
+<span class="kw">use </span>relay_general::protocol::EventId;
 <span class="kw">use </span>serde::Serialize;
 
-<span class="kw">use </span>relay_general::protocol::EventId;
-
-<span class="kw">use </span><span class="kw">crate</span>::body::StoreBody;
+<span class="kw">use </span><span class="kw">crate</span>::body;
 <span class="kw">use </span><span class="kw">crate</span>::endpoints::common::{<span class="self">self</span>, BadStoreRequest};
 <span class="kw">use </span><span class="kw">crate</span>::envelope::{ContentType, Envelope, Item, ItemType};
 <span class="kw">use </span><span class="kw">crate</span>::extractors::RequestMeta;
-<span class="kw">use </span><span class="kw">crate</span>::service::{ServiceApp, ServiceState};
+<span class="kw">use </span><span class="kw">crate</span>::service::ServiceState;
 
 <span class="comment">// Transparent 1x1 gif
 // See http://probablyprogramming.com/2009/03/15/the-tiniest-gif-ever
@@ -220,11 +205,16 @@
     <span class="prelude-val">Ok</span>(envelope)
 }
 
-<span class="kw">fn </span>extract_envelope(
+<span class="kw">async fn </span>extract_envelope(
     request: <span class="kw-2">&amp;</span>HttpRequest&lt;ServiceState&gt;,
     meta: RequestMeta,
-) -&gt; ResponseFuture&lt;Box&lt;Envelope&gt;, BadStoreRequest&gt; {
+) -&gt; <span class="prelude-ty">Result</span>&lt;Box&lt;Envelope&gt;, BadStoreRequest&gt; {
     <span class="kw">let </span>max_payload_size = request.state().config().max_event_size();
+    <span class="kw">let </span>data = body::store_body(request, max_payload_size).<span class="kw">await</span><span class="question-mark">?</span>;
+
+    <span class="kw">if </span>data.is_empty() {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(BadStoreRequest::EmptyBody);
+    }
 
     <span class="comment">// If the content type is missing, assume &quot;application/json&quot;.
     </span><span class="kw">let </span>content_type = <span class="kw">match </span>request.content_type() {
@@ -232,20 +222,10 @@
         content_type =&gt; ContentType::from(content_type),
     };
 
-    <span class="kw">let </span>future = StoreBody::new(request, max_payload_size)
-        .map_err(BadStoreRequest::from)
-        .and_then(<span class="kw">move </span>|data| {
-            <span class="kw">if </span>data.is_empty() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(BadStoreRequest::EmptyBody);
-            }
-
-            <span class="kw">match </span>content_type {
-                ContentType::Envelope =&gt; parse_envelope(meta, data),
-                <span class="kw">_ </span>=&gt; parse_event(meta, content_type, data),
-            }
-        });
-
-    Box::new(future)
+    <span class="kw">match </span>content_type {
+        ContentType::Envelope =&gt; parse_envelope(meta, data),
+        <span class="kw">_ </span>=&gt; parse_event(meta, content_type, data),
+    }
 }
 
 <span class="attr">#[derive(Serialize)]
@@ -254,54 +234,48 @@
     </span>id: <span class="prelude-ty">Option</span>&lt;EventId&gt;,
 }
 
-<span class="kw">fn </span>create_response(id: <span class="prelude-ty">Option</span>&lt;EventId&gt;, is_get_request: bool) -&gt; HttpResponse {
-    <span class="kw">if </span>is_get_request {
-        HttpResponse::Ok().content_type(<span class="string">&quot;image/gif&quot;</span>).body(PIXEL)
-    } <span class="kw">else </span>{
-        HttpResponse::Ok().json(StoreResponse { id })
-    }
-}
-
 <span class="doccomment">/// Handler for the JSON event store endpoint.
 ///
 /// This simply delegates to `store_event` which does all the work.
 /// `handle_store_event` is an adaptor for `store_event` which cannot
 /// be used directly as a request handler since not all of its arguments
 /// implement the FromRequest trait.
-</span><span class="kw">fn </span>store_event(
+</span><span class="kw">async fn </span>store_event(
     meta: RequestMeta,
     request: HttpRequest&lt;ServiceState&gt;,
-) -&gt; ResponseFuture&lt;HttpResponse, BadStoreRequest&gt; {
-    <span class="kw">let </span>is_get_request = request.method() == <span class="string">&quot;GET&quot;</span>;
+) -&gt; <span class="prelude-ty">Result</span>&lt;HttpResponse, BadStoreRequest&gt; {
+    <span class="kw">let </span>envelope = extract_envelope(<span class="kw-2">&amp;</span>request, meta).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let </span>id = common::handle_envelope(request.state(), envelope).<span class="kw">await</span><span class="question-mark">?</span>;
 
-    common::handle_store_like_request(
-        meta,
-        request,
-        extract_envelope,
-        <span class="kw">move </span>|id| create_response(id, is_get_request),
-        <span class="bool-val">true</span>,
-    )
+    <span class="prelude-val">Ok</span>(<span class="kw">match </span>request.method() {
+        <span class="kw-2">&amp;</span>Method::GET =&gt; HttpResponse::Ok().content_type(<span class="string">&quot;image/gif&quot;</span>).body(PIXEL),
+        <span class="kw">_ </span>=&gt; HttpResponse::Ok().json(StoreResponse { id }),
+    })
 }
 
-<span class="kw">pub fn </span>configure_app(app: ServiceApp) -&gt; ServiceApp {
+<span class="kw">pub fn </span>configure_app(app: App&lt;ServiceState&gt;) -&gt; App&lt;ServiceState&gt; {
     common::cors(app)
         <span class="comment">// Standard store endpoint. Some SDKs send multiple leading or trailing slashes due to bugs
         // in their URL handling. Since actix does not normalize such paths, allow any number of
         // slashes. The trailing slash can also be omitted, optionally.
         </span>.resource(<span class="kw-2">&amp;</span>common::normpath(<span class="string">r&quot;/api/{project:\d+}/store/&quot;</span>), |r| {
             r.name(<span class="string">&quot;store-default&quot;</span>);
-            r.post().with(store_event);
-            r.get().with(store_event);
+            r.post()
+                .with_async(|m, r| common::handler(store_event(m, r)));
+            r.get()
+                .with_async(|m, r| common::handler(store_event(m, r)));
         })
         <span class="comment">// Legacy store path. Since it is missing the project parameter, the `RequestMeta` extractor
         // will use `ProjectKeyLookup` to map the public key to a project id before handling the
         // request.
         </span>.resource(<span class="kw-2">&amp;</span>common::normpath(<span class="string">r&quot;/api/store/&quot;</span>), |r| {
             r.name(<span class="string">&quot;store-legacy&quot;</span>);
-            r.post().with(store_event);
-            r.get().with(store_event);
+            r.post()
+                .with_async(|m, r| common::handler(store_event(m, r)));
+            r.get()
+                .with_async(|m, r| common::handler(store_event(m, r)));
         })
         .register()
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0 (fc594f156 2023-01-24)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
