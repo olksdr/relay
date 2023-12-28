@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/utils/sizes.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sizes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html">
-                        <img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/utils/sizes.rs`."><title>sizes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -89,95 +88,134 @@
 <a href="#88" id="88">88</a>
 <a href="#89" id="89">89</a>
 <a href="#90" id="90">90</a>
-</pre><pre class="rust"><code><span class="kw">use </span>relay_config::Config;
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>relay_config::Config;
 
 <span class="kw">use </span><span class="kw">crate</span>::envelope::{AttachmentType, Envelope, ItemType};
+<span class="kw">use </span><span class="kw">crate</span>::utils::{ItemAction, ManagedEnvelope};
 
 <span class="doccomment">/// Checks for size limits of items in this envelope.
 ///
-/// Returns `true`, if the envelope adheres to the configured size limits. Otherwise, returns
-/// `false`, in which case the envelope should be discarded and a `413 Payload Too Large` response
-/// should be given.
+/// Returns `Ok`, if the envelope adheres to the configured size limits. Otherwise, returns
+/// an `Err` containing the offending item type, in which case the envelope should be discarded
+/// and a `413 Payload Too Large` response should be given.
 ///
 /// The following limits are checked:
 ///
-///  - `max_event_size`
 ///  - `max_attachment_size`
 ///  - `max_attachments_size`
-///  - `max_session_count`
+///  - `max_check_in_size`
+///  - `max_event_size`
+///  - `max_metric_buckets_size`
+///  - `max_metric_meta_size`
 ///  - `max_profile_size`
-</span><span class="kw">pub fn </span>check_envelope_size_limits(config: <span class="kw-2">&amp;</span>Config, envelope: <span class="kw-2">&amp;</span>Envelope) -&gt; bool {
+///  - `max_replay_compressed_size`
+///  - `max_session_count`
+///  - `max_span_size`
+///  - `max_statsd_size`
+</span><span class="kw">pub fn </span>check_envelope_size_limits(config: <span class="kw-2">&amp;</span>Config, envelope: <span class="kw-2">&amp;</span>Envelope) -&gt; <span class="prelude-ty">Result</span>&lt;(), ItemType&gt; {
+    <span class="kw">const </span>NO_LIMIT: usize = usize::MAX;
+
     <span class="kw">let </span><span class="kw-2">mut </span>event_size = <span class="number">0</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>attachments_size = <span class="number">0</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>session_count = <span class="number">0</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>client_reports_size = <span class="number">0</span>;
 
     <span class="kw">for </span>item <span class="kw">in </span>envelope.items() {
-        <span class="kw">match </span>item.ty() {
+        <span class="kw">let </span>max_size = <span class="kw">match </span>item.ty() {
             ItemType::Event
             | ItemType::Transaction
             | ItemType::Security
             | ItemType::ReplayEvent
             | ItemType::RawSecurity
+            | ItemType::Nel
+            | ItemType::UserReportV2
             | ItemType::FormData =&gt; {
                 event_size += item.len();
+                NO_LIMIT
             }
-            ItemType::Attachment | ItemType::UnrealReport | ItemType::ReplayRecording =&gt; {
-                <span class="kw">if </span>item.len() &gt; config.max_attachment_size() {
-                    <span class="kw">return </span><span class="bool-val">false</span>;
-                }
-
-                attachments_size += item.len()
+            ItemType::Attachment | ItemType::UnrealReport =&gt; {
+                attachments_size += item.len();
+                config.max_attachment_size()
             }
+            ItemType::ReplayRecording =&gt; config.max_replay_compressed_size(),
             ItemType::Session | ItemType::Sessions =&gt; {
                 session_count += <span class="number">1</span>;
+                NO_LIMIT
             }
             ItemType::ClientReport =&gt; {
                 client_reports_size += item.len();
+                NO_LIMIT
             }
-            ItemType::Profile =&gt; {
-                <span class="kw">if </span>item.len() &gt; config.max_profile_size() {
-                    <span class="kw">return </span><span class="bool-val">false</span>;
-                }
-            }
-            ItemType::CheckIn =&gt; {
-                <span class="kw">if </span>item.len() &gt; config.max_check_in_size() {
-                    <span class="kw">return </span><span class="bool-val">false</span>;
-                }
-            }
-            ItemType::UserReport =&gt; (),
-            ItemType::Metrics =&gt; (),
-            ItemType::MetricBuckets =&gt; (),
-            ItemType::Unknown(<span class="kw">_</span>) =&gt; (),
+            ItemType::Profile =&gt; config.max_profile_size(),
+            ItemType::CheckIn =&gt; config.max_check_in_size(),
+            ItemType::UserReport =&gt; NO_LIMIT,
+            ItemType::Statsd =&gt; config.max_statsd_size(),
+            ItemType::MetricBuckets =&gt; config.max_metric_buckets_size(),
+            ItemType::MetricMeta =&gt; config.max_metric_meta_size(),
+            ItemType::Span | ItemType::OtelSpan =&gt; config.max_span_size(),
+            ItemType::Unknown(<span class="kw">_</span>) =&gt; NO_LIMIT,
+        };
+
+        <span class="kw">if </span>item.len() &gt; max_size {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(item.ty().clone());
         }
     }
 
-    event_size &lt;= config.max_event_size()
-        &amp;&amp; attachments_size &lt;= config.max_attachments_size()
-        &amp;&amp; session_count &lt;= config.max_session_count()
-        &amp;&amp; client_reports_size &lt;= config.max_client_reports_size()
+    <span class="kw">if </span>event_size &gt; config.max_event_size() {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ItemType::Event);
+    }
+    <span class="kw">if </span>attachments_size &gt; config.max_attachments_size() {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ItemType::Attachment);
+    }
+    <span class="kw">if </span>session_count &gt; config.max_session_count() {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ItemType::Session);
+    }
+    <span class="kw">if </span>client_reports_size &gt; config.max_client_reports_size() {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ItemType::ClientReport);
+    }
+
+    <span class="prelude-val">Ok</span>(())
 }
 
 <span class="doccomment">/// Checks for valid envelope items.
 ///
 /// If Relay is configured to drop unknown items, this function removes them from the Envelope. All
 /// known items will be retained.
-</span><span class="kw">pub fn </span>remove_unknown_items(config: <span class="kw-2">&amp;</span>Config, envelope: <span class="kw-2">&amp;mut </span>Envelope) {
+</span><span class="kw">pub fn </span>remove_unknown_items(config: <span class="kw-2">&amp;</span>Config, envelope: <span class="kw-2">&amp;mut </span>ManagedEnvelope) {
     <span class="kw">if </span>!config.accept_unknown_items() {
         envelope.retain_items(|item| <span class="kw">match </span>item.ty() {
             ItemType::Unknown(ty) =&gt; {
-                <span class="macro">relay_log::debug!</span>(<span class="string">&quot;dropping unknown item of type &#39;{}&#39;&quot;</span>, ty);
-                <span class="bool-val">false
-            </span>}
+                <span class="macro">relay_log::debug!</span>(<span class="string">&quot;dropping unknown item of type &#39;{ty}&#39;&quot;</span>);
+                ItemAction::DropSilently
+            }
             <span class="kw">_ </span>=&gt; <span class="kw">match </span>item.attachment_type() {
                 <span class="prelude-val">Some</span>(AttachmentType::Unknown(ty)) =&gt; {
-                    <span class="macro">relay_log::debug!</span>(<span class="string">&quot;dropping unknown attachment of type &#39;{}&#39;&quot;</span>, ty);
-                    <span class="bool-val">false
-                </span>}
-                <span class="kw">_ </span>=&gt; <span class="bool-val">true</span>,
+                    <span class="macro">relay_log::debug!</span>(<span class="string">&quot;dropping unknown attachment of type &#39;{ty}&#39;&quot;</span>);
+                    ItemAction::DropSilently
+                }
+                <span class="kw">_ </span>=&gt; ItemAction::Keep,
             },
         });
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

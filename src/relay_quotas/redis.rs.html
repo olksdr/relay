@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-quotas/src/redis.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>redis.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_quotas/index.html">
-                        <img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-quotas/src/redis.rs`."><title>redis.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_quotas" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_quotas/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -769,10 +768,40 @@
 <a href="#768" id="768">768</a>
 <a href="#769" id="769">769</a>
 <a href="#770" id="770">770</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::fmt;
+<a href="#771" id="771">771</a>
+<a href="#772" id="772">772</a>
+<a href="#773" id="773">773</a>
+<a href="#774" id="774">774</a>
+<a href="#775" id="775">775</a>
+<a href="#776" id="776">776</a>
+<a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
+<a href="#784" id="784">784</a>
+<a href="#785" id="785">785</a>
+<a href="#786" id="786">786</a>
+<a href="#787" id="787">787</a>
+<a href="#788" id="788">788</a>
+<a href="#789" id="789">789</a>
+<a href="#790" id="790">790</a>
+<a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+<a href="#796" id="796">796</a>
+<a href="#797" id="797">797</a>
+<a href="#798" id="798">798</a>
+<a href="#799" id="799">799</a>
+<a href="#800" id="800">800</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::sync::Arc;
 
-<span class="kw">use </span>relay_common::UnixTimestamp;
+<span class="kw">use </span>relay_common::time::UnixTimestamp;
 <span class="kw">use </span>relay_log::protocol::value;
 <span class="kw">use </span>relay_redis::redis::Script;
 <span class="kw">use </span>relay_redis::{RedisError, RedisPool};
@@ -850,7 +879,10 @@
 
     <span class="doccomment">/// Returns the limit value for Redis (`-1` for unlimited, otherwise the limit value).
     </span><span class="kw">fn </span>limit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i64 {
-        <span class="self">self</span>.limit.map(i64::from).unwrap_or(-<span class="number">1</span>)
+        <span class="self">self</span>.limit
+            <span class="comment">// If it does not fit into i64, treat as unlimited:
+            </span>.and_then(|limit| limit.try_into().ok())
+            .unwrap_or(-<span class="number">1</span>)
     }
 
     <span class="kw">fn </span>shift(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u64 {
@@ -999,7 +1031,7 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>client = <span class="self">self</span>.pool.client().map_err(RateLimitingError::Redis)<span class="question-mark">?</span>;
         <span class="kw">let </span>rejections: Vec&lt;bool&gt; = invocation
-            .invoke(<span class="kw-2">&amp;mut </span>client.connection())
+            .invoke(<span class="kw-2">&amp;mut </span>client.connection().map_err(RateLimitingError::Redis)<span class="question-mark">?</span>)
             .map_err(RedisError::Redis)
             .map_err(RateLimitingError::Redis)<span class="question-mark">?</span>;
 
@@ -1028,7 +1060,7 @@
     <span class="kw">use </span>std::sync::Arc;
     <span class="kw">use </span>std::time::{SystemTime, UNIX_EPOCH};
 
-    <span class="kw">use </span>relay_common::{ProjectId, ProjectKey};
+    <span class="kw">use </span>relay_base_schema::project::{ProjectId, ProjectKey};
     <span class="kw">use </span>relay_redis::redis::Commands;
     <span class="kw">use </span>relay_redis::RedisConfigOptions;
 
@@ -1041,7 +1073,7 @@
             .unwrap_or_else(|<span class="kw">_</span>| <span class="string">&quot;redis://127.0.0.1:6379&quot;</span>.to_owned());
 
         RedisRateLimiter {
-            pool: RedisPool::single(<span class="kw-2">&amp;</span>url, <span class="kw-2">&amp;</span>RedisConfigOptions::default()).unwrap(),
+            pool: RedisPool::single(<span class="kw-2">&amp;</span>url, RedisConfigOptions::default()).unwrap(),
             script: Arc::new(load_lua_script()),
             max_limit: <span class="prelude-val">None</span>,
         }
@@ -1427,6 +1459,33 @@
     }
 
     <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_large_redis_limit_large() {
+        <span class="kw">let </span>quota = Quota {
+            id: <span class="prelude-val">Some</span>(<span class="string">&quot;foo&quot;</span>.to_owned()),
+            categories: DataCategories::new(),
+            scope: QuotaScope::Organization,
+            scope_id: <span class="prelude-val">None</span>,
+            window: <span class="prelude-val">Some</span>(<span class="number">10</span>),
+            limit: <span class="prelude-val">Some</span>(<span class="number">9223372036854775808</span>), <span class="comment">// i64::MAX + 1
+            </span>reason_code: <span class="prelude-val">None</span>,
+        };
+
+        <span class="kw">let </span>scoping = ItemScoping {
+            category: DataCategory::Error,
+            scoping: <span class="kw-2">&amp;</span>Scoping {
+                organization_id: <span class="number">69420</span>,
+                project_id: ProjectId::new(<span class="number">42</span>),
+                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                key_id: <span class="prelude-val">Some</span>(<span class="number">4711</span>),
+            },
+        };
+
+        <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">234_531</span>);
+        <span class="kw">let </span>redis_quota = RedisQuota::new(<span class="kw-2">&amp;</span>quota, scoping, timestamp).unwrap();
+        <span class="macro">assert_eq!</span>(redis_quota.limit(), -<span class="number">1</span>);
+    }
+
+    <span class="attr">#[test]
     #[allow(clippy::disallowed_names, clippy::let_unit_value)]
     </span><span class="kw">fn </span>test_is_rate_limited_script() {
         <span class="kw">let </span>now = SystemTime::now()
@@ -1436,7 +1495,7 @@
 
         <span class="kw">let </span>rate_limiter = build_rate_limiter();
         <span class="kw">let </span><span class="kw-2">mut </span>client = rate_limiter.pool.client().expect(<span class="string">&quot;get client&quot;</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>conn = client.connection();
+        <span class="kw">let </span><span class="kw-2">mut </span>conn = client.connection().expect(<span class="string">&quot;Redis connection&quot;</span>);
 
         <span class="comment">// define a few keys with random seed such that they do not collide with repeated test runs
         </span><span class="kw">let </span>foo = <span class="macro">format!</span>(<span class="string">&quot;foo___{now}&quot;</span>);
@@ -1539,5 +1598,4 @@
         );
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_quotas" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

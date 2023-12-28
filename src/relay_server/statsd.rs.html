@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/statsd.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>statsd.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_server/index.html">
-                        <img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/statsd.rs`."><title>statsd.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -546,16 +545,174 @@
 <a href="#545" id="545">545</a>
 <a href="#546" id="546">546</a>
 <a href="#547" id="547">547</a>
-</pre><pre class="rust"><code><span class="kw">use </span>relay_statsd::{CounterMetric, GaugeMetric, HistogramMetric, TimerMetric};
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
+<a href="#624" id="624">624</a>
+<a href="#625" id="625">625</a>
+<a href="#626" id="626">626</a>
+<a href="#627" id="627">627</a>
+<a href="#628" id="628">628</a>
+<a href="#629" id="629">629</a>
+<a href="#630" id="630">630</a>
+<a href="#631" id="631">631</a>
+<a href="#632" id="632">632</a>
+<a href="#633" id="633">633</a>
+<a href="#634" id="634">634</a>
+<a href="#635" id="635">635</a>
+<a href="#636" id="636">636</a>
+<a href="#637" id="637">637</a>
+<a href="#638" id="638">638</a>
+<a href="#639" id="639">639</a>
+<a href="#640" id="640">640</a>
+<a href="#641" id="641">641</a>
+<a href="#642" id="642">642</a>
+<a href="#643" id="643">643</a>
+<a href="#644" id="644">644</a>
+<a href="#645" id="645">645</a>
+<a href="#646" id="646">646</a>
+<a href="#647" id="647">647</a>
+<a href="#648" id="648">648</a>
+<a href="#649" id="649">649</a>
+<a href="#650" id="650">650</a>
+<a href="#651" id="651">651</a>
+<a href="#652" id="652">652</a>
+<a href="#653" id="653">653</a>
+<a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>relay_statsd::{CounterMetric, GaugeMetric, HistogramMetric, TimerMetric};
 
 <span class="doccomment">/// Gauge metrics used by Relay
 </span><span class="kw">pub enum </span>RelayGauges {
     <span class="doccomment">/// The state of Relay with respect to the upstream connection.
     /// Possible values are `0` for normal operations and `1` for a network outage.
     </span>NetworkOutage,
-
     <span class="doccomment">/// The number of items currently in the garbage disposal queue.
     </span>ProjectCacheGarbageQueueSize,
+    <span class="doccomment">/// The number of envelopes waiting for project states in memory.
+    ///
+    /// This number is always &lt;= `EnvelopeQueueSize`.
+    ///
+    /// The memory buffer size can be configured with `spool.envelopes.max_memory_size`.
+    </span>BufferEnvelopesMemoryCount,
+    <span class="doccomment">/// The number of envelopes waiting for project states on disk.
+    ///
+    /// Note this metric *will not be logged* when we encounter envelopes in the database on startup,
+    /// because counting those envelopes reliably would risk locking the db for multiple seconds.
+    ///
+    /// The disk buffer size can be configured with `spool.envelopes.max_disk_size`.
+    </span>BufferEnvelopesDiskCount,
+    <span class="doccomment">/// The current count of the keys in the &quot;in-memory&quot; buffer.
+    </span>BufferProjectsMemoryCount,
 }
 
 <span class="kw">impl </span>GaugeMetric <span class="kw">for </span>RelayGauges {
@@ -563,6 +720,9 @@
         <span class="kw">match </span><span class="self">self </span>{
             RelayGauges::NetworkOutage =&gt; <span class="string">&quot;upstream.network_outage&quot;</span>,
             RelayGauges::ProjectCacheGarbageQueueSize =&gt; <span class="string">&quot;project_cache.garbage.queue_size&quot;</span>,
+            RelayGauges::BufferEnvelopesMemoryCount =&gt; <span class="string">&quot;buffer.envelopes_mem_count&quot;</span>,
+            RelayGauges::BufferEnvelopesDiskCount =&gt; <span class="string">&quot;buffer.envelopes_disk_count&quot;</span>,
+            RelayGauges::BufferProjectsMemoryCount =&gt; <span class="string">&quot;buffer.projects_mem_count&quot;</span>,
         }
     }
 }
@@ -590,6 +750,25 @@
     ///
     /// The queue size can be configured with `cache.event_buffer_size`.
     </span>EnvelopeQueueSize,
+    <span class="doccomment">/// The estimated number of envelope bytes buffered in memory.
+    ///
+    /// The memory buffer size can be configured with `spool.envelopes.max_memory_size`.
+    </span>BufferEnvelopesMemoryBytes,
+    <span class="doccomment">/// The file size of the buffer db on disk, in bytes.
+    ///
+    /// This metric is computed by multiplying `page_count * page_size`.
+    </span>BufferDiskSize,
+    <span class="doccomment">/// Number of attempts needed to dequeue spooled envelopes from disk.
+    ///
+    /// As long as there are enough permits in the [`crate::utils::BufferGuard`], this number should
+    /// always be one.
+    </span>BufferDequeueAttempts,
+    <span class="doccomment">/// The number of batches emitted per partition.
+    </span>BatchesPerPartition,
+    <span class="doccomment">/// The number of buckets in a batch emitted.
+    ///
+    /// This corresponds to the number of buckets that will end up in an envelope.
+    </span>BucketsPerBatch,
     <span class="doccomment">/// The number of spans per processed transaction event.
     ///
     /// This metric is tagged with:
@@ -597,25 +776,6 @@
     ///  - `sdk`: The name of the Sentry SDK sending the transaction. This tag is only set for
     ///    Sentry&#39;s SDKs and defaults to &quot;proprietary&quot;.
     </span>EventSpans,
-    <span class="doccomment">/// The size of the HTTP request body as seen by Relay after it is extracted from a request in
-    /// bytes.
-    ///
-    /// - For envelope requests, this is the full size of the envelope.
-    /// - For JSON store requests, this is the size of the JSON body.
-    /// - For multipart uploads of crash reports and attachments, this is the size of the multipart
-    ///   body including boundaries.
-    ///
-    /// If this request contains a base64 zlib compressed payload without a proper
-    /// `content-encoding` header, then this is the size before decompression.
-    ///
-    /// The maximum request body size can be configured with `limits.max_envelope_size`.
-    </span>RequestSizeBytesRaw,
-    <span class="doccomment">/// The size of the request body as seen by Relay after decompression and decoding in bytes.
-    ///
-    /// JSON store requests may contain a base64 zlib compressed payload without proper
-    /// `content-encoding` header. In this case, this metric contains the size after decoding.
-    /// Otherwise, it is always equal to `event.size_bytes.raw`.
-    </span>RequestSizeBytesUncompressed,
     <span class="doccomment">/// Number of projects in the in-memory project cache that are waiting for their state to be
     /// updated.
     ///
@@ -697,8 +857,11 @@
             RelayHistograms::EnvelopeQueueSizePct =&gt; <span class="string">&quot;event.queue_size.pct&quot;</span>,
             RelayHistograms::EnvelopeQueueSize =&gt; <span class="string">&quot;event.queue_size&quot;</span>,
             RelayHistograms::EventSpans =&gt; <span class="string">&quot;event.spans&quot;</span>,
-            RelayHistograms::RequestSizeBytesRaw =&gt; <span class="string">&quot;event.size_bytes.raw&quot;</span>,
-            RelayHistograms::RequestSizeBytesUncompressed =&gt; <span class="string">&quot;event.size_bytes.uncompressed&quot;</span>,
+            RelayHistograms::BatchesPerPartition =&gt; <span class="string">&quot;metrics.buckets.batches_per_partition&quot;</span>,
+            RelayHistograms::BucketsPerBatch =&gt; <span class="string">&quot;metrics.buckets.per_batch&quot;</span>,
+            RelayHistograms::BufferEnvelopesMemoryBytes =&gt; <span class="string">&quot;buffer.envelopes_mem&quot;</span>,
+            RelayHistograms::BufferDiskSize =&gt; <span class="string">&quot;buffer.disk_size&quot;</span>,
+            RelayHistograms::BufferDequeueAttempts =&gt; <span class="string">&quot;buffer.dequeue_attempts&quot;</span>,
             RelayHistograms::ProjectStatePending =&gt; <span class="string">&quot;project_state.pending&quot;</span>,
             RelayHistograms::ProjectStateAttempts =&gt; <span class="string">&quot;project_state.attempts&quot;</span>,
             RelayHistograms::ProjectStateRequestBatchSize =&gt; <span class="string">&quot;project_state.request.batch_size&quot;</span>,
@@ -746,6 +909,8 @@
     </span>EventProcessingPii,
     <span class="doccomment">/// Time spent converting the event from its in-memory reprsentation into a JSON string.
     </span>EventProcessingSerialization,
+    <span class="doccomment">/// Time used to extract span metrics from an event.
+    </span>EventProcessingSpanMetricsExtraction,
     <span class="doccomment">/// Time spent between the start of request handling and processing of the envelope.
     ///
     /// This includes streaming the request body, scheduling overheads, project config fetching,
@@ -769,6 +934,8 @@
     <span class="doccomment">/// Total time in milliseconds an envelope spends in Relay from the time it is received until it
     /// finishes processing and has been submitted to the upstream.
     </span>EnvelopeTotalTime,
+    <span class="doccomment">/// Total time in milliseconds an envelope spends in the Relay&#39;s on-disk buffer.
+    </span>EnvelopeOnDiskBufferTime,
     <span class="doccomment">/// Total time in milliseconds spent evicting outdated and unused projects happens.
     </span>ProjectStateEvictionDuration,
     <span class="doccomment">/// Total time in milliseconds spent fetching queued project configuration updates requests to
@@ -851,12 +1018,16 @@
     </span>TimestampDelay,
     <span class="doccomment">/// The time it takes the outcome aggregator to flush aggregated outcomes.
     </span>OutcomeAggregatorFlushTime,
-
-    <span class="doccomment">/// Time in milliseconds spent on converting a transaction event into a metric.
-    </span>TransactionMetricsExtraction,
-
     <span class="doccomment">/// Time in milliseconds spent on parsing, normalizing and scrubbing replay recordings.
     </span>ReplayRecordingProcessing,
+    <span class="doccomment">/// Total time spent to send a request and receive the response from upstream.
+    </span>GlobalConfigRequestDuration,
+    <span class="doccomment">/// Timing in milliseconds for processing a message in the internal CPU pool.
+    ///
+    /// This metric is tagged with:
+    ///
+    ///  - `message`: The type of message that was processed.
+    </span>ProcessMessageDuration,
 }
 
 <span class="kw">impl </span>TimerMetric <span class="kw">for </span>RelayTimers {
@@ -872,10 +1043,14 @@
             <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
             </span>RelayTimers::EventProcessingRateLimiting =&gt; <span class="string">&quot;event_processing.rate_limiting&quot;</span>,
             RelayTimers::EventProcessingPii =&gt; <span class="string">&quot;event_processing.pii&quot;</span>,
+            RelayTimers::EventProcessingSpanMetricsExtraction =&gt; {
+                <span class="string">&quot;event_processing.span_metrics_extraction&quot;
+            </span>}
             RelayTimers::EventProcessingSerialization =&gt; <span class="string">&quot;event_processing.serialization&quot;</span>,
             RelayTimers::EnvelopeWaitTime =&gt; <span class="string">&quot;event.wait_time&quot;</span>,
             RelayTimers::EnvelopeProcessingTime =&gt; <span class="string">&quot;event.processing_time&quot;</span>,
             RelayTimers::EnvelopeTotalTime =&gt; <span class="string">&quot;event.total_time&quot;</span>,
+            RelayTimers::EnvelopeOnDiskBufferTime =&gt; <span class="string">&quot;envelope.on_disk_buffer_time&quot;</span>,
             RelayTimers::ProjectStateEvictionDuration =&gt; <span class="string">&quot;project_state.eviction.duration&quot;</span>,
             RelayTimers::ProjectStateRequestDuration =&gt; <span class="string">&quot;project_state.request.duration&quot;</span>,
             <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
@@ -886,8 +1061,9 @@
             RelayTimers::UpstreamRequestsDuration =&gt; <span class="string">&quot;upstream.requests.duration&quot;</span>,
             RelayTimers::TimestampDelay =&gt; <span class="string">&quot;requests.timestamp_delay&quot;</span>,
             RelayTimers::OutcomeAggregatorFlushTime =&gt; <span class="string">&quot;outcomes.aggregator.flush_time&quot;</span>,
-            RelayTimers::TransactionMetricsExtraction =&gt; <span class="string">&quot;metrics.extraction.transactions&quot;</span>,
             RelayTimers::ReplayRecordingProcessing =&gt; <span class="string">&quot;replay.recording.process&quot;</span>,
+            RelayTimers::GlobalConfigRequestDuration =&gt; <span class="string">&quot;global_config.requests.duration&quot;</span>,
+            RelayTimers::ProcessMessageDuration =&gt; <span class="string">&quot;processor.message.duration&quot;</span>,
         }
     }
 }
@@ -920,6 +1096,14 @@
     ///  - `handling`: Either `&quot;success&quot;` if the envelope was handled correctly, or `&quot;failure&quot;` if
     ///    there was an error or bug.
     </span>EnvelopeRejected,
+    <span class="doccomment">/// Number times the envelope buffer spools to disk.
+    </span>BufferWrites,
+    <span class="doccomment">/// Number times the envelope buffer reads back from disk.
+    </span>BufferReads,
+    <span class="doccomment">/// Number of _envelopes_ the envelope buffer spools to disk.
+    </span>BufferEnvelopesWritten,
+    <span class="doccomment">/// Number of _envelopes_ the envelope buffer reads back from disk.
+    </span>BufferEnvelopesRead,
     <span class="doccomment">/// Number of outcomes and reasons for rejected Envelopes.
     ///
     /// This metric is tagged with:
@@ -986,6 +1170,16 @@
     /// for `result` and `attempts` indicating whether it was succesful or a timeout and how
     /// many attempts were made respectively.
     </span>ProjectUpstreamCompleted,
+    <span class="doccomment">/// Number of times an upstream request for a project config failed.
+    ///
+    /// Failure can happen, for example, when there&#39;s a network error. Refer to
+    /// [`UpstreamRequestError`](crate::actors::upstream::UpstreamRequestError) for all cases.
+    </span>ProjectUpstreamFailed,
+    <span class="doccomment">/// Number of full metric data flushes.
+    ///
+    /// A full flush takes all contained items of the aggregator and flushes them upstream,
+    /// at best this happens once per freshly loaded project.
+    </span>ProjectStateFlushAllMetricMeta,
     <span class="doccomment">/// Number of Relay server starts.
     ///
     /// This can be used to track unwanted restarts due to crashes or termination.
@@ -1021,12 +1215,22 @@
     ///
     /// This metric is tagged with:
     ///  - `platform`: The event&#39;s platform, such as `&quot;javascript&quot;`.
-    ///  - `sdk`: The name of the Sentry SDK sending the transaction. This tag is only set for
-    ///    Sentry&#39;s SDKs and defaults to &quot;proprietary&quot;.
     ///  - `source`: The source of the transaction name on the client. See the [transaction source
     ///    documentation](https://develop.sentry.dev/sdk/event-payloads/properties/transaction_info/)
     ///    for all valid values.
-    </span>EventTransactionSource,
+    ///  - `contains_slashes`: Whether the transaction name contains `/`. We use this as a heuristic
+    ///    to represent URL transactions.
+    </span>EventTransaction,
+    <span class="doccomment">/// The number of transaction events processed grouped by transaction name modifications.
+    /// This metric is tagged with:
+    ///  - `source_in`: The source of the transaction name before normalization.
+    ///    See the [transaction source
+    ///    documentation](https://develop.sentry.dev/sdk/event-payloads/properties/transaction_info/)
+    ///    for all valid values.
+    ///  - `change`: The mechanism that changed the transaction name.
+    ///    Either `&quot;none&quot;`, `&quot;pattern&quot;`, `&quot;rule&quot;`, or `&quot;both&quot;`.
+    ///  - `source_out`: The source of the transaction name after normalization.
+    </span>TransactionNameChanges,
     <span class="doccomment">/// Number of HTTP requests reaching Relay.
     </span>Requests,
     <span class="doccomment">/// Number of completed HTTP requests.
@@ -1052,6 +1256,8 @@
     </span>EvictingStaleProjectCaches,
     <span class="doccomment">/// Number of times that parsing a metrics bucket item from an envelope failed.
     </span>MetricBucketsParsingFailed,
+    <span class="doccomment">/// Number of times that parsing a metric meta item from an envelope failed.
+    </span>MetricMetaParsingFailed,
     <span class="doccomment">/// Count extraction of transaction names. Tag with the decision to drop / replace / use original.
     </span>MetricsTransactionNameExtracted,
     <span class="doccomment">/// Number of Events with an OpenTelemetry Context
@@ -1061,6 +1267,12 @@
     ///  - `sdk`: The name of the Sentry SDK sending the transaction. This tag is only set for
     ///    Sentry&#39;s SDKs and defaults to &quot;proprietary&quot;.
     </span>OpenTelemetryEvent,
+    <span class="doccomment">/// Number of global config fetches from upstream. Only 2XX responses are
+    /// considered and ignores send errors (e.g. auth or network errors).
+    ///
+    /// This metric is tagged with:
+    ///  - `success`: whether deserializing the global config succeeded.
+    </span>GlobalConfigFetched,
 }
 
 <span class="kw">impl </span>CounterMetric <span class="kw">for </span>RelayCounters {
@@ -1070,28 +1282,102 @@
             </span>RelayCounters::EventCorrupted =&gt; <span class="string">&quot;event.corrupted&quot;</span>,
             RelayCounters::EnvelopeAccepted =&gt; <span class="string">&quot;event.accepted&quot;</span>,
             RelayCounters::EnvelopeRejected =&gt; <span class="string">&quot;event.rejected&quot;</span>,
+            RelayCounters::BufferWrites =&gt; <span class="string">&quot;buffer.writes&quot;</span>,
+            RelayCounters::BufferReads =&gt; <span class="string">&quot;buffer.reads&quot;</span>,
+            RelayCounters::BufferEnvelopesWritten =&gt; <span class="string">&quot;buffer.envelopes_written&quot;</span>,
+            RelayCounters::BufferEnvelopesRead =&gt; <span class="string">&quot;buffer.envelopes_read&quot;</span>,
             RelayCounters::Outcomes =&gt; <span class="string">&quot;events.outcomes&quot;</span>,
             RelayCounters::ProjectStateGet =&gt; <span class="string">&quot;project_state.get&quot;</span>,
             RelayCounters::ProjectStateRequest =&gt; <span class="string">&quot;project_state.request&quot;</span>,
             RelayCounters::ProjectStateNoCache =&gt; <span class="string">&quot;project_state.no_cache&quot;</span>,
+            RelayCounters::ProjectStateFlushAllMetricMeta =&gt; <span class="string">&quot;project_state.flush_all_metric_meta&quot;</span>,
             <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
             </span>RelayCounters::ProjectStateRedis =&gt; <span class="string">&quot;project_state.redis.requests&quot;</span>,
             RelayCounters::ProjectUpstreamCompleted =&gt; <span class="string">&quot;project_upstream.completed&quot;</span>,
+            RelayCounters::ProjectUpstreamFailed =&gt; <span class="string">&quot;project_upstream.failed&quot;</span>,
             RelayCounters::ProjectCacheHit =&gt; <span class="string">&quot;project_cache.hit&quot;</span>,
             RelayCounters::ProjectCacheMiss =&gt; <span class="string">&quot;project_cache.miss&quot;</span>,
             RelayCounters::ServerStarting =&gt; <span class="string">&quot;server.starting&quot;</span>,
             <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
             </span>RelayCounters::ProcessingMessageProduced =&gt; <span class="string">&quot;processing.event.produced&quot;</span>,
             RelayCounters::EventProtocol =&gt; <span class="string">&quot;event.protocol&quot;</span>,
-            RelayCounters::EventTransactionSource =&gt; <span class="string">&quot;event.transaction_source&quot;</span>,
+            RelayCounters::EventTransaction =&gt; <span class="string">&quot;event.transaction&quot;</span>,
+            RelayCounters::TransactionNameChanges =&gt; <span class="string">&quot;event.transaction_name_changes&quot;</span>,
             RelayCounters::Requests =&gt; <span class="string">&quot;requests&quot;</span>,
             RelayCounters::ResponsesStatusCodes =&gt; <span class="string">&quot;responses.status_codes&quot;</span>,
             RelayCounters::EvictingStaleProjectCaches =&gt; <span class="string">&quot;project_cache.eviction&quot;</span>,
             RelayCounters::MetricBucketsParsingFailed =&gt; <span class="string">&quot;metrics.buckets.parsing_failed&quot;</span>,
+            RelayCounters::MetricMetaParsingFailed =&gt; <span class="string">&quot;metrics.meta.parsing_failed&quot;</span>,
             RelayCounters::MetricsTransactionNameExtracted =&gt; <span class="string">&quot;metrics.transaction_name&quot;</span>,
             RelayCounters::OpenTelemetryEvent =&gt; <span class="string">&quot;event.opentelemetry&quot;</span>,
+            RelayCounters::GlobalConfigFetched =&gt; <span class="string">&quot;global_config.fetch&quot;</span>,
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+
+<span class="doccomment">/// Low-cardinality platform that can be used as a statsd tag.
+</span><span class="kw">pub enum </span>PlatformTag {
+    Cocoa,
+    Csharp,
+    Edge,
+    Go,
+    Java,
+    Javascript,
+    Julia,
+    Native,
+    Node,
+    Objc,
+    Other,
+    Perl,
+    Php,
+    Python,
+    Ruby,
+    Swift,
+}
+
+<span class="kw">impl </span>PlatformTag {
+    <span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::Cocoa =&gt; <span class="string">&quot;cocoa&quot;</span>,
+            <span class="self">Self</span>::Csharp =&gt; <span class="string">&quot;csharp&quot;</span>,
+            <span class="self">Self</span>::Edge =&gt; <span class="string">&quot;edge&quot;</span>,
+            <span class="self">Self</span>::Go =&gt; <span class="string">&quot;go&quot;</span>,
+            <span class="self">Self</span>::Java =&gt; <span class="string">&quot;java&quot;</span>,
+            <span class="self">Self</span>::Javascript =&gt; <span class="string">&quot;javascript&quot;</span>,
+            <span class="self">Self</span>::Julia =&gt; <span class="string">&quot;julia&quot;</span>,
+            <span class="self">Self</span>::Native =&gt; <span class="string">&quot;native&quot;</span>,
+            <span class="self">Self</span>::Node =&gt; <span class="string">&quot;node&quot;</span>,
+            <span class="self">Self</span>::Objc =&gt; <span class="string">&quot;objc&quot;</span>,
+            <span class="self">Self</span>::Other =&gt; <span class="string">&quot;other&quot;</span>,
+            <span class="self">Self</span>::Perl =&gt; <span class="string">&quot;perl&quot;</span>,
+            <span class="self">Self</span>::Php =&gt; <span class="string">&quot;php&quot;</span>,
+            <span class="self">Self</span>::Python =&gt; <span class="string">&quot;python&quot;</span>,
+            <span class="self">Self</span>::Ruby =&gt; <span class="string">&quot;ruby&quot;</span>,
+            <span class="self">Self</span>::Swift =&gt; <span class="string">&quot;swift&quot;</span>,
+        }
+    }
+}
+
+<span class="kw">impl</span>&lt;S: AsRef&lt;str&gt;&gt; From&lt;S&gt; <span class="kw">for </span>PlatformTag {
+    <span class="kw">fn </span>from(value: S) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value.as_ref() {
+            <span class="string">&quot;cocoa&quot; </span>=&gt; <span class="self">Self</span>::Cocoa,
+            <span class="string">&quot;csharp&quot; </span>=&gt; <span class="self">Self</span>::Csharp,
+            <span class="string">&quot;edge&quot; </span>=&gt; <span class="self">Self</span>::Edge,
+            <span class="string">&quot;go&quot; </span>=&gt; <span class="self">Self</span>::Go,
+            <span class="string">&quot;java&quot; </span>=&gt; <span class="self">Self</span>::Java,
+            <span class="string">&quot;javascript&quot; </span>=&gt; <span class="self">Self</span>::Javascript,
+            <span class="string">&quot;julia&quot; </span>=&gt; <span class="self">Self</span>::Julia,
+            <span class="string">&quot;native&quot; </span>=&gt; <span class="self">Self</span>::Native,
+            <span class="string">&quot;node&quot; </span>=&gt; <span class="self">Self</span>::Node,
+            <span class="string">&quot;objc&quot; </span>=&gt; <span class="self">Self</span>::Objc,
+            <span class="string">&quot;perl&quot; </span>=&gt; <span class="self">Self</span>::Perl,
+            <span class="string">&quot;php&quot; </span>=&gt; <span class="self">Self</span>::Php,
+            <span class="string">&quot;python&quot; </span>=&gt; <span class="self">Self</span>::Python,
+            <span class="string">&quot;ruby&quot; </span>=&gt; <span class="self">Self</span>::Ruby,
+            <span class="string">&quot;swift&quot; </span>=&gt; <span class="self">Self</span>::Swift,
+            <span class="kw">_ </span>=&gt; <span class="self">Self</span>::Other,
+        }
+    }
+}
+</code></pre></div></section></main></body></html>

@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/utils/unreal.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>unreal.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html">
-                        <img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/utils/unreal.rs`."><title>unreal.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -413,26 +412,14 @@
 <a href="#412" id="412">412</a>
 <a href="#413" id="413">413</a>
 <a href="#414" id="414">414</a>
-<a href="#415" id="415">415</a>
-<a href="#416" id="416">416</a>
-<a href="#417" id="417">417</a>
-<a href="#418" id="418">418</a>
-<a href="#419" id="419">419</a>
-<a href="#420" id="420">420</a>
-<a href="#421" id="421">421</a>
-<a href="#422" id="422">422</a>
-<a href="#423" id="423">423</a>
-<a href="#424" id="424">424</a>
-<a href="#425" id="425">425</a>
-<a href="#426" id="426">426</a>
-</pre><pre class="rust"><code><span class="kw">use </span>chrono::{TimeZone, Utc};
+</pre></div><pre class="rust"><code><span class="kw">use </span>chrono::{TimeZone, Utc};
 <span class="kw">use </span>relay_config::Config;
-<span class="kw">use </span>relay_general::protocol::{
+<span class="kw">use </span>relay_event_schema::protocol::{
     AsPair, Breadcrumb, ClientSdkInfo, Context, Contexts, DeviceContext, Event, EventId,
     GpuContext, LenientString, Level, LogEntry, Message, OsContext, TagEntry, Tags, Timestamp,
     User, UserReport, Values,
 };
-<span class="kw">use </span>relay_general::types::{<span class="self">self</span>, Annotated, Array, Object, Value};
+<span class="kw">use </span>relay_protocol::{Annotated, Array, Object, Value};
 <span class="kw">use </span>symbolic_unreal::{
     Unreal4Context, Unreal4Crash, Unreal4Error, Unreal4ErrorKind, Unreal4FileType, Unreal4LogEntry,
 };
@@ -510,12 +497,13 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>item = Item::new(ItemType::Attachment);
         item.set_filename(file.name());
-        item.set_payload(content_type, file.data());
+        <span class="comment">// TODO: This clones data. Update symbolic to allow moving the bytes out.
+        </span>item.set_payload(content_type, file.data().to_owned());
         item.set_attachment_type(attachment_type);
         envelope.add_item(item);
     }
 
-    <span class="kw">if </span>!<span class="kw">super</span>::check_envelope_size_limits(config, envelope) {
+    <span class="kw">if </span><span class="kw">super</span>::check_envelope_size_limits(config, envelope).is_err() {
         <span class="kw">return </span><span class="prelude-val">Err</span>(Unreal4ErrorKind::TooLarge.into());
     }
 
@@ -628,32 +616,19 @@
     <span class="kw">let </span>contexts = event.contexts.get_or_insert_with(Contexts::default);
 
     <span class="kw">if let </span><span class="prelude-val">Some</span>(memory_physical) = runtime_props.memory_stats_total_physical.take() {
-        <span class="kw">let </span>device_context = contexts.get_or_insert_with(DeviceContext::default_key(), || {
-            Context::Device(Box::default())
-        });
-
-        <span class="kw">if let </span>Context::Device(device_context) = device_context {
-            device_context.memory_size = Annotated::new(memory_physical);
-        }
+        <span class="kw">let </span>device_context = contexts.get_or_default::&lt;DeviceContext&gt;();
+        device_context.memory_size = Annotated::new(memory_physical);
     }
 
     <span class="comment">// OS information is likely overwritten by Minidump processing later.
     </span><span class="kw">if let </span><span class="prelude-val">Some</span>(os_major) = runtime_props.misc_os_version_major.take() {
-        <span class="kw">let </span>os_context =
-            contexts.get_or_insert_with(OsContext::default_key(), || Context::Os(Box::default()));
-
-        <span class="kw">if let </span>Context::Os(os_context) = os_context {
-            os_context.name = Annotated::new(os_major);
-        }
+        <span class="kw">let </span>os_context = contexts.get_or_default::&lt;OsContext&gt;();
+        os_context.name = Annotated::new(os_major);
     }
 
     <span class="kw">if let </span><span class="prelude-val">Some</span>(gpu_brand) = runtime_props.misc_primary_gpu_brand.take() {
-        <span class="kw">let </span>gpu_context =
-            contexts.get_or_insert_with(GpuContext::default_key(), || Context::Gpu(Box::default()));
-
-        <span class="kw">if let </span>Context::Gpu(gpu_context) = gpu_context {
-            gpu_context.name = Annotated::new(gpu_brand);
-        }
+        <span class="kw">let </span>gpu_context = contexts.get_or_default::&lt;GpuContext&gt;();
+        gpu_context.name = Annotated::new(gpu_brand);
     }
 
     <span class="kw">if </span>runtime_props.is_assert.unwrap_or(<span class="bool-val">false</span>) {
@@ -692,7 +667,7 @@
         ..ClientSdkInfo::default()
     });
 
-    <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(Value::Object(props))) = types::to_value(<span class="kw-2">&amp;</span>runtime_props) {
+    <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(Value::Object(props))) = relay_protocol::to_value(<span class="kw-2">&amp;</span>runtime_props) {
         <span class="kw">let </span>unreal_context =
             contexts.get_or_insert_with(<span class="string">&quot;unreal&quot;</span>, || Context::Other(Object::new()));
 
@@ -756,7 +731,7 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="kw">fn </span>get_context() -&gt; Unreal4Context {
-        <span class="kw">let </span>raw_context = <span class="string">br##&quot;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        <span class="kw">let </span>raw_context = <span class="string">br#&quot;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;FGenericCrashContext&gt;
 	&lt;RuntimeProperties&gt;
 		&lt;UserName&gt;bruno&lt;/UserName&gt;
@@ -782,7 +757,7 @@
 		&lt;PlatformCallbackResult&gt;0&lt;/PlatformCallbackResult&gt;
 	&lt;/PlatformProperties&gt;
 &lt;/FGenericCrashContext&gt;
-&quot;##</span>;
+&quot;#</span>;
 
         Unreal4Context::parse(raw_context).unwrap()
     }
@@ -800,7 +775,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_merge_unreal_context_is_assert_level_error() {
         <span class="kw">let </span><span class="kw-2">mut </span>context = get_context();
-        <span class="kw">let </span><span class="kw-2">mut </span>runtime_props = context.runtime_properties.as_mut().unwrap();
+        <span class="kw">let </span>runtime_props = context.runtime_properties.as_mut().unwrap();
         runtime_props.is_assert = <span class="prelude-val">Some</span>(<span class="bool-val">true</span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>event = Event::default();
@@ -813,7 +788,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_merge_unreal_context_is_esure_level_warning() {
         <span class="kw">let </span><span class="kw-2">mut </span>context = get_context();
-        <span class="kw">let </span><span class="kw-2">mut </span>runtime_props = context.runtime_properties.as_mut().unwrap();
+        <span class="kw">let </span>runtime_props = context.runtime_properties.as_mut().unwrap();
         runtime_props.is_ensure = <span class="prelude-val">Some</span>(<span class="bool-val">true</span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>event = Event::default();
@@ -825,11 +800,11 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_merge_unreal_logs() {
-        <span class="kw">let </span>logs = <span class="string">br##&quot;Log file open, 10/29/18 17:56:37
+        <span class="kw">let </span>logs = <span class="string">br#&quot;Log file open, 10/29/18 17:56:37
 [2018.10.29-16.56.38:332][  0]LogGameplayTags: Display: UGameplayTagsManager::DoneAddingNativeTags. DelegateIsBound: 0
 [2018.10.29-16.56.39:332][  0]LogStats: UGameplayTagsManager::ConstructGameplayTagTree: ImportINI prefixes -  0.000 s
 [2018.10.29-16.56.40:332][  0]LogStats: UGameplayTagsManager::ConstructGameplayTagTree: Construct from data asset -  0.000 s
-[2018.10.29-16.56.41:332][  0]LogStats: UGameplayTagsManager::ConstructGameplayTagTree: ImportINI -  0.000 s&quot;##</span>;
+[2018.10.29-16.56.41:332][  0]LogStats: UGameplayTagsManager::ConstructGameplayTagTree: ImportINI -  0.000 s&quot;#</span>;
 
         <span class="kw">let </span><span class="kw-2">mut </span>event = Event::default();
         merge_unreal_logs(<span class="kw-2">&amp;mut </span>event, logs).ok();
@@ -851,5 +826,4 @@
         <span class="macro">insta::assert_snapshot!</span>(Annotated::new(event).to_json_pretty().unwrap());
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

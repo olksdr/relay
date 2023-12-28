@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/actors/outcome.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>outcome.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html">
-                        <img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/actors/outcome.rs`."><title>outcome.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -954,19 +953,7 @@
 <a href="#953" id="953">953</a>
 <a href="#954" id="954">954</a>
 <a href="#955" id="955">955</a>
-<a href="#956" id="956">956</a>
-<a href="#957" id="957">957</a>
-<a href="#958" id="958">958</a>
-<a href="#959" id="959">959</a>
-<a href="#960" id="960">960</a>
-<a href="#961" id="961">961</a>
-<a href="#962" id="962">962</a>
-<a href="#963" id="963">963</a>
-<a href="#964" id="964">964</a>
-<a href="#965" id="965">965</a>
-<a href="#966" id="966">966</a>
-<a href="#967" id="967">967</a>
-</pre><pre class="rust"><code><span class="doccomment">//! This module contains the service that tracks outcomes.
+</pre></div><pre class="rust"><code><span class="doccomment">//! This module contains the service that tracks outcomes.
 //!
 //! Outcomes describe the final &quot;fate&quot; of an envelope item. As such, for every item exactly one
 //! outcome must be emitted in the entire ingestion pipeline. Since Relay is only one part in this
@@ -975,6 +962,7 @@
 </span><span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>std::collections::BTreeMap;
 <span class="kw">use </span>std::convert::TryInto;
+<span class="kw">use </span>std::error::Error;
 <span class="kw">use </span>std::net::IpAddr;
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::time::Duration;
@@ -983,16 +971,15 @@
 <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
 </span><span class="kw">use </span>anyhow::Context;
 <span class="kw">use </span>chrono::{DateTime, SecondsFormat, Utc};
-<span class="kw">use </span>relay_common::{DataCategory, ProjectId, UnixTimestamp};
+<span class="kw">use </span>relay_base_schema::project::ProjectId;
+<span class="kw">use </span>relay_common::time::UnixTimestamp;
 <span class="kw">use </span>relay_config::{Config, EmitOutcomes};
+<span class="kw">use </span>relay_event_schema::protocol::{ClientReport, DiscardedEvent, EventId};
 <span class="kw">use </span>relay_filter::FilterStatKey;
-<span class="kw">use </span>relay_general::protocol::{ClientReport, DiscardedEvent, EventId};
 <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
 </span><span class="kw">use </span>relay_kafka::{ClientError, KafkaClient, KafkaTopic};
-<span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-</span><span class="kw">use </span>relay_log::LogError;
-<span class="kw">use </span>relay_quotas::{ReasonCode, Scoping};
-<span class="kw">use </span>relay_sampling::MatchedRuleIds;
+<span class="kw">use </span>relay_quotas::{DataCategory, ReasonCode, Scoping};
+<span class="kw">use </span>relay_sampling::evaluation::MatchedRuleIds;
 <span class="kw">use </span>relay_statsd::metric;
 <span class="kw">use </span>relay_system::{Addr, FromMessage, Interface, NoResponse, Service};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
@@ -1001,7 +988,6 @@
 <span class="kw">use </span><span class="kw">crate</span>::actors::upstream::{Method, SendQuery, UpstreamQuery, UpstreamRelay};
 <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::service::ServiceError;
-<span class="kw">use </span><span class="kw">crate</span>::service::REGISTRY;
 <span class="kw">use </span><span class="kw">crate</span>::statsd::RelayCounters;
 <span class="kw">use </span><span class="kw">crate</span>::utils::SleepHandle;
 
@@ -1094,12 +1080,6 @@
     </span><span class="kw">pub </span>quantity: u32,
 }
 
-<span class="kw">impl </span>TrackOutcome {
-    <span class="kw">pub fn </span>from_registry() -&gt; Addr&lt;<span class="self">Self</span>&gt; {
-        REGISTRY.get().unwrap().outcome_aggregator.clone()
-    }
-}
-
 <span class="kw">impl </span>TrackOutcomeLike <span class="kw">for </span>TrackOutcome {
     <span class="kw">fn </span>reason(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Cow&lt;str&gt;&gt; {
         <span class="self">self</span>.outcome.to_reason()
@@ -1165,7 +1145,7 @@
     </span><span class="kw">fn </span>to_reason(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Cow&lt;str&gt;&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             Outcome::Invalid(discard_reason) =&gt; <span class="prelude-val">Some</span>(Cow::Borrowed(discard_reason.name())),
-            Outcome::Filtered(filter_key) =&gt; <span class="prelude-val">Some</span>(Cow::Borrowed(filter_key.name())),
+            Outcome::Filtered(filter_key) =&gt; <span class="prelude-val">Some</span>(filter_key.clone().name()),
             Outcome::FilteredSampling(rule_ids) =&gt; <span class="prelude-val">Some</span>(Cow::Owned(<span class="macro">format!</span>(<span class="string">&quot;Sampled:{rule_ids}&quot;</span>))),
             <span class="comment">//TODO can we do better ? (not re copying the string )
             </span>Outcome::RateLimited(code_opt) =&gt; code_opt
@@ -1513,11 +1493,11 @@
         <span class="self">self</span>.flush_handle.reset();
 
         <span class="kw">if </span><span class="self">self</span>.unsent_outcomes.is_empty() {
-            <span class="macro">relay_log::warn!</span>(<span class="string">&quot;unexpected send_batch scheduled with no outcomes to send.&quot;</span>);
+            <span class="macro">relay_log::warn!</span>(<span class="string">&quot;unexpected send_batch scheduled with no outcomes to send&quot;</span>);
             <span class="kw">return</span>;
         } <span class="kw">else </span>{
             <span class="macro">relay_log::trace!</span>(
-                <span class="string">&quot;sending outcome batch of size:{}&quot;</span>,
+                <span class="string">&quot;sending outcome batch of size {}&quot;</span>,
                 <span class="self">self</span>.unsent_outcomes.len()
             );
         }
@@ -1530,16 +1510,16 @@
 
         tokio::spawn(<span class="kw">async move </span>{
             <span class="kw">match </span>upstream_relay.send(SendQuery(request)).<span class="kw">await </span>{
-                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">relay_log::trace!</span>(<span class="string">&quot;outcome batch sent.&quot;</span>),
+                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">relay_log::trace!</span>(<span class="string">&quot;outcome batch sent&quot;</span>),
                 <span class="prelude-val">Err</span>(error) =&gt; {
-                    <span class="macro">relay_log::error!</span>(<span class="string">&quot;outcome batch sending failed with: {}&quot;</span>, error)
+                    <span class="macro">relay_log::error!</span>(error = <span class="kw-2">&amp;</span>error <span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>Error, <span class="string">&quot;outcome batch sending failed&quot;</span>)
                 }
             }
         });
     }
 
     <span class="kw">fn </span>handle_message(<span class="kw-2">&amp;mut </span><span class="self">self</span>, message: TrackRawOutcome) {
-        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;Batching outcome&quot;</span>);
+        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;batching outcome&quot;</span>);
         <span class="self">self</span>.unsent_outcomes.push(message);
 
         <span class="kw">if </span><span class="self">self</span>.unsent_outcomes.len() &gt;= <span class="self">self</span>.config.outcome_batch_size() {
@@ -1590,7 +1570,7 @@
     }
 
     <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;Flushing client reports&quot;</span>);
+        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;flushing client reports&quot;</span>);
         <span class="self">self</span>.flush_handle.reset();
 
         <span class="kw">let </span>unsent_reports = mem::take(<span class="kw-2">&amp;mut </span><span class="self">self</span>.unsent_reports);
@@ -1681,8 +1661,8 @@
 </span><span class="kw">impl </span>KafkaOutcomesProducer {
     <span class="doccomment">/// Creates and connects the Kafka producers.
     ///
-    /// If the given Kafka configuration parameters are invalid, or an error happens during
-    /// connecting during the broker, an error is returned.
+    /// If the given Kafka configuration parameters are invalid, or an error
+    /// happens while connecting to the broker, an error is returned.
     </span><span class="kw">pub fn </span>create(config: <span class="kw-2">&amp;</span>Config) -&gt; anyhow::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>client_builder = KafkaClient::builder();
 
@@ -1715,12 +1695,6 @@
 </span><span class="kw">pub enum </span>OutcomeProducer {
     TrackOutcome(TrackOutcome),
     TrackRawOutcome(TrackRawOutcome),
-}
-
-<span class="kw">impl </span>OutcomeProducer {
-    <span class="kw">pub fn </span>from_registry() -&gt; Addr&lt;<span class="self">Self</span>&gt; {
-        REGISTRY.get().unwrap().outcome_producer.clone()
-    }
 }
 
 <span class="kw">impl </span>Interface <span class="kw">for </span>OutcomeProducer {}
@@ -1774,7 +1748,7 @@
         organization_id: u64,
         message: TrackRawOutcome,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), OutcomeError&gt; {
-        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;Tracking kafka outcome: {:?}&quot;</span>, message);
+        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;Tracking kafka outcome: {message:?}&quot;</span>);
 
         <span class="kw">let </span>payload = serde_json::to_string(<span class="kw-2">&amp;</span>message).map_err(OutcomeError::SerializationError)<span class="question-mark">?</span>;
 
@@ -1782,7 +1756,7 @@
         // Here we create a fake EventId, when we don&#39;t have the real one, so that we can
         // create a kafka message key that spreads the events nicely over all the
         // kafka consumer groups.
-        </span><span class="kw">let </span>key = message.event_id.unwrap_or_else(EventId::new).<span class="number">0</span>;
+        </span><span class="kw">let </span>key = message.event_id.unwrap_or_default().<span class="number">0</span>;
 
         <span class="comment">// Dispatch to the correct topic and cluster based on the kind of outcome.
         </span><span class="kw">let </span>topic = <span class="kw">if </span>message.is_billing() {
@@ -1795,6 +1769,7 @@
             topic,
             organization_id,
             key.as_bytes(),
+            <span class="prelude-val">None</span>,
             <span class="string">&quot;outcome&quot;</span>,
             payload.as_bytes(),
         );
@@ -1815,7 +1790,7 @@
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(error) =
                     <span class="self">self</span>.send_kafka_message(kafka_producer, organization_id, raw_message)
                 {
-                    <span class="macro">relay_log::error!</span>(<span class="string">&quot;failed to produce outcome: {}&quot;</span>, LogError(<span class="kw-2">&amp;</span>error));
+                    <span class="macro">relay_log::error!</span>(error = <span class="kw-2">&amp;</span>error <span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>Error, <span class="string">&quot;failed to produce outcome&quot;</span>);
                 }
             }
             <span class="self">Self</span>::ClientReport(producer) =&gt; {
@@ -1837,7 +1812,7 @@
                 send_outcome_metric(<span class="kw-2">&amp;</span>message, <span class="string">&quot;kafka&quot;</span>);
                 <span class="kw">let </span>sharding_id = message.org_id.unwrap_or_else(|| message.project_id.value());
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(error) = <span class="self">self</span>.send_kafka_message(kafka_producer, sharding_id, message) {
-                    <span class="macro">relay_log::error!</span>(<span class="string">&quot;failed to produce outcome: {}&quot;</span>, LogError(<span class="kw-2">&amp;</span>error));
+                    <span class="macro">relay_log::error!</span>(error = <span class="kw-2">&amp;</span>error <span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>Error, <span class="string">&quot;failed to produce outcome&quot;</span>);
                 }
             }
             <span class="self">Self</span>::Http(producer) =&gt; {
@@ -1933,5 +1908,4 @@
         });
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

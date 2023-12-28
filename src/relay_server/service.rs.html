@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/service.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_server/index.html">
-                        <img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/service.rs`."><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -207,24 +206,149 @@
 <a href="#206" id="206">206</a>
 <a href="#207" id="207">207</a>
 <a href="#208" id="208">208</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::fmt;
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::convert::Infallible;
+<span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>anyhow::{Context, <span class="prelude-ty">Result</span>};
-<span class="kw">use </span>once_cell::race::OnceBox;
+<span class="kw">use </span>axum::extract::FromRequestParts;
+<span class="kw">use </span>axum::http::request::Parts;
 <span class="kw">use </span>relay_aws_extension::AwsExtension;
 <span class="kw">use </span>relay_config::Config;
-<span class="kw">use </span>relay_metrics::{Aggregator, AggregatorService};
+<span class="kw">use </span>relay_metrics::Aggregator;
 <span class="kw">use </span>relay_redis::RedisPool;
-<span class="kw">use </span>relay_system::{Addr, Service};
+<span class="kw">use </span>relay_system::{channel, Addr, Service};
 <span class="kw">use </span>tokio::runtime::Runtime;
 
 <span class="kw">use </span><span class="kw">crate</span>::actors::envelopes::{EnvelopeManager, EnvelopeManagerService};
+<span class="kw">use </span><span class="kw">crate</span>::actors::global_config::{GlobalConfigManager, GlobalConfigService};
 <span class="kw">use </span><span class="kw">crate</span>::actors::health_check::{HealthCheck, HealthCheckService};
 <span class="kw">use </span><span class="kw">crate</span>::actors::outcome::{OutcomeProducer, OutcomeProducerService, TrackOutcome};
 <span class="kw">use </span><span class="kw">crate</span>::actors::outcome_aggregator::OutcomeAggregator;
 <span class="kw">use </span><span class="kw">crate</span>::actors::processor::{EnvelopeProcessor, EnvelopeProcessorService};
-<span class="kw">use </span><span class="kw">crate</span>::actors::project_cache::{ProjectCache, ProjectCacheService};
+<span class="kw">use </span><span class="kw">crate</span>::actors::project_cache::{ProjectCache, ProjectCacheService, Services};
 <span class="kw">use </span><span class="kw">crate</span>::actors::relays::{RelayCache, RelayCacheService};
 <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::actors::store::StoreService;
@@ -232,14 +356,11 @@
 <span class="kw">use </span><span class="kw">crate</span>::actors::upstream::{UpstreamRelay, UpstreamRelayService};
 <span class="kw">use </span><span class="kw">crate</span>::utils::BufferGuard;
 
-<span class="kw">pub static </span>REGISTRY: OnceBox&lt;Registry&gt; = OnceBox::new();
-
 <span class="doccomment">/// Indicates the type of failure of the server.
 </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, thiserror::Error)]
 </span><span class="kw">pub enum </span>ServiceError {
     <span class="doccomment">/// GeoIp construction failed.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-    #[error(<span class="string">&quot;could not load the Geoip Db&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">&quot;could not load the Geoip Db&quot;</span>)]
     </span>GeoIp,
 
     <span class="doccomment">/// Initializing the Kafka producer failed.
@@ -262,18 +383,9 @@
     <span class="kw">pub </span>envelope_manager: Addr&lt;EnvelopeManager&gt;,
     <span class="kw">pub </span>test_store: Addr&lt;TestStore&gt;,
     <span class="kw">pub </span>relay_cache: Addr&lt;RelayCache&gt;,
+    <span class="kw">pub </span>global_config: Addr&lt;GlobalConfigManager&gt;,
     <span class="kw">pub </span>project_cache: Addr&lt;ProjectCache&gt;,
     <span class="kw">pub </span>upstream_relay: Addr&lt;UpstreamRelay&gt;,
-}
-
-<span class="kw">impl </span>Registry {
-    <span class="doccomment">/// Get the [`AggregatorService`] address from the registry.
-    ///
-    /// TODO(actix): this is temporary solution while migrating `ProjectCache` actor to the new tokio
-    /// runtime and follow up refactoring of the dependencies.
-    </span><span class="kw">pub fn </span>aggregator() -&gt; Addr&lt;Aggregator&gt; {
-        REGISTRY.get().unwrap().aggregator.clone()
-    }
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Registry {
@@ -298,28 +410,24 @@
         .unwrap()
 }
 
-<span class="doccomment">/// Server state.
-</span><span class="attr">#[derive(Clone)]
-</span><span class="kw">pub struct </span>ServiceState {
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">struct </span>StateInner {
     config: Arc&lt;Config&gt;,
     buffer_guard: Arc&lt;BufferGuard&gt;,
-    _aggregator_runtime: Arc&lt;Runtime&gt;,
-    _outcome_runtime: Arc&lt;Runtime&gt;,
-    _project_runtime: Arc&lt;Runtime&gt;,
-    _upstream_runtime: Arc&lt;Runtime&gt;,
-    _store_runtime: <span class="prelude-ty">Option</span>&lt;Arc&lt;Runtime&gt;&gt;,
+    registry: Registry,
+}
+
+<span class="doccomment">/// Server state.
+</span><span class="attr">#[derive(Clone, Debug)]
+</span><span class="kw">pub struct </span>ServiceState {
+    inner: Arc&lt;StateInner&gt;,
 }
 
 <span class="kw">impl </span>ServiceState {
     <span class="doccomment">/// Starts all services and returns addresses to all of them.
-    </span><span class="kw">pub fn </span>start(config: Arc&lt;Config&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>upstream_runtime = create_runtime(<span class="string">&quot;upstream-rt&quot;</span>, <span class="number">1</span>);
-        <span class="kw">let </span>project_runtime = create_runtime(<span class="string">&quot;project-rt&quot;</span>, <span class="number">1</span>);
-        <span class="kw">let </span>aggregator_runtime = create_runtime(<span class="string">&quot;aggregator-rt&quot;</span>, <span class="number">1</span>);
-        <span class="kw">let </span>outcome_runtime = create_runtime(<span class="string">&quot;outcome-rt&quot;</span>, <span class="number">1</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>_store_runtime = <span class="prelude-val">None</span>;
-
-        <span class="kw">let </span>upstream_relay = UpstreamRelayService::new(config.clone()).start_in(<span class="kw-2">&amp;</span>upstream_runtime);
+    </span><span class="kw">pub fn </span>start(config: Arc&lt;Config&gt;, runtimes: <span class="kw-2">&amp;</span>Runtimes) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>upstream_relay = UpstreamRelayService::new(config.clone()).start_in(<span class="kw-2">&amp;</span>runtimes.upstream);
+        <span class="kw">let </span>test_store = TestStoreService::new(config.clone()).start();
 
         <span class="kw">let </span>redis_pool = <span class="kw">match </span>config.redis() {
             <span class="prelude-val">Some</span>(redis_config) <span class="kw">if </span>config.processing_enabled() =&gt; {
@@ -329,31 +437,100 @@
         };
 
         <span class="kw">let </span>buffer = Arc::new(BufferGuard::new(config.envelope_buffer_size()));
-        <span class="kw">let </span>processor = EnvelopeProcessorService::new(config.clone(), redis_pool.clone())<span class="question-mark">?</span>.start();
-        <span class="attr">#[allow(unused_mut)]
-        </span><span class="kw">let </span><span class="kw-2">mut </span>envelope_manager = EnvelopeManagerService::new(config.clone());
+
+        <span class="comment">// Create an address for the `EnvelopeManagerService`, which can be injected into the
+        // other services. This also solves the issue of circular dependencies with `EnvelopeProcessorService`.
+        </span><span class="kw">let </span>(envelope_manager, envelope_manager_rx) = channel(EnvelopeManagerService::name());
+        <span class="kw">let </span>outcome_producer = OutcomeProducerService::create(
+            config.clone(),
+            upstream_relay.clone(),
+            envelope_manager.clone(),
+        )<span class="question-mark">?
+        </span>.start_in(<span class="kw-2">&amp;</span>runtimes.outcome);
+        <span class="kw">let </span>outcome_aggregator =
+            OutcomeAggregator::new(<span class="kw-2">&amp;</span>config, outcome_producer.clone()).start_in(<span class="kw-2">&amp;</span>runtimes.outcome);
+
+        <span class="comment">// The global config service must start before dependant services are
+        // started. Messages like subscription requests to the global config
+        // service fail if the service is not running.
+        </span><span class="kw">let </span>global_config =
+            GlobalConfigService::new(config.clone(), upstream_relay.clone()).start();
+
+        <span class="kw">let </span>(project_cache, project_cache_rx) = channel(ProjectCacheService::name());
+
+        <span class="kw">let </span>aggregator = relay_metrics::RouterService::new(
+            config.default_aggregator_config().clone(),
+            config.secondary_aggregator_configs().clone(),
+            <span class="prelude-val">Some</span>(project_cache.clone().recipient()),
+        )
+        .start_in(<span class="kw-2">&amp;</span>runtimes.aggregator);
 
         <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-        </span><span class="kw">if </span>config.processing_enabled() {
-            <span class="kw">let </span>rt = create_runtime(<span class="string">&quot;store-rt&quot;</span>, <span class="number">1</span>);
-            <span class="kw">let </span>store = StoreService::create(config.clone())<span class="question-mark">?</span>.start_in(<span class="kw-2">&amp;</span>rt);
-            envelope_manager.set_store_forwarder(store);
-            _store_runtime = <span class="prelude-val">Some</span>(rt);
-        }
+        </span><span class="kw">let </span>store = <span class="kw">match </span>runtimes.store {
+            <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>rt) =&gt; {
+                <span class="prelude-val">Some</span>(StoreService::create(config.clone(), outcome_aggregator.clone())<span class="question-mark">?</span>.start_in(rt))
+            }
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
+        };
 
-        <span class="kw">let </span>envelope_manager = envelope_manager.start();
-        <span class="kw">let </span>test_store = TestStoreService::new(config.clone()).start();
+        <span class="kw">let </span>processor = EnvelopeProcessorService::new(
+            config.clone(),
+            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
+            </span>redis_pool.clone(),
+            envelope_manager.clone(),
+            outcome_aggregator.clone(),
+            project_cache.clone(),
+            upstream_relay.clone(),
+            test_store.clone(),
+            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
+            </span>aggregator.clone(),
+            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
+            </span>store.clone(),
+        )
+        .start();
 
-        <span class="kw">let </span>project_cache = ProjectCacheService::new(
+        <span class="attr">#[allow(unused_mut)]
+        </span><span class="kw">let </span><span class="kw-2">mut </span>envelope_manager_service = EnvelopeManagerService::new(
             config.clone(),
             processor.clone(),
+            project_cache.clone(),
+            test_store.clone(),
             upstream_relay.clone(),
+            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
+            </span>store.clone(),
+        );
+
+        envelope_manager_service.spawn_handler(envelope_manager_rx);
+
+        <span class="comment">// Keep all the services in one context.
+        </span><span class="kw">let </span>project_cache_services = Services::new(
+            aggregator.clone(),
+            processor.clone(),
+            envelope_manager.clone(),
+            outcome_aggregator.clone(),
+            project_cache.clone(),
+            test_store.clone(),
+            upstream_relay.clone(),
+            global_config.clone(),
+        );
+        <span class="kw">let </span>guard = runtimes.project.enter();
+        ProjectCacheService::new(
+            config.clone(),
+            buffer.clone(),
+            project_cache_services,
             redis_pool,
         )
-        .start_in(<span class="kw-2">&amp;</span>project_runtime);
+        .spawn_handler(project_cache_rx);
+        drop(guard);
 
-        <span class="kw">let </span>health_check = HealthCheckService::new(config.clone()).start();
-        <span class="kw">let </span>relay_cache = RelayCacheService::new(config.clone()).start();
+        <span class="kw">let </span>health_check = HealthCheckService::new(
+            config.clone(),
+            aggregator.clone(),
+            upstream_relay.clone(),
+            project_cache.clone(),
+        )
+        .start();
+        <span class="kw">let </span>relay_cache = RelayCacheService::new(config.clone(), upstream_relay.clone()).start();
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(aws_api) = config.aws_runtime_api() {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(aws_extension) = AwsExtension::new(aws_api) {
@@ -361,50 +538,34 @@
             }
         }
 
-        <span class="kw">let </span>aggregator = AggregatorService::new(
-            config.aggregator_config().clone(),
-            <span class="prelude-val">Some</span>(project_cache.clone().recipient()),
-        )
-        .start_in(<span class="kw-2">&amp;</span>aggregator_runtime);
+        <span class="kw">let </span>registry = Registry {
+            aggregator,
+            processor,
+            health_check,
+            outcome_producer,
+            outcome_aggregator,
+            envelope_manager,
+            test_store,
+            relay_cache,
+            global_config,
+            project_cache,
+            upstream_relay,
+        };
 
-        <span class="kw">let </span>outcome_producer = OutcomeProducerService::create(
-            config.clone(),
-            upstream_relay.clone(),
-            envelope_manager.clone(),
-        )<span class="question-mark">?
-        </span>.start_in(<span class="kw-2">&amp;</span>outcome_runtime);
-        <span class="kw">let </span>outcome_aggregator =
-            OutcomeAggregator::new(<span class="kw-2">&amp;</span>config, outcome_producer.clone()).start_in(<span class="kw-2">&amp;</span>outcome_runtime);
-
-        REGISTRY
-            .set(Box::new(Registry {
-                aggregator,
-                processor,
-                health_check,
-                outcome_producer,
-                outcome_aggregator,
-                envelope_manager,
-                test_store,
-                relay_cache,
-                project_cache,
-                upstream_relay,
-            }))
-            .unwrap();
-
-        <span class="prelude-val">Ok</span>(ServiceState {
+        <span class="kw">let </span>state = StateInner {
             buffer_guard: buffer,
             config,
-            _aggregator_runtime: Arc::new(aggregator_runtime),
-            _outcome_runtime: Arc::new(outcome_runtime),
-            _project_runtime: Arc::new(project_runtime),
-            _upstream_runtime: Arc::new(upstream_runtime),
-            _store_runtime: _store_runtime.map(Arc::new),
+            registry,
+        };
+
+        <span class="prelude-val">Ok</span>(ServiceState {
+            inner: Arc::new(state),
         })
     }
 
     <span class="doccomment">/// Returns a reference to the Relay configuration.
     </span><span class="kw">pub fn </span>config(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Config {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.config
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.config
     }
 
     <span class="doccomment">/// Returns a reference to the guard of the envelope buffer.
@@ -412,8 +573,89 @@
     /// This can be used to enter new envelopes into the processing queue and reserve a slot in the
     /// buffer. See [`BufferGuard`] for more information.
     </span><span class="kw">pub fn </span>buffer_guard(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>BufferGuard {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.buffer_guard
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.buffer_guard
+    }
+
+    <span class="doccomment">/// Returns the address of the [`ProjectCache`] service.
+    </span><span class="kw">pub fn </span>project_cache(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;ProjectCache&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.project_cache
+    }
+
+    <span class="doccomment">/// Returns the address of the [`RelayCache`] service.
+    </span><span class="kw">pub fn </span>relay_cache(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;RelayCache&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.relay_cache
+    }
+
+    <span class="doccomment">/// Returns the address of the [`HealthCheck`] service.
+    </span><span class="kw">pub fn </span>health_check(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;HealthCheck&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.health_check
+    }
+
+    <span class="doccomment">/// Returns the address of the [`OutcomeProducer`] service.
+    </span><span class="kw">pub fn </span>outcome_producer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;OutcomeProducer&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.outcome_producer
+    }
+
+    <span class="doccomment">/// Returns the address of the [`OutcomeProducer`] service.
+    </span><span class="kw">pub fn </span>test_store(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;TestStore&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.test_store
+    }
+
+    <span class="doccomment">/// Returns the address of the [`OutcomeProducer`] service.
+    </span><span class="kw">pub fn </span>upstream_relay(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;UpstreamRelay&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.upstream_relay
+    }
+
+    <span class="doccomment">/// Returns the address of the [`OutcomeProducer`] service.
+    </span><span class="kw">pub fn </span>processor(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;EnvelopeProcessor&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.processor
+    }
+
+    <span class="doccomment">/// Returns the address of the [`GlobalConfigService`] service.
+    </span><span class="kw">pub fn </span>global_config(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;GlobalConfigManager&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.global_config
+    }
+
+    <span class="doccomment">/// Returns the address of the [`OutcomeProducer`] service.
+    </span><span class="kw">pub fn </span>outcome_aggregator(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Addr&lt;TrackOutcome&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.registry.outcome_aggregator
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
+
+<span class="doccomment">/// Contains secondary service runtimes.
+</span><span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>Runtimes {
+    upstream: Runtime,
+    project: Runtime,
+    aggregator: Runtime,
+    outcome: Runtime,
+    <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
+    </span>store: <span class="prelude-ty">Option</span>&lt;Runtime&gt;,
+}
+
+<span class="kw">impl </span>Runtimes {
+    <span class="doccomment">/// Creates the secondary runtimes required by services.
+    </span><span class="attr">#[allow(unused_variables)]
+    </span><span class="kw">pub fn </span>new(config: <span class="kw-2">&amp;</span>Config) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            upstream: create_runtime(<span class="string">&quot;upstream-rt&quot;</span>, <span class="number">1</span>),
+            project: create_runtime(<span class="string">&quot;project-rt&quot;</span>, <span class="number">1</span>),
+            aggregator: create_runtime(<span class="string">&quot;aggregator-rt&quot;</span>, <span class="number">1</span>),
+            outcome: create_runtime(<span class="string">&quot;outcome-rt&quot;</span>, <span class="number">1</span>),
+            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
+            </span>store: config
+                .processing_enabled()
+                .then(|| create_runtime(<span class="string">&quot;store-rt&quot;</span>, <span class="number">1</span>)),
+        }
+    }
+}
+
+<span class="attr">#[axum::async_trait]
+</span><span class="kw">impl </span>FromRequestParts&lt;<span class="self">Self</span>&gt; <span class="kw">for </span>ServiceState {
+    <span class="kw">type </span>Rejection = Infallible;
+
+    <span class="kw">async fn </span>from_request_parts(<span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Parts, state: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Rejection&gt; {
+        <span class="prelude-val">Ok</span>(state.clone())
+    }
+}
+</code></pre></div></section></main></body></html>
