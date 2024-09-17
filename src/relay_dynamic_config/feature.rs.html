@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-dynamic-config/src/feature.rs`."><title>feature.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_dynamic_config" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_dynamic_config/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-dynamic-config/src/feature.rs`."><title>feature.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_dynamic_config" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -111,65 +111,210 @@
 <a href="#111" id="111">111</a>
 <a href="#112" id="112">112</a>
 <a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::BTreeSet;
 
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="doccomment">/// Features exposed by project config.
-</span><span class="attr">#[derive(Clone, Debug, Eq, PartialEq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+</span><span class="attr">#[derive(Clone, Copy, Debug, Eq, PartialEq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 </span><span class="kw">pub enum </span>Feature {
     <span class="doccomment">/// Enables ingestion of Session Replays (Replay Recordings and Replay Events).
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:session-replay&quot;</span>)]
+    ///
+    /// Serialized as `organizations:session-replay`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:session-replay"</span>)]
     </span>SessionReplay,
     <span class="doccomment">/// Enables data scrubbing of replay recording payloads.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:session-replay-recording-scrubbing&quot;</span>)]
+    ///
+    /// Serialized as `organizations:session-replay-recording-scrubbing`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:session-replay-recording-scrubbing"</span>)]
     </span>SessionReplayRecordingScrubbing,
+    <span class="doccomment">/// Enables combining session replay envelope items (Replay Recordings and Replay Events).
+    /// into one Kafka message.
+    ///
+    /// Serialized as `organizations:session-replay-combined-envelope-items`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:session-replay-combined-envelope-items"</span>)]
+    </span>SessionReplayCombinedEnvelopeItems,
+    <span class="doccomment">/// Disables select organizations from processing mobile replay events.
+    ///
+    /// Serialized as `organizations:session-replay-video-disabled`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:session-replay-video-disabled"</span>)]
+    </span>SessionReplayVideoDisabled,
     <span class="doccomment">/// Enables new User Feedback ingest.
     ///
     /// TODO(jferg): rename to UserFeedbackIngest once old UserReport logic is deprecated.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:user-feedback-ingest&quot;</span>)]
+    ///
+    /// Serialized as `organizations:user-feedback-ingest`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:user-feedback-ingest"</span>)]
     </span>UserReportV2Ingest,
     <span class="doccomment">/// Enables device.class synthesis
     ///
     /// Enables device.class tag synthesis on mobile events.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:device-class-synthesis&quot;</span>)]
+    ///
+    /// Serialized as `organizations:device-class-synthesis`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:device-class-synthesis"</span>)]
     </span>DeviceClassSynthesis,
-    <span class="doccomment">/// Enables metric extraction from spans.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;projects:span-metrics-extraction&quot;</span>)]
-    </span>SpanMetricsExtraction,
-    <span class="doccomment">/// Allow ingestion of metrics in the &quot;custom&quot; namespace.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:custom-metrics&quot;</span>)]
+    <span class="doccomment">/// Allow ingestion of metrics in the "custom" namespace.
+    ///
+    /// Serialized as `organizations:custom-metrics`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:custom-metrics"</span>)]
     </span>CustomMetrics,
-    <span class="doccomment">/// Enable extracting spans for all modules.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;projects:span-metrics-extraction-all-modules&quot;</span>)]
-    </span>SpanMetricsExtractionAllModules,
-    <span class="doccomment">/// Enable processing profiles
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:profiling&quot;</span>)]
+
+    <span class="doccomment">/// Enable processing profiles.
+    ///
+    /// Serialized as `organizations:profiling`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:profiling"</span>)]
     </span>Profiling,
     <span class="doccomment">/// Enable standalone span ingestion.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:standalone-span-ingestion&quot;</span>)]
+    ///
+    /// Serialized as `organizations:standalone-span-ingestion`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:standalone-span-ingestion"</span>)]
     </span>StandaloneSpanIngestion,
-    <span class="doccomment">/// Enable metric metadata.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:metric-meta&quot;</span>)]
-    </span>MetricMeta,
-    <span class="doccomment">/// Enable the Relay cardinality limiter.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:relay-cardinality-limiter&quot;</span>)]
-    </span>CardinalityLimiter,
+    <span class="doccomment">/// Enable standalone span ingestion via the `/spans/` OTel endpoint.
+    ///
+    /// Serialized as `projects:relay-otel-endpoint`.
+    </span><span class="attr">#[serde(rename = <span class="string">"projects:relay-otel-endpoint"</span>)]
+    </span>OtelEndpoint,
+
+    <span class="doccomment">/// Discard transactions in a spans-only world.
+    ///
+    /// Serialized as `projects:discard-transaction`.
+    </span><span class="attr">#[serde(rename = <span class="string">"projects:discard-transaction"</span>)]
+    </span>DiscardTransaction,
+
+    <span class="doccomment">/// Enable continuous profiling.
+    ///
+    /// Serialized as `organizations:continuous-profiling`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:continuous-profiling"</span>)]
+    </span>ContinuousProfiling,
+
+    <span class="doccomment">/// Enables metric extraction from spans for common modules.
+    ///
+    /// Serialized as `projects:span-metrics-extraction`.
+    </span><span class="attr">#[serde(rename = <span class="string">"projects:span-metrics-extraction"</span>)]
+    </span>ExtractCommonSpanMetricsFromEvent,
+
+    <span class="doccomment">/// Enables metric extraction from spans for addon modules.
+    ///
+    /// Serialized as `projects:span-metrics-extraction-addons`.
+    </span><span class="attr">#[serde(rename = <span class="string">"projects:span-metrics-extraction-addons"</span>)]
+    </span>ExtractAddonsSpanMetricsFromEvent,
+
+    <span class="doccomment">/// When enabled, spans will be extracted from a transaction.
+    ///
+    /// Serialized as `organizations:indexed-spans-extraction`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:indexed-spans-extraction"</span>)]
+    </span>ExtractSpansFromEvent,
+
+    <span class="doccomment">/// Enables description scrubbing for MongoDB spans (and consequently, their presence in the
+    /// Queries module inside Sentry).
+    ///
+    /// Serialized as `organizations:performance-queries-mongodb-extraction`.
+    </span><span class="attr">#[serde(rename = <span class="string">"organizations:performance-queries-mongodb-extraction"</span>)]
+    </span>ScrubMongoDbDescriptions,
 
     <span class="doccomment">/// Deprecated, still forwarded for older downstream Relays.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:transaction-name-mark-scrubbed-as-sanitized&quot;</span>)]
+    </span><span class="attr">#[doc(hidden)]
+    #[serde(rename = <span class="string">"organizations:transaction-name-mark-scrubbed-as-sanitized"</span>)]
     </span>Deprecated1,
     <span class="doccomment">/// Deprecated, still forwarded for older downstream Relays.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;organizations:transaction-name-normalize&quot;</span>)]
+    </span><span class="attr">#[doc(hidden)]
+    #[serde(rename = <span class="string">"organizations:transaction-name-normalize"</span>)]
     </span>Deprecated2,
     <span class="doccomment">/// Deprecated, still forwarded for older downstream Relays.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;projects:extract-standalone-spans&quot;</span>)]
+    </span><span class="attr">#[doc(hidden)]
+    #[serde(rename = <span class="string">"projects:extract-standalone-spans"</span>)]
     </span>Deprecated4,
     <span class="doccomment">/// Deprecated, still forwarded for older downstream Relays.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;projects:span-metrics-extraction-resource&quot;</span>)]
+    </span><span class="attr">#[doc(hidden)]
+    #[serde(rename = <span class="string">"projects:span-metrics-extraction-resource"</span>)]
     </span>Deprecated5,
+    <span class="doccomment">/// Deprecated, still forwarded for older downstream Relays.
+    </span><span class="attr">#[doc(hidden)]
+    #[serde(rename = <span class="string">"projects:span-metrics-extraction-all-modules"</span>)]
+    </span>Deprecated6,
+    <span class="doccomment">/// Deprecated, still forwarded for older downstream Relays.
+    </span><span class="attr">#[doc(hidden)]
+    #[serde(rename = <span class="string">"projects:profiling-ingest-unsampled-profiles"</span>)]
+    </span>Deprecated7,
     <span class="doccomment">/// Forward compatibility.
-    </span><span class="attr">#[serde(other)]
+    </span><span class="attr">#[doc(hidden)]
+    #[serde(other)]
     </span>Unknown,
 }
 
@@ -187,6 +332,13 @@
     </span><span class="kw">pub fn </span>has(<span class="kw-2">&amp;</span><span class="self">self</span>, feature: Feature) -&gt; bool {
         <span class="self">self</span>.<span class="number">0</span>.contains(<span class="kw-2">&amp;</span>feature)
     }
+
+    <span class="doccomment">/// Returns `true` if any spans are produced for this project.
+    </span><span class="kw">pub fn </span>produces_spans(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.has(Feature::ExtractSpansFromEvent)
+            || <span class="self">self</span>.has(Feature::StandaloneSpanIngestion)
+            || <span class="self">self</span>.has(Feature::ExtractCommonSpanMetricsFromEvent)
+    }
 }
 
 <span class="kw">impl </span>FromIterator&lt;Feature&gt; <span class="kw">for </span>FeatureSet {
@@ -195,10 +347,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>FeatureSet {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>FeatureSet {
     <span class="kw">fn </span>deserialize&lt;D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt;
     <span class="kw">where
-        </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="kw">let </span><span class="kw-2">mut </span>set = BTreeSet::&lt;Feature&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
         set.remove(<span class="kw-2">&amp;</span>Feature::Unknown);
@@ -213,14 +365,14 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>roundtrip() {
         <span class="kw">let </span>features: FeatureSet =
-            serde_json::from_str(<span class="string">r#&quot;[&quot;organizations:session-replay&quot;, &quot;foo&quot;]&quot;#</span>).unwrap();
+            serde_json::from_str(<span class="string">r#"["organizations:session-replay", "foo"]"#</span>).unwrap();
         <span class="macro">assert_eq!</span>(
             <span class="kw-2">&amp;</span>features,
             <span class="kw-2">&amp;</span>FeatureSet(BTreeSet::from([Feature::SessionReplay]))
         );
         <span class="macro">assert_eq!</span>(
             serde_json::to_string(<span class="kw-2">&amp;</span>features).unwrap(),
-            <span class="string">r#&quot;[&quot;organizations:session-replay&quot;]&quot;#
+            <span class="string">r#"["organizations:session-replay"]"#
         </span>);
     }
 }

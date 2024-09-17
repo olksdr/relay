@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/endpoints/common.rs`."><title>common.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/endpoints/common.rs`."><title>common.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -469,27 +469,36 @@
 <a href="#469" id="469">469</a>
 <a href="#470" id="470">470</a>
 <a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Common facilities for ingesting events through store-like endpoints.
 
 </span><span class="kw">use </span>axum::http::{header, StatusCode};
 <span class="kw">use </span>axum::response::IntoResponse;
+<span class="kw">use </span>relay_config::RelayMode;
 <span class="kw">use </span>relay_event_schema::protocol::{EventId, EventType};
 <span class="kw">use </span>relay_quotas::RateLimits;
 <span class="kw">use </span>relay_statsd::metric;
 <span class="kw">use </span>serde::Deserialize;
 
-<span class="kw">use </span><span class="kw">crate</span>::actors::outcome::{DiscardReason, Outcome};
-<span class="kw">use </span><span class="kw">crate</span>::actors::processor::{ProcessMetricMeta, ProcessMetrics};
-<span class="kw">use </span><span class="kw">crate</span>::actors::project_cache::{CheckEnvelope, ValidateEnvelope};
 <span class="kw">use </span><span class="kw">crate</span>::envelope::{AttachmentType, Envelope, EnvelopeError, Item, ItemType, Items};
 <span class="kw">use </span><span class="kw">crate</span>::service::ServiceState;
-<span class="kw">use </span><span class="kw">crate</span>::statsd::RelayCounters;
-<span class="kw">use </span><span class="kw">crate</span>::utils::{
-    <span class="self">self</span>, ApiErrorResponse, BufferError, BufferGuard, FormDataIter, ManagedEnvelope, MultipartError,
-};
+<span class="kw">use </span><span class="kw">crate</span>::services::buffer::EnvelopeBuffer;
+<span class="kw">use </span><span class="kw">crate</span>::services::outcome::{DiscardReason, Outcome};
+<span class="kw">use </span><span class="kw">crate</span>::services::processor::{MetricData, ProcessMetricMeta, ProcessingGroup};
+<span class="kw">use </span><span class="kw">crate</span>::services::project_cache::{CheckEnvelope, ProcessMetrics, ValidateEnvelope};
+<span class="kw">use </span><span class="kw">crate</span>::statsd::{RelayCounters, RelayHistograms};
+<span class="kw">use </span><span class="kw">crate</span>::utils::{<span class="self">self</span>, ApiErrorResponse, FormDataIter, ManagedEnvelope};
 
 <span class="attr">#[derive(Clone, Copy, Debug, thiserror::Error)]
-#[error(<span class="string">&quot;the service is overloaded&quot;</span>)]
+#[error(<span class="string">"the service is overloaded"</span>)]
 </span><span class="kw">pub struct </span>ServiceUnavailable;
 
 <span class="kw">impl </span>From&lt;relay_system::SendError&gt; <span class="kw">for </span>ServiceUnavailable {
@@ -511,53 +520,50 @@
 <span class="doccomment">/// Error type for all store-like requests.
 </span><span class="attr">#[derive(Debug, thiserror::Error)]
 </span><span class="kw">pub enum </span>BadStoreRequest {
-    <span class="attr">#[error(<span class="string">&quot;could not schedule event processing&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"could not schedule event processing"</span>)]
     </span>ScheduleFailed,
 
-    <span class="attr">#[error(<span class="string">&quot;empty request body&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"empty request body"</span>)]
     </span>EmptyBody,
 
-    <span class="attr">#[error(<span class="string">&quot;invalid request body&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid request body"</span>)]
     </span>InvalidBody(<span class="attr">#[source] </span>std::io::Error),
 
-    <span class="attr">#[error(<span class="string">&quot;invalid JSON data&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid JSON data: {0:?}"</span>)]
     </span>InvalidJson(<span class="attr">#[source] </span>serde_json::Error),
 
-    <span class="attr">#[error(<span class="string">&quot;invalid messagepack data&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid messagepack data"</span>)]
     </span>InvalidMsgpack(<span class="attr">#[source] </span>rmp_serde::decode::Error),
 
-    <span class="attr">#[error(<span class="string">&quot;invalid event envelope&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid event envelope"</span>)]
     </span>InvalidEnvelope(<span class="attr">#[from] </span>EnvelopeError),
 
-    <span class="attr">#[error(<span class="string">&quot;invalid multipart data&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid multipart data"</span>)]
     </span>InvalidMultipart(<span class="attr">#[from] </span>multer::Error),
 
-    <span class="attr">#[error(<span class="string">&quot;invalid multipart data&quot;</span>)]
-    </span>InvalidMultipartAxum(<span class="attr">#[from] </span>MultipartError),
-
-    <span class="attr">#[error(<span class="string">&quot;invalid minidump&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid minidump"</span>)]
     </span>InvalidMinidump,
 
-    <span class="attr">#[error(<span class="string">&quot;missing minidump&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"missing minidump"</span>)]
     </span>MissingMinidump,
 
-    <span class="attr">#[error(<span class="string">&quot;invalid event id&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid event id"</span>)]
     </span>InvalidEventId,
 
-    <span class="attr">#[error(<span class="string">&quot;failed to queue envelope&quot;</span>)]
-    </span>QueueFailed(<span class="attr">#[from] </span>BufferError),
+    <span class="attr">#[error(<span class="string">"failed to queue envelope"</span>)]
+    </span>QueueFailed,
 
     <span class="attr">#[error(
-        <span class="string">&quot;envelope exceeded size limits for type &#39;{0}&#39; (https://develop.sentry.dev/sdk/envelopes/#size-limits)&quot;
+        <span class="string">"envelope exceeded size limits for type '{0}' (https://develop.sentry.dev/sdk/envelopes/#size-limits)"
     </span>)]
     </span>Overflow(ItemType),
 
     <span class="attr">#[error(
-        <span class="string">&quot;Sentry dropped data due to a quota or internal rate limit being reached. This will not affect your application. See https://docs.sentry.io/product/accounts/quotas/ for more information.&quot;
+        <span class="string">"Sentry dropped data due to a quota or internal rate limit being reached. This will not affect your application. See https://docs.sentry.io/product/accounts/quotas/ for more information."
     </span>)]
     </span>RateLimited(RateLimits),
 
-    <span class="attr">#[error(<span class="string">&quot;event submission rejected with_reason: {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"event submission rejected with_reason: {0:?}"</span>)]
     </span>EventRejected(DiscardReason),
 }
 
@@ -584,8 +590,8 @@
 
                 (StatusCode::TOO_MANY_REQUESTS, headers, body).into_response()
             }
-            BadStoreRequest::ScheduleFailed | BadStoreRequest::QueueFailed(<span class="kw">_</span>) =&gt; {
-                <span class="comment">// These errors indicate that something&#39;s wrong with our service system, most likely
+            BadStoreRequest::ScheduleFailed | BadStoreRequest::QueueFailed =&gt; {
+                <span class="comment">// These errors indicate that something's wrong with our service system, most likely
                 // mailbox congestion or a faulty shutdown. Indicate an unavailable service to the
                 // client. It might retry event submission at a later time.
                 </span>(StatusCode::SERVICE_UNAVAILABLE, body).into_response()
@@ -598,7 +604,7 @@
             }
             <span class="kw">_ </span>=&gt; {
                 <span class="comment">// In all other cases, we indicate a generic bad request to the client and render
-                // the cause. This was likely the client&#39;s fault.
+                // the cause. This was likely the client's fault.
                 </span>(StatusCode::BAD_REQUEST, body).into_response()
             }
         };
@@ -607,7 +613,12 @@
         <span class="kw">if </span>response.status().is_server_error() {
             <span class="macro">relay_log::error!</span>(
                 error = <span class="kw-2">&amp;</span><span class="self">self </span><span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>std::error::Error,
-                <span class="string">&quot;error handling request&quot;
+                <span class="string">"error handling request"
+            </span>);
+        } <span class="kw">else if </span>response.status().is_client_error() {
+            <span class="macro">relay_log::debug!</span>(
+                error = <span class="kw-2">&amp;</span><span class="self">self </span><span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>std::error::Error,
+                <span class="string">"error handling request"
             </span>);
         }
 
@@ -617,10 +628,10 @@
 
 <span class="attr">#[derive(Debug, Deserialize, PartialEq)]
 </span><span class="kw">pub struct </span>MinimalEvent {
-    <span class="attr">#[serde(default, rename = <span class="string">&quot;event_id&quot;</span>)]
+    <span class="attr">#[serde(default, rename = <span class="string">"event_id"</span>)]
     </span><span class="kw">pub </span>id: <span class="prelude-ty">Option</span>&lt;EventId&gt;,
 
-    <span class="attr">#[serde(default, rename = <span class="string">&quot;type&quot;</span>)]
+    <span class="attr">#[serde(default, rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>ty: EventType,
 }
 
@@ -657,9 +668,9 @@
 /// malformed JSON, an error is returned.
 </span><span class="kw">pub fn </span>event_id_from_formdata(data: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EventId&gt;, BadStoreRequest&gt; {
     <span class="kw">for </span>entry <span class="kw">in </span>FormDataIter::new(data) {
-        <span class="kw">if </span>entry.key() == <span class="string">&quot;sentry&quot; </span>{
+        <span class="kw">if </span>entry.key() == <span class="string">"sentry" </span>{
             <span class="kw">return </span>event_id_from_json(entry.value().as_bytes());
-        } <span class="kw">else if </span>entry.key() == <span class="string">&quot;sentry[event_id]&quot; </span>{
+        } <span class="kw">else if </span>entry.key() == <span class="string">"sentry[event_id]" </span>{
             <span class="kw">return </span>entry
                 .value()
                 .parse()
@@ -721,7 +732,7 @@
 ///   queued and processed.
 /// - Sessions and Session batches are always queued separately. If they occur in the same envelope
 ///   as an event, they are split off. Their path is the same as other Envelopes.
-/// - Metrics are directly sent to the [`crate::actors::processor::EnvelopeProcessor`], bypassing the manager&#39;s queue and
+/// - Metrics are directly sent to the [`crate::services::processor::EnvelopeProcessor`], bypassing the manager's queue and
 ///   going straight into metrics aggregation. See [`ProcessMetrics`] for a full description.
 ///
 /// Queueing can fail if the queue exceeds `envelope_buffer_size`. In this case, `Err` is
@@ -729,82 +740,72 @@
 </span><span class="kw">fn </span>queue_envelope(
     state: <span class="kw-2">&amp;</span>ServiceState,
     <span class="kw-2">mut </span>managed_envelope: ManagedEnvelope,
-    buffer_guard: <span class="kw-2">&amp;</span>BufferGuard,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), BadStoreRequest&gt; {
     <span class="kw">let </span>envelope = managed_envelope.envelope_mut();
 
-    <span class="comment">// Remove metrics from the envelope and queue them directly on the project&#39;s `Aggregator`.
-    </span><span class="kw">let </span>is_metric = |i: <span class="kw-2">&amp;</span>Item| <span class="macro">matches!</span>(i.ty(), ItemType::Statsd | ItemType::MetricBuckets);
-    <span class="kw">let </span>metric_items = envelope.take_items_by(is_metric);
+    <span class="kw">if </span>state.config().relay_mode() != RelayMode::Proxy {
+        <span class="comment">// Remove metrics from the envelope and queue them directly on the project's `Aggregator`.
+        // In proxy mode, we cannot aggregate metrics because we may not have a project ID.
+        </span><span class="kw">let </span>is_metric = |i: <span class="kw-2">&amp;</span>Item| <span class="macro">matches!</span>(i.ty(), ItemType::Statsd | ItemType::MetricBuckets);
+        <span class="kw">let </span>metric_items = envelope.take_items_by(is_metric);
 
-    <span class="kw">if </span>!metric_items.is_empty() {
-        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;sending metrics into processing queue&quot;</span>);
-        state.processor().send(ProcessMetrics {
-            items: metric_items.into_vec(),
-            project_key: envelope.meta().public_key(),
-            start_time: envelope.meta().start_time(),
-            sent_at: envelope.sent_at(),
-        });
+        <span class="kw">if </span>!metric_items.is_empty() {
+            <span class="macro">relay_log::trace!</span>(<span class="string">"sending metrics into processing queue"</span>);
+            state.project_cache().send(ProcessMetrics {
+                data: MetricData::Raw(metric_items.into_vec()),
+                start_time: envelope.meta().start_time().into(),
+                sent_at: envelope.sent_at(),
+                project_key: envelope.meta().public_key(),
+                source: envelope.meta().into(),
+            });
+        }
+
+        <span class="comment">// Remove metric meta from the envelope and send them directly to processing.
+        </span><span class="kw">let </span>metric_meta = envelope.take_items_by(|item| <span class="macro">matches!</span>(item.ty(), ItemType::MetricMeta));
+        <span class="kw">if </span>!metric_meta.is_empty() {
+            <span class="macro">relay_log::trace!</span>(<span class="string">"sending metric meta into processing queue"</span>);
+            state.processor().send(ProcessMetricMeta {
+                items: metric_meta.into_vec(),
+                project_key: envelope.meta().public_key(),
+            })
+        }
     }
 
-    <span class="comment">// Remove metric meta from the envelope and send them directly to processing.
-    </span><span class="kw">let </span>metric_meta = envelope.take_items_by(|item| <span class="macro">matches!</span>(item.ty(), ItemType::MetricMeta));
-    <span class="kw">if </span>!metric_meta.is_empty() {
-        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;sending metric meta into processing queue&quot;</span>);
-        state.processor().send(ProcessMetricMeta {
-            items: metric_meta.into_vec(),
-            project_key: envelope.meta().public_key(),
-        })
-    }
-
-    <span class="comment">// Take all NEL reports and split them up into the separate envelopes with 1 item per
-    // envelope.
-    </span><span class="kw">for </span>nel_envelope <span class="kw">in </span>envelope.split_all_by(|item| <span class="macro">matches!</span>(item.ty(), ItemType::Nel)) {
-        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;queueing separate envelopes for NEL report&quot;</span>);
-        <span class="kw">let </span>buffer_guard = state.buffer_guard();
-        <span class="kw">let </span>nel_envelope = buffer_guard
-            .enter(
-                nel_envelope,
-                state.outcome_aggregator().clone(),
-                state.test_store().clone(),
-            )
-            .map_err(BadStoreRequest::QueueFailed)<span class="question-mark">?</span>;
-        state
-            .project_cache()
-            .send(ValidateEnvelope::new(nel_envelope));
-    }
-
-    <span class="comment">// Split the envelope into event-related items and other items. This allows to fast-track:
-    //  1. Envelopes with only session items. They only require rate limiting.
-    //  2. Event envelope processing can bail out if the event is filtered or rate limited,
-    //     since all items depend on this event.
-    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(event_envelope) = envelope.split_by(Item::requires_event) {
-        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;queueing separate envelope for non-event items&quot;</span>);
-
-        <span class="comment">// The envelope has been split, so we need to fork the context.
-        </span><span class="kw">let </span>event_context = buffer_guard.enter(
-            event_envelope,
+    <span class="comment">// Split off the envelopes by item type.
+    </span><span class="kw">let </span>scoping = managed_envelope.scoping();
+    <span class="kw">let </span>envelopes = ProcessingGroup::split_envelope(<span class="kw-2">*</span>managed_envelope.take_envelope());
+    <span class="kw">for </span>(group, envelope) <span class="kw">in </span>envelopes {
+        <span class="kw">let </span><span class="kw-2">mut </span>envelope = ManagedEnvelope::new(
+            envelope,
             state.outcome_aggregator().clone(),
             state.test_store().clone(),
-        )<span class="question-mark">?</span>;
-        state
-            .project_cache()
-            .send(ValidateEnvelope::new(event_context));
-    }
+            group,
+        );
+        envelope.scope(scoping);
 
-    <span class="comment">// Update the old context before continuing with the source envelope.
-    </span>managed_envelope.update();
+        <span class="kw">match </span>state.envelope_buffer() {
+            <span class="prelude-val">Some</span>(buffer) =&gt; {
+                <span class="kw">if </span>!buffer.has_capacity() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(BadStoreRequest::QueueFailed);
+                }
 
-    <span class="kw">if </span>managed_envelope.envelope().is_empty() {
-        <span class="comment">// The envelope can be empty here if it contained only metrics items which were removed
-        // above. In this case, the envelope was accepted and needs no further queueing.
-        </span>managed_envelope.accept();
-    } <span class="kw">else </span>{
-        <span class="macro">relay_log::trace!</span>(<span class="string">&quot;queueing envelope&quot;</span>);
-        state
-            .project_cache()
-            .send(ValidateEnvelope::new(managed_envelope));
+                <span class="comment">// NOTE: This assumes that a `prefetch` has already been scheduled for both the
+                // envelope's projects. See `handle_check_envelope`.
+                </span><span class="macro">relay_log::trace!</span>(<span class="string">"Pushing envelope to V2 buffer"</span>);
+
+                buffer
+                    .addr()
+                    .send(EnvelopeBuffer::Push(envelope.into_envelope()));
+            }
+            <span class="prelude-val">None </span>=&gt; {
+                <span class="macro">relay_log::trace!</span>(<span class="string">"Sending envelope to project cache for V1 buffer"</span>);
+                state.project_cache().send(ValidateEnvelope::new(envelope));
+            }
+        }
     }
+    <span class="comment">// The entire envelope is taken for a split above, and it's empty at this point, we can just
+    // accept it without additional checks.
+    </span>managed_envelope.accept();
 
     <span class="prelude-val">Ok</span>(())
 }
@@ -821,14 +822,26 @@
     state: <span class="kw-2">&amp;</span>ServiceState,
     envelope: Box&lt;Envelope&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EventId&gt;, BadStoreRequest&gt; {
-    <span class="kw">let </span>buffer_guard = state.buffer_guard();
-    <span class="kw">let </span><span class="kw-2">mut </span>managed_envelope = buffer_guard
-        .enter(
-            envelope,
-            state.outcome_aggregator().clone(),
-            state.test_store().clone(),
+    <span class="kw">for </span>item <span class="kw">in </span>envelope.items() {
+        <span class="macro">metric!</span>(
+            histogram(RelayHistograms::EnvelopeItemSize) = item.payload().len() <span class="kw">as </span>u64,
+            item_type = item.ty().name()
         )
-        .map_err(BadStoreRequest::QueueFailed)<span class="question-mark">?</span>;
+    }
+
+    <span class="comment">// TODO(jjbayer): Remove this check once spool v1 is removed.
+    </span><span class="kw">if </span>state.envelope_buffer().is_none() &amp;&amp; state.memory_checker().check_memory().is_exceeded() {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(BadStoreRequest::QueueFailed);
+    };
+
+    <span class="kw">let </span><span class="kw-2">mut </span>managed_envelope = ManagedEnvelope::new(
+        envelope,
+        state.outcome_aggregator().clone(),
+        state.test_store().clone(),
+        <span class="comment">// It's not clear at this point which group this envelope belongs to.
+        // The decision will be made while queueing in `queue_envelope` function.
+        </span>ProcessingGroup::Ungrouped,
+    );
 
     <span class="comment">// If configured, remove unknown items at the very beginning. If the envelope is
     // empty, we fail the request with a special control flow error to skip checks and
@@ -849,7 +862,8 @@
         </span>.map_err(BadStoreRequest::EventRejected)<span class="question-mark">?</span>;
 
     <span class="kw">let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>managed_envelope) = checked.envelope <span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(BadStoreRequest::RateLimited(checked.rate_limits));
+        <span class="comment">// All items have been removed from the envelope.
+        </span><span class="kw">return </span><span class="prelude-val">Err</span>(BadStoreRequest::RateLimited(checked.rate_limits));
     };
 
     <span class="kw">if let </span><span class="prelude-val">Err</span>(offender) =
@@ -859,10 +873,14 @@
         <span class="kw">return </span><span class="prelude-val">Err</span>(BadStoreRequest::Overflow(offender));
     }
 
-    queue_envelope(state, managed_envelope, buffer_guard)<span class="question-mark">?</span>;
+    queue_envelope(state, managed_envelope)<span class="question-mark">?</span>;
 
     <span class="kw">if </span>checked.rate_limits.is_limited() {
-        <span class="prelude-val">Err</span>(BadStoreRequest::RateLimited(checked.rate_limits))
+        <span class="comment">// Even if some envelope items have been queued, there might be active rate limits on
+        // other items. Communicate these rate limits to the downstream (Relay or SDK).
+        //
+        // See `IntoResponse` implementation of `BadStoreRequest`.
+        </span><span class="prelude-val">Err</span>(BadStoreRequest::RateLimited(checked.rate_limits))
     } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(event_id)
     }
@@ -890,7 +908,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_minimal_empty_event() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{}&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{}"#</span>;
         <span class="kw">let </span>minimal = minimal_event_from_json(json.as_ref()).unwrap();
         <span class="macro">assert_eq!</span>(
             minimal,
@@ -903,12 +921,12 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_minimal_event_id() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{&quot;event_id&quot;: &quot;037af9ac1b49494bacd7ec5114f801d9&quot;}&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{"event_id": "037af9ac1b49494bacd7ec5114f801d9"}"#</span>;
         <span class="kw">let </span>minimal = minimal_event_from_json(json.as_ref()).unwrap();
         <span class="macro">assert_eq!</span>(
             minimal,
             MinimalEvent {
-                id: <span class="prelude-val">Some</span>(<span class="string">&quot;037af9ac1b49494bacd7ec5114f801d9&quot;</span>.parse().unwrap()),
+                id: <span class="prelude-val">Some</span>(<span class="string">"037af9ac1b49494bacd7ec5114f801d9"</span>.parse().unwrap()),
                 ty: EventType::Default,
             }
         );
@@ -916,7 +934,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_minimal_event_type() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{&quot;type&quot;: &quot;expectct&quot;}&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{"type": "expectct"}"#</span>;
         <span class="kw">let </span>minimal = minimal_event_from_json(json.as_ref()).unwrap();
         <span class="macro">assert_eq!</span>(
             minimal,
@@ -929,7 +947,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_minimal_event_invalid_type() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{&quot;type&quot;: &quot;invalid&quot;}&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{"type": "invalid"}"#</span>;
         <span class="kw">let </span>minimal = minimal_event_from_json(json.as_ref()).unwrap();
         <span class="macro">assert_eq!</span>(
             minimal,

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-dynamic-config/src/project.rs`."><title>project.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_dynamic_config" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_dynamic_config/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-dynamic-config/src/project.rs`."><title>project.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_dynamic_config" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -189,15 +189,15 @@
 <a href="#189" id="189">189</a>
 <a href="#190" id="190">190</a>
 <a href="#191" id="191">191</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::BTreeSet;
-
-<span class="kw">use </span>relay_auth::PublicKey;
-<span class="kw">use </span>relay_base_schema::spans::SpanAttribute;
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>relay_auth::PublicKey;
 <span class="kw">use </span>relay_event_normalization::{
     BreakdownsConfig, MeasurementsConfig, PerformanceScoreConfig, SpanDescriptionRule,
     TransactionNameRule,
 };
-<span class="kw">use </span>relay_filter::FiltersConfig;
+<span class="kw">use </span>relay_filter::ProjectFiltersConfig;
 <span class="kw">use </span>relay_pii::{DataScrubbingConfig, PiiConfig};
 <span class="kw">use </span>relay_quotas::Quota;
 <span class="kw">use </span>relay_sampling::SamplingConfig;
@@ -208,12 +208,13 @@
 <span class="kw">use </span><span class="kw">crate</span>::error_boundary::ErrorBoundary;
 <span class="kw">use </span><span class="kw">crate</span>::feature::FeatureSet;
 <span class="kw">use </span><span class="kw">crate</span>::metrics::{
-    <span class="self">self</span>, MetricExtractionConfig, SessionMetricsConfig, TaggingRule, TransactionMetricsConfig,
+    <span class="self">self</span>, MetricExtractionConfig, Metrics, SessionMetricsConfig, TaggingRule,
+    TransactionMetricsConfig,
 };
 
 <span class="doccomment">/// Dynamic, per-DSN configuration passed down from Sentry.
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(default, rename_all = <span class="string">&quot;camelCase&quot;</span>)]
+#[serde(default, rename_all = <span class="string">"camelCase"</span>)]
 </span><span class="kw">pub struct </span>ProjectConfig {
     <span class="doccomment">/// URLs that are permitted for cross original JavaScript requests.
     </span><span class="kw">pub </span>allowed_domains: Vec&lt;String&gt;,
@@ -222,68 +223,68 @@
     <span class="doccomment">/// Configuration for PII stripping.
     </span><span class="kw">pub </span>pii_config: <span class="prelude-ty">Option</span>&lt;PiiConfig&gt;,
     <span class="doccomment">/// The grouping configuration.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>grouping_config: <span class="prelude-ty">Option</span>&lt;Value&gt;,
     <span class="doccomment">/// Configuration for filter rules.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;FiltersConfig::is_empty&quot;</span>)]
-    </span><span class="kw">pub </span>filter_settings: FiltersConfig,
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"ProjectFiltersConfig::is_empty"</span>)]
+    </span><span class="kw">pub </span>filter_settings: ProjectFiltersConfig,
     <span class="doccomment">/// Configuration for data scrubbers.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;DataScrubbingConfig::is_disabled&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"DataScrubbingConfig::is_disabled"</span>)]
     </span><span class="kw">pub </span>datascrubbing_settings: DataScrubbingConfig,
     <span class="doccomment">/// Maximum event retention for the organization.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>event_retention: <span class="prelude-ty">Option</span>&lt;u16&gt;,
     <span class="doccomment">/// Usage quotas for this project.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Vec::is_empty&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Vec::is_empty"</span>)]
     </span><span class="kw">pub </span>quotas: Vec&lt;Quota&gt;,
     <span class="doccomment">/// Configuration for sampling traces, if not present there will be no sampling.
-    </span><span class="attr">#[serde(alias = <span class="string">&quot;dynamicSampling&quot;</span>, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(alias = <span class="string">"dynamicSampling"</span>, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>sampling: <span class="prelude-ty">Option</span>&lt;ErrorBoundary&lt;SamplingConfig&gt;&gt;,
     <span class="doccomment">/// Configuration for measurements.
-    /// NOTE: do not access directly, use [`relay_event_normalization::DynamicMeasurementsConfig`].
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    /// NOTE: do not access directly, use [`relay_event_normalization::CombinedMeasurementsConfig`].
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>measurements: <span class="prelude-ty">Option</span>&lt;MeasurementsConfig&gt;,
     <span class="doccomment">/// Configuration for operation breakdown. Will be emitted only if present.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>breakdowns_v2: <span class="prelude-ty">Option</span>&lt;BreakdownsConfig&gt;,
     <span class="doccomment">/// Configuration for performance score calculations. Will be emitted only if present.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>performance_score: <span class="prelude-ty">Option</span>&lt;PerformanceScoreConfig&gt;,
     <span class="doccomment">/// Configuration for extracting metrics from sessions.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;SessionMetricsConfig::is_disabled&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"SessionMetricsConfig::is_disabled"</span>)]
     </span><span class="kw">pub </span>session_metrics: SessionMetricsConfig,
     <span class="doccomment">/// Configuration for extracting metrics from transaction events.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>transaction_metrics: <span class="prelude-ty">Option</span>&lt;ErrorBoundary&lt;TransactionMetricsConfig&gt;&gt;,
     <span class="doccomment">/// Configuration for generic metrics extraction from all data categories.
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;skip_metrics_extraction&quot;</span>)]
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"skip_metrics_extraction"</span>)]
     </span><span class="kw">pub </span>metric_extraction: ErrorBoundary&lt;MetricExtractionConfig&gt;,
-    <span class="doccomment">/// The span attributes configuration.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;BTreeSet::is_empty&quot;</span>)]
-    </span><span class="kw">pub </span>span_attributes: BTreeSet&lt;SpanAttribute&gt;,
-    <span class="doccomment">/// Rules for applying metrics tags depending on the event&#39;s content.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Vec::is_empty&quot;</span>)]
+    <span class="doccomment">/// Rules for applying metrics tags depending on the event's content.
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Vec::is_empty"</span>)]
     </span><span class="kw">pub </span>metric_conditional_tagging: Vec&lt;TaggingRule&gt;,
     <span class="doccomment">/// Exposable features enabled for this project.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;FeatureSet::is_empty&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"FeatureSet::is_empty"</span>)]
     </span><span class="kw">pub </span>features: FeatureSet,
     <span class="doccomment">/// Transaction renaming rules.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Vec::is_empty&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Vec::is_empty"</span>)]
     </span><span class="kw">pub </span>tx_name_rules: Vec&lt;TransactionNameRule&gt;,
-    <span class="doccomment">/// Whether or not a project is ready to mark all URL transactions as &quot;sanitized&quot;.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;is_false&quot;</span>)]
+    <span class="doccomment">/// Whether or not a project is ready to mark all URL transactions as "sanitized".
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"is_false"</span>)]
     </span><span class="kw">pub </span>tx_name_ready: bool,
     <span class="doccomment">/// Span description renaming rules.
     ///
     /// These are currently not used by Relay, and only here to be forwarded to old
     /// relays that might still need them.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>span_description_rules: <span class="prelude-ty">Option</span>&lt;Vec&lt;SpanDescriptionRule&gt;&gt;,
+    <span class="doccomment">/// Configuration for metrics.
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"skip_metrics"</span>)]
+    </span><span class="kw">pub </span>metrics: ErrorBoundary&lt;Metrics&gt;,
 }
 
 <span class="kw">impl </span>ProjectConfig {
     <span class="doccomment">/// Validates fields in this project config and removes values that are partially invalid.
-    </span><span class="kw">pub fn </span>sanitize(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+    </span><span class="kw">pub fn </span>sanitized(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.quotas.retain(Quota::is_valid);
 
         metrics::convert_conditional_tagging(<span class="self">self</span>);
@@ -298,11 +299,11 @@
 <span class="kw">impl </span>Default <span class="kw">for </span>ProjectConfig {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         ProjectConfig {
-            allowed_domains: <span class="macro">vec!</span>[<span class="string">&quot;*&quot;</span>.to_string()],
+            allowed_domains: <span class="macro">vec!</span>[<span class="string">"*"</span>.to_string()],
             trusted_relays: <span class="macro">vec!</span>[],
             pii_config: <span class="prelude-val">None</span>,
             grouping_config: <span class="prelude-val">None</span>,
-            filter_settings: FiltersConfig::default(),
+            filter_settings: ProjectFiltersConfig::default(),
             datascrubbing_settings: DataScrubbingConfig::default(),
             event_retention: <span class="prelude-val">None</span>,
             quotas: Vec::new(),
@@ -313,12 +314,12 @@
             session_metrics: SessionMetricsConfig::default(),
             transaction_metrics: <span class="prelude-val">None</span>,
             metric_extraction: Default::default(),
-            span_attributes: BTreeSet::new(),
             metric_conditional_tagging: Vec::new(),
             features: Default::default(),
             tx_name_rules: Vec::new(),
             tx_name_ready: <span class="bool-val">false</span>,
             span_description_rules: <span class="prelude-val">None</span>,
+            metrics: Default::default(),
         }
     }
 }
@@ -330,50 +331,55 @@
     }
 }
 
+<span class="kw">fn </span>skip_metrics(boundary: <span class="kw-2">&amp;</span>ErrorBoundary&lt;Metrics&gt;) -&gt; bool {
+    <span class="kw">match </span>boundary {
+        ErrorBoundary::Err(<span class="kw">_</span>) =&gt; <span class="bool-val">true</span>,
+        ErrorBoundary::Ok(metrics) =&gt; metrics.is_empty(),
+    }
+}
+
 <span class="doccomment">/// Subset of [`ProjectConfig`] that is passed to external Relays.
 ///
 /// For documentation of the fields, see [`ProjectConfig`].
 </span><span class="attr">#[allow(missing_docs)]
 #[derive(Debug, Serialize)]
-#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>, remote = <span class="string">&quot;ProjectConfig&quot;</span>)]
+#[serde(rename_all = <span class="string">"camelCase"</span>, remote = <span class="string">"ProjectConfig"</span>)]
 </span><span class="kw">pub struct </span>LimitedProjectConfig {
     <span class="kw">pub </span>allowed_domains: Vec&lt;String&gt;,
     <span class="kw">pub </span>trusted_relays: Vec&lt;PublicKey&gt;,
     <span class="kw">pub </span>pii_config: <span class="prelude-ty">Option</span>&lt;PiiConfig&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;FiltersConfig::is_empty&quot;</span>)]
-    </span><span class="kw">pub </span>filter_settings: FiltersConfig,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;DataScrubbingConfig::is_disabled&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"ProjectFiltersConfig::is_empty"</span>)]
+    </span><span class="kw">pub </span>filter_settings: ProjectFiltersConfig,
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"DataScrubbingConfig::is_disabled"</span>)]
     </span><span class="kw">pub </span>datascrubbing_settings: DataScrubbingConfig,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>sampling: <span class="prelude-ty">Option</span>&lt;ErrorBoundary&lt;SamplingConfig&gt;&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;SessionMetricsConfig::is_disabled&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"SessionMetricsConfig::is_disabled"</span>)]
     </span><span class="kw">pub </span>session_metrics: SessionMetricsConfig,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>transaction_metrics: <span class="prelude-ty">Option</span>&lt;ErrorBoundary&lt;TransactionMetricsConfig&gt;&gt;,
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;skip_metrics_extraction&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"skip_metrics_extraction"</span>)]
     </span><span class="kw">pub </span>metric_extraction: ErrorBoundary&lt;MetricExtractionConfig&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Vec::is_empty&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Vec::is_empty"</span>)]
     </span><span class="kw">pub </span>metric_conditional_tagging: Vec&lt;TaggingRule&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;BTreeSet::is_empty&quot;</span>)]
-    </span><span class="kw">pub </span>span_attributes: BTreeSet&lt;SpanAttribute&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>measurements: <span class="prelude-ty">Option</span>&lt;MeasurementsConfig&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>breakdowns_v2: <span class="prelude-ty">Option</span>&lt;BreakdownsConfig&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>performance_score: <span class="prelude-ty">Option</span>&lt;PerformanceScoreConfig&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;FeatureSet::is_empty&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"FeatureSet::is_empty"</span>)]
     </span><span class="kw">pub </span>features: FeatureSet,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Vec::is_empty&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Vec::is_empty"</span>)]
     </span><span class="kw">pub </span>tx_name_rules: Vec&lt;TransactionNameRule&gt;,
-    <span class="doccomment">/// Whether or not a project is ready to mark all URL transactions as &quot;sanitized&quot;.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;is_false&quot;</span>)]
+    <span class="doccomment">/// Whether or not a project is ready to mark all URL transactions as "sanitized".
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"is_false"</span>)]
     </span><span class="kw">pub </span>tx_name_ready: bool,
     <span class="doccomment">/// Span description renaming rules.
     ///
     /// These are currently not used by Relay, and only here to be forwarded to old
     /// relays that might still need them.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>span_description_rules: <span class="prelude-ty">Option</span>&lt;Vec&lt;SpanDescriptionRule&gt;&gt;,
 }
 

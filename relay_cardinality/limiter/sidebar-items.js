@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["CardinalityLimiter","CardinalityLimits","Config","Entry","EntryId","Rejection"],"trait":["CardinalityItem","CardinalityScope","Limiter"]};
+window.SIDEBAR_ITEMS = {"struct":["CardinalityLimiter","CardinalityLimits","CardinalityLimitsSplit","CardinalityReport","Entry","EntryId","Scoping"],"trait":["CardinalityItem","Limiter","Reporter"]};

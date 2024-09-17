@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-filter/src/transaction_name.rs`."><title>transaction_name.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_filter" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_filter/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-filter/src/transaction_name.rs`."><title>transaction_name.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_filter" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -249,54 +249,29 @@
 <a href="#249" id="249">249</a>
 <a href="#250" id="250">250</a>
 <a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-<a href="#257" id="257">257</a>
-<a href="#258" id="258">258</a>
-<a href="#259" id="259">259</a>
-<a href="#260" id="260">260</a>
-<a href="#261" id="261">261</a>
-<a href="#262" id="262">262</a>
-<a href="#263" id="263">263</a>
-<a href="#264" id="264">264</a>
-<a href="#265" id="265">265</a>
-<a href="#266" id="266">266</a>
-<a href="#267" id="267">267</a>
-<a href="#268" id="268">268</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Implements event filtering based on whether the endpoint called is a healthcheck endpoint.
 //!
 //! If this filter is enabled transactions from healthcheck endpoints will be filtered out.
 
 </span><span class="kw">use </span>relay_common::glob3::GlobPatterns;
-<span class="kw">use </span>relay_event_schema::protocol::{Event, EventType};
 
-<span class="kw">use crate</span>::{FilterStatKey, IgnoreTransactionsFilterConfig};
+<span class="kw">use crate</span>::{FilterStatKey, Filterable, IgnoreTransactionsFilterConfig};
 
-<span class="kw">fn </span>matches(event: <span class="kw-2">&amp;</span>Event, patterns: <span class="kw-2">&amp;</span>GlobPatterns) -&gt; bool {
-    <span class="kw">if </span>event.ty.value() != <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>EventType::Transaction) {
-        <span class="kw">return </span><span class="bool-val">false</span>;
-    }
-
-    event
-        .transaction
-        .value()
-        .map_or(<span class="bool-val">false</span>, |transaction| patterns.is_match(transaction))
+<span class="kw">fn </span>matches(transaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;, patterns: <span class="kw-2">&amp;</span>GlobPatterns) -&gt; bool {
+    transaction.map_or(<span class="bool-val">false</span>, |transaction| patterns.is_match(transaction))
 }
 
-<span class="doccomment">/// Filters [Transaction](EventType::Transaction) events based on a list of provided transaction
+<span class="doccomment">/// Filters [Transaction](relay_event_schema::protocol::EventType::Transaction) events based on a list of provided transaction
 /// name globs.
-</span><span class="kw">pub fn </span>should_filter(
-    event: <span class="kw-2">&amp;</span>Event,
+</span><span class="kw">pub fn </span>should_filter&lt;F: Filterable&gt;(
+    item: <span class="kw-2">&amp;</span>F,
     config: <span class="kw-2">&amp;</span>IgnoreTransactionsFilterConfig,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), FilterStatKey&gt; {
     <span class="kw">if </span>config.is_empty() {
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
-    <span class="kw">if </span>matches(event, <span class="kw-2">&amp;</span>config.patterns) {
+    <span class="kw">if </span>matches(item.transaction(), <span class="kw-2">&amp;</span>config.patterns) {
         <span class="kw">return </span><span class="prelude-val">Err</span>(FilterStatKey::FilteredTransactions);
     }
     <span class="prelude-val">Ok</span>(())
@@ -304,92 +279,67 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
+    <span class="kw">use </span>relay_event_schema::protocol::{Event, EventType};
     <span class="kw">use </span>relay_protocol::Annotated;
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="kw">fn </span>_get_patterns() -&gt; GlobPatterns {
+    <span class="kw">fn </span>_get_config() -&gt; IgnoreTransactionsFilterConfig {
         <span class="kw">let </span>patterns_raw = [
-            <span class="string">&quot;*healthcheck*&quot;</span>,
-            <span class="string">&quot;*healthy*&quot;</span>,
-            <span class="string">&quot;live&quot;</span>,
-            <span class="string">&quot;live[z/-]*&quot;</span>,
-            <span class="string">&quot;*[/-]live&quot;</span>,
-            <span class="string">&quot;*[/-]live[z/-]*&quot;</span>,
-            <span class="string">&quot;ready&quot;</span>,
-            <span class="string">&quot;ready[z/-]*&quot;</span>,
-            <span class="string">&quot;*[/-]ready&quot;</span>,
-            <span class="string">&quot;*[/-]ready[z/-]*&quot;</span>,
-            <span class="string">&quot;*heartbeat*&quot;</span>,
-            <span class="string">&quot;*/health&quot;</span>,
-            <span class="string">&quot;*/healthz&quot;</span>,
-            <span class="string">&quot;*/ping&quot;</span>,
+            <span class="string">"*healthcheck*"</span>,
+            <span class="string">"*healthy*"</span>,
+            <span class="string">"live"</span>,
+            <span class="string">"live[z/-]*"</span>,
+            <span class="string">"*[/-]live"</span>,
+            <span class="string">"*[/-]live[z/-]*"</span>,
+            <span class="string">"ready"</span>,
+            <span class="string">"ready[z/-]*"</span>,
+            <span class="string">"*[/-]ready"</span>,
+            <span class="string">"*[/-]ready[z/-]*"</span>,
+            <span class="string">"*heartbeat*"</span>,
+            <span class="string">"*/health"</span>,
+            <span class="string">"*/healthz"</span>,
+            <span class="string">"*/ping"</span>,
         ]
         .map(|val| val.to_string())
         .to_vec();
 
-        GlobPatterns::new(patterns_raw)
+        IgnoreTransactionsFilterConfig {
+            patterns: GlobPatterns::new(patterns_raw),
+            is_enabled: <span class="bool-val">true</span>,
+        }
     }
 
     <span class="doccomment">/// tests matching for various transactions
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_matches() {
-        <span class="kw">let </span>patterns = _get_patterns();
+        <span class="kw">let </span>config = _get_config();
 
         <span class="kw">let </span>transaction_names = [
-            <span class="string">&quot;a/b/healthcheck/c&quot;</span>,
-            <span class="string">&quot;a_HEALTHCHECK_b&quot;</span>,
-            <span class="string">&quot;healthcheck&quot;</span>,
-            <span class="string">&quot;/health&quot;</span>,
-            <span class="string">&quot;a/HEALTH&quot;</span>,
-            <span class="string">&quot;/health&quot;</span>,
-            <span class="string">&quot;a/HEALTH&quot;</span>,
-            <span class="string">&quot;live&quot;</span>,
-            <span class="string">&quot;livez&quot;</span>,
-            <span class="string">&quot;live/123&quot;</span>,
-            <span class="string">&quot;live-33&quot;</span>,
-            <span class="string">&quot;x-live&quot;</span>,
-            <span class="string">&quot;abc/live&quot;</span>,
-            <span class="string">&quot;abc/live-23&quot;</span>,
-            <span class="string">&quot;ready&quot;</span>,
-            <span class="string">&quot;123/ready&quot;</span>,
-            <span class="string">&quot;readyz&quot;</span>,
-            <span class="string">&quot;ready/123&quot;</span>,
-            <span class="string">&quot;abc/ready/1234&quot;</span>,
-            <span class="string">&quot;abcheartbeat123&quot;</span>,
-            <span class="string">&quot;123/health&quot;</span>,
-            <span class="string">&quot;123/healthz&quot;</span>,
-            <span class="string">&quot;123/ping&quot;</span>,
+            <span class="string">"a/b/healthcheck/c"</span>,
+            <span class="string">"a_HEALTHCHECK_b"</span>,
+            <span class="string">"healthcheck"</span>,
+            <span class="string">"/health"</span>,
+            <span class="string">"a/HEALTH"</span>,
+            <span class="string">"/health"</span>,
+            <span class="string">"a/HEALTH"</span>,
+            <span class="string">"live"</span>,
+            <span class="string">"livez"</span>,
+            <span class="string">"live/123"</span>,
+            <span class="string">"live-33"</span>,
+            <span class="string">"x-live"</span>,
+            <span class="string">"abc/live"</span>,
+            <span class="string">"abc/live-23"</span>,
+            <span class="string">"ready"</span>,
+            <span class="string">"123/ready"</span>,
+            <span class="string">"readyz"</span>,
+            <span class="string">"ready/123"</span>,
+            <span class="string">"abc/ready/1234"</span>,
+            <span class="string">"abcheartbeat123"</span>,
+            <span class="string">"123/health"</span>,
+            <span class="string">"123/healthz"</span>,
+            <span class="string">"123/ping"</span>,
         ];
-
-        <span class="kw">for </span>name <span class="kw">in </span>transaction_names {
-            <span class="kw">let </span>event = Event {
-                transaction: Annotated::new(name.into()),
-                ty: Annotated::new(EventType::Transaction),
-                ..Event::default()
-            };
-            <span class="macro">assert!</span>(matches(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>patterns), <span class="string">&quot;Did not match `{name}`&quot;</span>)
-        }
-    }
-    <span class="doccomment">/// tests non matching transactions transactions
-    </span><span class="attr">#[test]
-    </span><span class="kw">fn </span>test_does_not_match() {
-        <span class="kw">let </span>transaction_names = [
-            <span class="string">&quot;bad&quot;</span>,
-            <span class="string">&quot;/bad&quot;</span>,
-            <span class="string">&quot;a/b/c&quot;</span>,
-            <span class="string">&quot;health&quot;</span>,
-            <span class="string">&quot;healthz&quot;</span>,
-            <span class="string">&quot;/health/&quot;</span>,
-            <span class="string">&quot;/healthz/&quot;</span>,
-            <span class="string">&quot;/healthx&quot;</span>,
-            <span class="string">&quot;/healthzx&quot;</span>,
-            <span class="string">&quot;service-delivery&quot;</span>,
-            <span class="string">&quot;delivery&quot;</span>,
-            <span class="string">&quot;notready&quot;</span>,
-            <span class="string">&quot;already&quot;</span>,
-        ];
-        <span class="kw">let </span>patterns = _get_patterns();
 
         <span class="kw">for </span>name <span class="kw">in </span>transaction_names {
             <span class="kw">let </span>event = Event {
@@ -398,50 +348,79 @@
                 ..Event::default()
             };
             <span class="macro">assert!</span>(
-                !matches(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>patterns),
-                <span class="string">&quot;Did match `{name}` but it shouldn&#39;t have.&quot;
+                should_filter(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>config).is_err(),
+                <span class="string">"Did not match `{name}`"
+            </span>)
+        }
+    }
+    <span class="doccomment">/// tests non matching transactions transactions
+    </span><span class="attr">#[test]
+    </span><span class="kw">fn </span>test_does_not_match() {
+        <span class="kw">let </span>transaction_names = [
+            <span class="string">"bad"</span>,
+            <span class="string">"/bad"</span>,
+            <span class="string">"a/b/c"</span>,
+            <span class="string">"health"</span>,
+            <span class="string">"healthz"</span>,
+            <span class="string">"/health/"</span>,
+            <span class="string">"/healthz/"</span>,
+            <span class="string">"/healthx"</span>,
+            <span class="string">"/healthzx"</span>,
+            <span class="string">"service-delivery"</span>,
+            <span class="string">"delivery"</span>,
+            <span class="string">"notready"</span>,
+            <span class="string">"already"</span>,
+        ];
+        <span class="kw">let </span>config = _get_config();
+
+        <span class="kw">for </span>name <span class="kw">in </span>transaction_names {
+            <span class="kw">let </span>event = Event {
+                transaction: Annotated::new(name.into()),
+                ty: Annotated::new(EventType::Transaction),
+                ..Event::default()
+            };
+            <span class="macro">assert!</span>(
+                should_filter(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>config).is_ok(),
+                <span class="string">"Did match `{name}` but it shouldn't have."
             </span>)
         }
     }
 
-    <span class="comment">// test it doesn&#39;t match when the transaction name is missing
+    <span class="comment">// test it doesn't match when the transaction name is missing
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_does_not_match_missing_transaction() {
         <span class="kw">let </span>event = Event {
             ty: Annotated::new(EventType::Transaction),
             ..Event::default()
         };
-        <span class="kw">let </span>patterns = _get_patterns();
+        <span class="kw">let </span>config = _get_config();
         <span class="macro">assert!</span>(
-            !matches(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>patterns),
-            <span class="string">&quot;Did match with empty transaction but it shouldn&#39;t have.&quot;
+            should_filter(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>config).is_ok(),
+            <span class="string">"Did match with empty transaction but it shouldn't have."
         </span>)
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_filters_when_matching() {
         <span class="kw">let </span>event = Event {
-            transaction: Annotated::new(<span class="string">&quot;/health&quot;</span>.into()),
+            transaction: Annotated::new(<span class="string">"/health"</span>.into()),
             ty: Annotated::new(EventType::Transaction),
             ..Event::default()
         };
-        <span class="kw">let </span>config = IgnoreTransactionsFilterConfig {
-            patterns: _get_patterns(),
-            is_enabled: <span class="bool-val">true</span>,
-        };
+        <span class="kw">let </span>config = _get_config();
 
         <span class="kw">let </span>filter_result = should_filter(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>config);
         <span class="macro">assert_eq!</span>(
             filter_result,
             <span class="prelude-val">Err</span>(FilterStatKey::FilteredTransactions),
-            <span class="string">&quot;Event was not filtered &quot;
+            <span class="string">"Event was not filtered "
         </span>)
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_does_not_filter_when_disabled() {
         <span class="kw">let </span>event = Event {
-            transaction: Annotated::new(<span class="string">&quot;/health&quot;</span>.into()),
+            transaction: Annotated::new(<span class="string">"/health"</span>.into()),
             ty: Annotated::new(EventType::Transaction),
             ..Event::default()
         };
@@ -455,63 +434,50 @@
         <span class="macro">assert_eq!</span>(
             filter_result,
             <span class="prelude-val">Ok</span>(()),
-            <span class="string">&quot;Event filtered although filter should have been disabled&quot;
+            <span class="string">"Event filtered although filter should have been disabled"
         </span>)
     }
     <span class="attr">#[test]
     </span><span class="comment">// Tests that is_enabled flag disables the transaction name filter
     </span><span class="kw">fn </span>test_does_not_filter_when_disabled_with_flag() {
         <span class="kw">let </span>event = Event {
-            transaction: Annotated::new(<span class="string">&quot;/health&quot;</span>.into()),
+            transaction: Annotated::new(<span class="string">"/health"</span>.into()),
             ty: Annotated::new(EventType::Transaction),
             ..Event::default()
         };
-        <span class="kw">let </span>filter_result = should_filter(
-            <span class="kw-2">&amp;</span>event,
-            <span class="kw-2">&amp;</span>IgnoreTransactionsFilterConfig {
-                patterns: _get_patterns(),
-                is_enabled: <span class="bool-val">false</span>,
-            },
-        );
+        <span class="kw">let </span><span class="kw-2">mut </span>config = _get_config();
+        config.is_enabled = <span class="bool-val">false</span>;
+        <span class="kw">let </span>filter_result = should_filter(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>config);
         <span class="macro">assert_eq!</span>(
             filter_result,
             <span class="prelude-val">Ok</span>(()),
-            <span class="string">&quot;Event filtered although filter should have been disabled&quot;
+            <span class="string">"Event filtered although filter should have been disabled"
         </span>)
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_does_not_filter_when_not_matching() {
         <span class="kw">let </span>event = Event {
-            transaction: Annotated::new(<span class="string">&quot;/a/b/c&quot;</span>.into()),
+            transaction: Annotated::new(<span class="string">"/a/b/c"</span>.into()),
             ty: Annotated::new(EventType::Transaction),
             ..Event::default()
         };
-        <span class="kw">let </span>filter_result = should_filter(
-            <span class="kw-2">&amp;</span>event,
-            <span class="kw-2">&amp;</span>IgnoreTransactionsFilterConfig {
-                patterns: _get_patterns(),
-                is_enabled: <span class="bool-val">true</span>,
-            },
-        );
+        <span class="kw">let </span>filter_result = should_filter(<span class="kw-2">&amp;</span>event, <span class="kw-2">&amp;</span>_get_config());
         <span class="macro">assert_eq!</span>(
             filter_result,
             <span class="prelude-val">Ok</span>(()),
-            <span class="string">&quot;Event filtered although filter should have not matched&quot;
+            <span class="string">"Event filtered although filter should have not matched"
         </span>)
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_only_filters_transactions_not_anything_else() {
-        <span class="kw">let </span>config = IgnoreTransactionsFilterConfig {
-            patterns: _get_patterns(),
-            is_enabled: <span class="bool-val">true</span>,
-        };
+        <span class="kw">let </span>config = _get_config();
 
         <span class="kw">for </span>event_type <span class="kw">in </span>[EventType::Transaction, EventType::Error, EventType::Csp] {
             <span class="kw">let </span>expect_to_filter = event_type == EventType::Transaction;
             <span class="kw">let </span>event = Event {
-                transaction: Annotated::new(<span class="string">&quot;/health&quot;</span>.into()),
+                transaction: Annotated::new(<span class="string">"/health"</span>.into()),
                 ty: Annotated::new(event_type),
                 ..Event::default()
             };
@@ -521,13 +487,13 @@
                 <span class="macro">assert_eq!</span>(
                     filter_result,
                     <span class="prelude-val">Err</span>(FilterStatKey::FilteredTransactions),
-                    <span class="string">&quot;Event was not filtered &quot;
+                    <span class="string">"Event was not filtered "
                 </span>);
             } <span class="kw">else </span>{
                 <span class="macro">assert_eq!</span>(
                     filter_result,
                     <span class="prelude-val">Ok</span>(()),
-                    <span class="string">&quot;Event filtered for event_type={} although filter should have not matched&quot;</span>,
+                    <span class="string">"Event filtered for event_type={} although filter should have not matched"</span>,
                     event_type
                 )
             }

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/utils/multipart.rs`."><title>multipart.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/utils/multipart.rs`."><title>multipart.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -288,16 +288,11 @@
 <a href="#288" id="288">288</a>
 <a href="#289" id="289">289</a>
 <a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::convert::TryInto;
-<span class="kw">use </span>std::io;
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::io;
 
-<span class="kw">use </span>axum::extract::multipart::{Field, Multipart};
+<span class="kw">use </span>axum::extract::Request;
+<span class="kw">use </span>multer::Multipart;
+<span class="kw">use </span>relay_config::Config;
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="kw">use </span><span class="kw">crate</span>::envelope::{AttachmentType, ContentType, Item, ItemType, Items};
@@ -317,7 +312,7 @@
 }
 
 <span class="doccomment">/// Safely consumes a slice of the given length.
-</span><span class="kw">fn </span>split_front&lt;<span class="lifetime">&#39;a</span>&gt;(data: <span class="kw-2">&amp;mut &amp;</span><span class="lifetime">&#39;a </span>[u8], len: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]&gt; {
+</span><span class="kw">fn </span>split_front&lt;<span class="lifetime">'a</span>&gt;(data: <span class="kw-2">&amp;mut &amp;</span><span class="lifetime">'a </span>[u8], len: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]&gt; {
     <span class="kw">if </span>data.len() &lt; len {
         <span class="kw-2">*</span>data = <span class="kw-2">&amp;</span>[];
         <span class="kw">return </span><span class="prelude-val">None</span>;
@@ -337,7 +332,7 @@
 }
 
 <span class="doccomment">/// Consumes a Pascal-style string with a 4 byte little-endian length prefix.
-</span><span class="kw">fn </span>consume_string&lt;<span class="lifetime">&#39;a</span>&gt;(data: <span class="kw-2">&amp;mut &amp;</span><span class="lifetime">&#39;a </span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; {
+</span><span class="kw">fn </span>consume_string&lt;<span class="lifetime">'a</span>&gt;(data: <span class="kw-2">&amp;mut &amp;</span><span class="lifetime">'a </span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt; {
     <span class="kw">let </span>len = consume_len(data)<span class="question-mark">?</span>;
     <span class="kw">let </span>bytes = split_front(data, len)<span class="question-mark">?</span>;
     std::str::from_utf8(bytes).ok()
@@ -345,18 +340,18 @@
 
 <span class="doccomment">/// An entry in a serialized form data item.
 </span><span class="attr">#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-</span><span class="kw">pub struct </span>FormDataEntry&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str);
+</span><span class="kw">pub struct </span>FormDataEntry&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FormDataEntry&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub fn </span>new(key: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str, value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; FormDataEntry&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub fn </span>new(key: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str, value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(key, value)
     }
 
-    <span class="kw">pub fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {
+    <span class="kw">pub fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
         <span class="self">self</span>.<span class="number">0
     </span>}
 
-    <span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {
+    <span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
         <span class="self">self</span>.<span class="number">1
     </span>}
 
@@ -365,7 +360,7 @@
         write_string(<span class="kw-2">&amp;mut </span>writer, <span class="self">self</span>.value()).ok();
     }
 
-    <span class="kw">fn </span>read(data: <span class="kw-2">&amp;mut &amp;</span><span class="lifetime">&#39;a </span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+    <span class="kw">fn </span>read(data: <span class="kw-2">&amp;mut &amp;</span><span class="lifetime">'a </span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>key = consume_string(data)<span class="question-mark">?</span>;
         <span class="kw">let </span>value = consume_string(data)<span class="question-mark">?</span>;
         <span class="prelude-val">Some</span>(<span class="self">Self</span>::new(key, value))
@@ -396,24 +391,24 @@
 }
 
 <span class="doccomment">/// Iterates through serialized form data written with `FormDataWriter`.
-</span><span class="kw">pub struct </span>FormDataIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8],
+</span><span class="kw">pub struct </span>FormDataIter&lt;<span class="lifetime">'a</span>&gt; {
+    data: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8],
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FormDataIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub fn </span>new(data: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; FormDataIter&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub fn </span>new(data: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ data }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>FormDataIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = FormDataEntry&lt;<span class="lifetime">&#39;a</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>FormDataIter&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = FormDataEntry&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">while </span>!<span class="self">self</span>.data.is_empty() {
             <span class="kw">match </span>FormDataEntry::read(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data) {
                 <span class="prelude-val">Some</span>(entry) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(entry),
-                <span class="prelude-val">None </span>=&gt; <span class="macro">relay_log::error!</span>(<span class="string">&quot;form data deserialization failed&quot;</span>),
+                <span class="prelude-val">None </span>=&gt; <span class="macro">relay_log::error!</span>(<span class="string">"form data deserialization failed"</span>),
             }
         }
 
@@ -425,77 +420,54 @@
 /// and returns it as a `&amp;str` if it is found
 ///
 /// A multipart boundary starts at the beginning of the data (possibly
-/// after some blank lines) and it is prefixed by &#39;--&#39; (two dashes)
+/// after some blank lines) and it is prefixed by '--' (two dashes)
 ///
 /// ```ignore
-/// let boundary = get_multipart_boundary(b&quot;--The boundary\r\n next line&quot;);
-/// assert_eq!(Some(&quot;The boundary&quot;), boundary);
+/// let boundary = get_multipart_boundary(b"--The boundary\r\n next line");
+/// assert_eq!(Some("The boundary"), boundary);
 ///
-/// let invalid_boundary = get_multipart_boundary(b&quot;The boundary\r\n next line&quot;);
+/// let invalid_boundary = get_multipart_boundary(b"The boundary\r\n next line");
 /// assert_eq!(None, invalid_boundary);
 /// ```
 </span><span class="kw">pub fn </span>get_multipart_boundary(data: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
-    data.split(|<span class="kw-2">&amp;</span>byte| byte == <span class="string">b&#39;\r&#39; </span>|| byte == <span class="string">b&#39;\n&#39;</span>)
+    data.split(|<span class="kw-2">&amp;</span>byte| byte == <span class="string">b'\r' </span>|| byte == <span class="string">b'\n'</span>)
         <span class="comment">// Get the first non-empty line
         </span>.find(|slice| !slice.is_empty())
         <span class="comment">// Check for the form boundary indicator
-        </span>.filter(|slice| slice.len() &gt; <span class="number">2 </span>&amp;&amp; slice.starts_with(<span class="string">b&quot;--&quot;</span>))
+        </span>.filter(|slice| slice.len() &gt; <span class="number">2 </span>&amp;&amp; slice.starts_with(<span class="string">b"--"</span>))
         <span class="comment">// Form boundaries must be valid UTF-8 strings
         </span>.and_then(|slice| std::str::from_utf8(<span class="kw-2">&amp;</span>slice[<span class="number">2</span>..]).ok())
 }
 
-<span class="attr">#[derive(Debug, thiserror::Error)]
-</span><span class="kw">pub enum </span>MultipartError {
-    <span class="attr">#[error(<span class="string">&quot;field exceeded the size limit&quot;</span>)]
-    </span>FieldSizeExceeded,
-    <span class="attr">#[error(transparent)]
-    </span>Raw(<span class="attr">#[from] </span>axum::extract::multipart::MultipartError),
-}
-
-<span class="kw">async fn </span>field_data&lt;<span class="lifetime">&#39;a</span>&gt;(field: <span class="kw-2">&amp;mut </span>Field&lt;<span class="lifetime">&#39;a</span>&gt;, limit: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;u8&gt;, MultipartError&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>body = Vec::new();
-
-    <span class="kw">while let </span><span class="prelude-val">Some</span>(chunk) = field.chunk().<span class="kw">await</span><span class="question-mark">? </span>{
-        <span class="kw">if </span>body.len() + chunk.len() &gt; limit {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(MultipartError::FieldSizeExceeded);
-        }
-        body.extend_from_slice(<span class="kw-2">&amp;</span>chunk);
-    }
-
-    <span class="prelude-val">Ok</span>(body)
-}
-
 <span class="kw">pub async fn </span>multipart_items&lt;F&gt;(
-    <span class="kw-2">mut </span>multipart: Multipart,
-    item_limit: usize,
+    <span class="kw-2">mut </span>multipart: Multipart&lt;<span class="lifetime">'_</span>&gt;,
     <span class="kw-2">mut </span>infer_type: F,
-) -&gt; <span class="prelude-ty">Result</span>&lt;Items, MultipartError&gt;
+) -&gt; <span class="prelude-ty">Result</span>&lt;Items, multer::Error&gt;
 <span class="kw">where
     </span>F: FnMut(<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; AttachmentType,
 {
     <span class="kw">let </span><span class="kw-2">mut </span>items = Items::new();
     <span class="kw">let </span><span class="kw-2">mut </span>form_data = FormDataWriter::new();
 
-    <span class="kw">while let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>field) = multipart.next_field().<span class="kw">await</span><span class="question-mark">? </span>{
+    <span class="kw">while let </span><span class="prelude-val">Some</span>(field) = multipart.next_field().<span class="kw">await</span><span class="question-mark">? </span>{
         <span class="kw">if let </span><span class="prelude-val">Some</span>(file_name) = field.file_name() {
             <span class="kw">let </span><span class="kw-2">mut </span>item = Item::new(ItemType::Attachment);
             item.set_attachment_type(infer_type(field.name()));
             item.set_filename(file_name);
-            <span class="kw">let </span>content_type = <span class="kw">match </span>field.content_type() {
-                <span class="prelude-val">Some</span>(string) =&gt; string.into(),
-                <span class="prelude-val">None </span>=&gt; ContentType::OctetStream,
-            };
             <span class="comment">// Extract the body after the immutable borrow on `file_name` is gone.
-            </span>item.set_payload(content_type, field_data(<span class="kw-2">&amp;mut </span>field, item_limit).<span class="kw">await</span><span class="question-mark">?</span>);
+            </span><span class="kw">if let </span><span class="prelude-val">Some</span>(content_type) = field.content_type() {
+                item.set_payload(content_type.as_ref().into(), field.bytes().<span class="kw">await</span><span class="question-mark">?</span>);
+            } <span class="kw">else </span>{
+                item.set_payload_without_content_type(field.bytes().<span class="kw">await</span><span class="question-mark">?</span>);
+            }
             items.push(item);
         } <span class="kw">else if let </span><span class="prelude-val">Some</span>(field_name) = field.name().map(str::to_owned) {
-            <span class="kw">let </span>data = field_data(<span class="kw-2">&amp;mut </span>field, item_limit).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="comment">// Ensure to decode this safely to match Django&#39;s POST data behavior. This allows us to
+            <span class="comment">// Ensure to decode this SAFELY to match Django's POST data behavior. This allows us to
             // process sentry event payloads even if they contain invalid encoding.
-            </span><span class="kw">let </span>string = String::from_utf8_lossy(<span class="kw-2">&amp;</span>data);
+            </span><span class="kw">let </span>string = field.text().<span class="kw">await</span><span class="question-mark">?</span>;
             form_data.append(<span class="kw-2">&amp;</span>field_name, <span class="kw-2">&amp;</span>string);
         } <span class="kw">else </span>{
-            <span class="macro">relay_log::trace!</span>(<span class="string">&quot;multipart content without name or file_name&quot;</span>);
+            <span class="macro">relay_log::trace!</span>(<span class="string">"multipart content without name or file_name"</span>);
         }
     }
 
@@ -511,27 +483,46 @@
     <span class="prelude-val">Ok</span>(items)
 }
 
+<span class="kw">pub fn </span>multipart_from_request(
+    request: Request,
+    config: <span class="kw-2">&amp;</span>Config,
+) -&gt; <span class="prelude-ty">Result</span>&lt;Multipart&lt;<span class="lifetime">'static</span>&gt;, multer::Error&gt; {
+    <span class="kw">let </span>content_type = request
+        .headers()
+        .get(<span class="string">"content-type"</span>)
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or(<span class="string">""</span>);
+    <span class="kw">let </span>boundary = multer::parse_boundary(content_type)<span class="question-mark">?</span>;
+
+    <span class="kw">let </span>limits = multer::SizeLimit::new()
+        .whole_stream(config.max_attachments_size() <span class="kw">as </span>u64)
+        .per_field(config.max_attachment_size() <span class="kw">as </span>u64);
+
+    <span class="prelude-val">Ok</span>(Multipart::with_constraints(
+        request.into_body().into_data_stream(),
+        boundary,
+        multer::Constraints::new().size_limit(limits),
+    ))
+}
+
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
-    <span class="kw">use </span>axum::body::Full;
-    <span class="kw">use </span>axum::extract::FromRequest;
-    <span class="kw">use </span>axum::http::Request;
-    <span class="kw">use </span>bytes::Bytes;
+    <span class="kw">use </span>std::convert::Infallible;
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_get_boundary() {
         <span class="kw">let </span>examples: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span>[u8], <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;)] = <span class="kw-2">&amp;</span>[
-            (<span class="string">b&quot;--some_val&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;some_val&quot;</span>)),
-            (<span class="string">b&quot;--\nsecond line&quot;</span>, <span class="prelude-val">None</span>),
-            (<span class="string">b&quot;\n\r--some_val&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;some_val&quot;</span>)),
-            (<span class="string">b&quot;\n\r--some_val\nadfa&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;some_val&quot;</span>)),
-            (<span class="string">b&quot;\n\r--some_val\rfasdf&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;some_val&quot;</span>)),
-            (<span class="string">b&quot;\n\r--some_val\r\nfasdf&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;some_val&quot;</span>)),
-            (<span class="string">b&quot;\n\rsome_val&quot;</span>, <span class="prelude-val">None</span>),
-            (<span class="string">b&quot;&quot;</span>, <span class="prelude-val">None</span>),
-            (<span class="string">b&quot;--&quot;</span>, <span class="prelude-val">None</span>),
+            (<span class="string">b"--some_val"</span>, <span class="prelude-val">Some</span>(<span class="string">"some_val"</span>)),
+            (<span class="string">b"--\nsecond line"</span>, <span class="prelude-val">None</span>),
+            (<span class="string">b"\n\r--some_val"</span>, <span class="prelude-val">Some</span>(<span class="string">"some_val"</span>)),
+            (<span class="string">b"\n\r--some_val\nadfa"</span>, <span class="prelude-val">Some</span>(<span class="string">"some_val"</span>)),
+            (<span class="string">b"\n\r--some_val\rfasdf"</span>, <span class="prelude-val">Some</span>(<span class="string">"some_val"</span>)),
+            (<span class="string">b"\n\r--some_val\r\nfasdf"</span>, <span class="prelude-val">Some</span>(<span class="string">"some_val"</span>)),
+            (<span class="string">b"\n\rsome_val"</span>, <span class="prelude-val">None</span>),
+            (<span class="string">b""</span>, <span class="prelude-val">None</span>),
+            (<span class="string">b"--"</span>, <span class="prelude-val">None</span>),
         ];
 
         <span class="kw">for </span>(input, expected) <span class="kw">in </span>examples {
@@ -543,9 +534,9 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_formdata() {
         <span class="kw">let </span><span class="kw-2">mut </span>writer = FormDataWriter::new();
-        writer.append(<span class="string">&quot;foo&quot;</span>, <span class="string">&quot;foo&quot;</span>);
-        writer.append(<span class="string">&quot;bar&quot;</span>, <span class="string">&quot;&quot;</span>);
-        writer.append(<span class="string">&quot;blub&quot;</span>, <span class="string">&quot;blub&quot;</span>);
+        writer.append(<span class="string">"foo"</span>, <span class="string">"foo"</span>);
+        writer.append(<span class="string">"bar"</span>, <span class="string">""</span>);
+        writer.append(<span class="string">"blub"</span>, <span class="string">"blub"</span>);
 
         <span class="kw">let </span>payload = writer.into_inner();
         <span class="kw">let </span>iter = FormDataIter::new(<span class="kw-2">&amp;</span>payload);
@@ -554,9 +545,9 @@
         <span class="macro">assert_eq!</span>(
             entries,
             <span class="macro">vec!</span>[
-                FormDataEntry::new(<span class="string">&quot;foo&quot;</span>, <span class="string">&quot;foo&quot;</span>),
-                FormDataEntry::new(<span class="string">&quot;bar&quot;</span>, <span class="string">&quot;&quot;</span>),
-                FormDataEntry::new(<span class="string">&quot;blub&quot;</span>, <span class="string">&quot;blub&quot;</span>),
+                FormDataEntry::new(<span class="string">"foo"</span>, <span class="string">"foo"</span>),
+                FormDataEntry::new(<span class="string">"bar"</span>, <span class="string">""</span>),
+                FormDataEntry::new(<span class="string">"blub"</span>, <span class="string">"blub"</span>),
             ]
         );
     }
@@ -575,15 +566,12 @@
     <span class="doccomment">/// Regression test for multipart payloads without a trailing newline.
     </span><span class="attr">#[tokio::test]
     </span><span class="kw">async fn </span>missing_trailing_newline() -&gt; anyhow::Result&lt;()&gt; {
-        <span class="kw">let </span>data = <span class="string">&quot;--X-BOUNDARY\r\nContent-Disposition: form-data; \
-        name=\&quot;my_text_field\&quot;\r\n\r\nabcd\r\n--X-BOUNDARY--&quot;</span>; <span class="comment">// No trailing newline
+        <span class="kw">let </span>data = <span class="string">"--X-BOUNDARY\r\nContent-Disposition: form-data; \
+        name=\"my_text_field\"\r\n\r\nabcd\r\n--X-BOUNDARY--"</span>; <span class="comment">// No trailing newline
 
-        </span><span class="kw">let </span>request = Request::builder()
-            .header(<span class="string">&quot;content-type&quot;</span>, <span class="string">&quot;multipart/form-data; boundary=X-BOUNDARY&quot;</span>)
-            .body(Full::new(Bytes::from(data)))
-            .unwrap();
+        </span><span class="kw">let </span>stream = futures::stream::once(<span class="kw">async </span>{ <span class="prelude-val">Ok</span>::&lt;<span class="kw">_</span>, Infallible&gt;(data) });
+        <span class="kw">let </span><span class="kw-2">mut </span>multipart = Multipart::new(stream, <span class="string">"X-BOUNDARY"</span>);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>multipart = Multipart::from_request(request, <span class="kw-2">&amp;</span>()).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="macro">assert!</span>(multipart.next_field().<span class="kw">await</span><span class="question-mark">?</span>.is_some());
         <span class="macro">assert!</span>(multipart.next_field().<span class="kw">await</span><span class="question-mark">?</span>.is_none());
 

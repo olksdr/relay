@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-kafka/src/producer/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_kafka" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_kafka/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-kafka/src/producer/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_kafka" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -378,64 +378,87 @@
 <a href="#378" id="378">378</a>
 <a href="#379" id="379">379</a>
 <a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! This module contains the kafka producer related code.
-//!
-//! There are two different producers that are supported in Relay right now:
-//! - [`SingleProducer`] - which sends all the messages to the defined kafka [`KafkaTopic`],
-//! - [`ShardedProducer`] - which expects to have at least one shard configured, and depending on
-//! the shard number the different messages will be sent to different topics using the configured
-//! producer for the this exact shard.
 
-</span><span class="kw">use </span>std::collections::{BTreeMap, HashMap};
+</span><span class="kw">use </span>std::borrow::Cow;
+<span class="kw">use </span>std::collections::{BTreeMap, HashMap};
 <span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::sync::atomic::{AtomicU64, Ordering};
 <span class="kw">use </span>std::sync::Arc;
+<span class="kw">use </span>std::time::{Duration, Instant};
 
 <span class="kw">use </span>rdkafka::message::{Header, OwnedHeaders};
-<span class="kw">use </span>rdkafka::producer::BaseRecord;
+<span class="kw">use </span>rdkafka::producer::{BaseRecord, Producer <span class="kw">as _</span>};
 <span class="kw">use </span>rdkafka::ClientConfig;
 <span class="kw">use </span>relay_statsd::metric;
 <span class="kw">use </span>thiserror::Error;
 
-<span class="kw">use </span><span class="kw">crate</span>::config::{KafkaConfig, KafkaParams, KafkaTopic};
-<span class="kw">use </span><span class="kw">crate</span>::statsd::KafkaHistograms;
+<span class="kw">use </span><span class="kw">crate</span>::config::{KafkaParams, KafkaTopic};
+<span class="kw">use </span><span class="kw">crate</span>::statsd::{KafkaCounters, KafkaGauges, KafkaHistograms};
 
 <span class="kw">mod </span>utils;
-<span class="kw">use </span>utils::{CaptureErrorContext, ThreadedProducer};
+<span class="kw">use </span>utils::{Context, ThreadedProducer};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;schemas&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"schemas"</span>)]
 </span><span class="kw">mod </span>schemas;
+
+<span class="kw">const </span>REPORT_FREQUENCY_SECS: u64 = <span class="number">1</span>;
+<span class="kw">const </span>KAFKA_FETCH_METADATA_TIMEOUT: Duration = Duration::from_secs(<span class="number">30</span>);
 
 <span class="doccomment">/// Kafka producer errors.
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>ClientError {
     <span class="doccomment">/// Failed to send a kafka message.
-    </span><span class="attr">#[error(<span class="string">&quot;failed to send kafka message&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"failed to send kafka message"</span>)]
     </span>SendFailed(<span class="attr">#[source] </span>rdkafka::error::KafkaError),
 
     <span class="doccomment">/// Failed to find configured producer for the requested kafka topic.
-    </span><span class="attr">#[error(<span class="string">&quot;failed to find producer for the requested kafka topic&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"failed to find producer for the requested kafka topic"</span>)]
     </span>InvalidTopicName,
 
     <span class="doccomment">/// Failed to create a kafka producer because of the invalid configuration.
-    </span><span class="attr">#[error(<span class="string">&quot;failed to create kafka producer: invalid kafka config&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"failed to create kafka producer: invalid kafka config"</span>)]
     </span>InvalidConfig(<span class="attr">#[source] </span>rdkafka::error::KafkaError),
 
     <span class="doccomment">/// Failed to serialize the message.
-    </span><span class="attr">#[error(<span class="string">&quot;failed to serialize kafka message&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"failed to serialize kafka message"</span>)]
     </span>InvalidMsgPack(<span class="attr">#[source] </span>rmp_serde::encode::Error),
 
     <span class="doccomment">/// Failed to serialize the json message using serde.
-    </span><span class="attr">#[error(<span class="string">&quot;failed to serialize json message&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"failed to serialize json message"</span>)]
     </span>InvalidJson(<span class="attr">#[source] </span>serde_json::Error),
 
     <span class="doccomment">/// Failed to run schema validation on message.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;schemas&quot;</span>)]
-    #[error(<span class="string">&quot;failed to run schema validation on message&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"schemas"</span>)]
+    #[error(<span class="string">"failed to run schema validation on message"</span>)]
     </span>SchemaValidationFailed(<span class="attr">#[source] </span>schemas::SchemaError),
 
     <span class="doccomment">/// Configuration is wrong and it cannot be used to identify the number of a shard.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid kafka shard&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid kafka shard"</span>)]
     </span>InvalidShard,
+
+    <span class="doccomment">/// Failed to fetch the metadata of Kafka.
+    </span><span class="attr">#[error(<span class="string">"failed to fetch the metadata of Kafka"</span>)]
+    </span>MetadataFetchError(rdkafka::error::KafkaError),
+
+    <span class="doccomment">/// Failed to validate the topic.
+    </span><span class="attr">#[error(<span class="string">"failed to validate the topic with name {0}: {1:?}"</span>)]
+    </span>TopicError(String, rdkafka_sys::rd_kafka_resp_err_t),
 }
 
 <span class="doccomment">/// Describes the type which can be sent using kafka producer provided by this crate.
@@ -444,7 +467,7 @@
     </span><span class="kw">fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [u8; <span class="number">16</span>];
 
     <span class="doccomment">/// Returns the type of the message.
-    </span><span class="kw">fn </span>variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
+    </span><span class="kw">fn </span>variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str;
 
     <span class="doccomment">/// Return the list of headers to be provided when payload is sent to Kafka.
     </span><span class="kw">fn </span>headers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>BTreeMap&lt;String, String&gt;&gt;;
@@ -454,71 +477,51 @@
     /// # Errors
     /// Returns the [`ClientError::InvalidMsgPack`] or [`ClientError::InvalidJson`] if the
     /// serialization failed.
-    </span><span class="kw">fn </span>serialize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;u8&gt;, ClientError&gt;;
+    </span><span class="kw">fn </span>serialize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Cow&lt;<span class="lifetime">'_</span>, [u8]&gt;, ClientError&gt;;
 }
 
 <span class="doccomment">/// Single kafka producer config with assigned topic.
-</span><span class="kw">struct </span>SingleProducer {
+</span><span class="kw">struct </span>Producer {
     <span class="doccomment">/// Kafka topic name.
     </span>topic_name: String,
     <span class="doccomment">/// Real kafka producer.
     </span>producer: Arc&lt;ThreadedProducer&gt;,
+    <span class="doccomment">/// Debouncer for metrics.
+    </span>metrics: Debounced,
 }
 
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>SingleProducer {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Single&quot;</span>)
-            .field(<span class="string">&quot;topic_name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.topic_name)
-            .field(<span class="string">&quot;producer&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;&lt;ThreadedProducer&gt;&quot;</span>)
-            .finish()
+<span class="kw">impl </span>Producer {
+    <span class="kw">fn </span>new(topic_name: String, producer: Arc&lt;ThreadedProducer&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            topic_name,
+            producer,
+            metrics: Debounced::new(REPORT_FREQUENCY_SECS),
+        }
+    }
+
+    <span class="doccomment">/// Validates the topic by fetching the metadata of the topic directly from Kafka.
+    </span><span class="kw">fn </span>validate_topic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), ClientError&gt; {
+        <span class="kw">let </span>client = <span class="self">self</span>.producer.client();
+        <span class="kw">let </span>metadata = client
+            .fetch_metadata(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.topic_name), KAFKA_FETCH_METADATA_TIMEOUT)
+            .map_err(ClientError::MetadataFetchError)<span class="question-mark">?</span>;
+
+        <span class="kw">for </span>topic <span class="kw">in </span>metadata.topics() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(error) = topic.error() {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(ClientError::TopicError(topic.name().to_string(), error));
+            }
+        }
+
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="doccomment">/// Sharded producer configuration.
-</span><span class="kw">struct </span>ShardedProducer {
-    <span class="doccomment">/// The maximum number of shards for this producer.
-    </span>shards: u64,
-    <span class="doccomment">/// The actual Kafka producer assigned to the range of logical shards, where the `u64` in the map is
-    /// the inclusive beginning of the range.
-    </span>producers: BTreeMap&lt;u64, (String, Arc&lt;ThreadedProducer&gt;)&gt;,
-}
-
-<span class="kw">impl </span>ShardedProducer {
-    <span class="doccomment">/// Returns topic name and the Kafka producer based on the provided sharding key.
-    /// Returns error [`ClientError::InvalidShard`] if the shard range for the provided sharding
-    /// key could not be found.
-    ///
-    /// # Errors
-    /// Returns [`ClientError::InvalidShard`] error if the provided `sharding_key` could not be
-    /// placed in any configured shard ranges.
-    </span><span class="kw">pub fn </span>get_producer(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        sharding_key: u64,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>ThreadedProducer), ClientError&gt; {
-        <span class="kw">let </span>shard = sharding_key % <span class="self">self</span>.shards;
-        <span class="kw">let </span>(topic_name, producer) = <span class="self">self
-            </span>.producers
-            .iter()
-            .take_while(|(k, <span class="kw">_</span>)| <span class="kw-2">*</span>k &lt;= <span class="kw-2">&amp;</span>shard)
-            .last()
-            .map(|(<span class="kw">_</span>, v)| v)
-            .ok_or(ClientError::InvalidShard)<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>((topic_name, producer))
-    }
-}
-
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ShardedProducer {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="kw">let </span>producers = <span class="kw-2">&amp;</span><span class="self">self
-            </span>.producers
-            .iter()
-            .map(|(shard, (topic, <span class="kw">_</span>))| (shard, topic))
-            .collect::&lt;BTreeMap&lt;<span class="kw">_</span>, <span class="kw">_</span>&gt;&gt;();
-        f.debug_struct(<span class="string">&quot;ShardedProducer&quot;</span>)
-            .field(<span class="string">&quot;shards&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.shards)
-            .field(<span class="string">&quot;producers&quot;</span>, producers)
-            .finish()
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Producer {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"Producer"</span>)
+            .field(<span class="string">"topic_name"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.topic_name)
+            .field(<span class="string">"producer"</span>, <span class="kw-2">&amp;</span><span class="string">"&lt;ThreadedProducer&gt;"</span>)
+            .finish_non_exhaustive()
     }
 }
 
@@ -526,8 +529,8 @@
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>KafkaClient {
     producers: HashMap&lt;KafkaTopic, Producer&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;schemas&quot;</span>)]
-    </span>schema_validator: std::cell::RefCell&lt;schemas::Validator&gt;,
+    <span class="attr">#[cfg(feature = <span class="string">"schemas"</span>)]
+    </span>schema_validator: schemas::Validator,
 }
 
 <span class="kw">impl </span>KafkaClient {
@@ -537,22 +540,21 @@
     }
 
     <span class="doccomment">/// Sends message to the provided kafka topic.
+    ///
+    /// Returns the name of the kafka topic to which the message was produced.
     </span><span class="kw">pub fn </span>send_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         topic: KafkaTopic,
-        organization_id: u64,
         message: <span class="kw-2">&amp;</span><span class="kw">impl </span>Message,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ClientError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>str, ClientError&gt; {
         <span class="kw">let </span>serialized = message.serialize()<span class="question-mark">?</span>;
-        <span class="attr">#[cfg(feature = <span class="string">&quot;schemas&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"schemas"</span>)]
         </span><span class="self">self</span>.schema_validator
-            .borrow_mut()
             .validate_message_schema(topic, <span class="kw-2">&amp;</span>serialized)
             .map_err(ClientError::SchemaValidationFailed)<span class="question-mark">?</span>;
         <span class="kw">let </span>key = message.key();
         <span class="self">self</span>.send(
             topic,
-            organization_id,
             <span class="kw-2">&amp;</span>key,
             message.headers(),
             message.variant(),
@@ -561,22 +563,23 @@
     }
 
     <span class="doccomment">/// Sends the payload to the correct producer for the current topic.
+    ///
+    /// Returns the name of the kafka topic to which the message was produced.
     </span><span class="kw">pub fn </span>send(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         topic: KafkaTopic,
-        organization_id: u64,
         key: <span class="kw-2">&amp;</span>[u8; <span class="number">16</span>],
         headers: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>BTreeMap&lt;String, String&gt;&gt;,
         variant: <span class="kw-2">&amp;</span>str,
         payload: <span class="kw-2">&amp;</span>[u8],
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ClientError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>str, ClientError&gt; {
         <span class="kw">let </span>producer = <span class="self">self</span>.producers.get(<span class="kw-2">&amp;</span>topic).ok_or_else(|| {
             <span class="macro">relay_log::error!</span>(
-                <span class="string">&quot;attempted to send message to {topic:?} using an unconfigured kafka producer&quot;</span>,
+                <span class="string">"attempted to send message to {topic:?} using an unconfigured kafka producer"</span>,
             );
             ClientError::InvalidTopicName
         })<span class="question-mark">?</span>;
-        producer.send(organization_id, key, headers, variant, payload)
+        producer.send(key, headers, variant, payload)
     }
 }
 
@@ -602,138 +605,84 @@
     </span><span class="kw">pub fn </span>add_kafka_topic_config(
         <span class="kw-2">mut </span><span class="self">self</span>,
         topic: KafkaTopic,
-        config: <span class="kw-2">&amp;</span>KafkaConfig,
+        params: <span class="kw-2">&amp;</span>KafkaParams,
+        validate_topic: bool,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ClientError&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>client_config = ClientConfig::new();
-        <span class="kw">match </span>config {
-            KafkaConfig::Single { params } =&gt; {
-                <span class="kw">let </span>KafkaParams {
-                    topic_name,
-                    config_name,
-                    params,
-                } = params;
 
-                <span class="kw">let </span>config_name = config_name.map(str::to_string);
+        <span class="kw">let </span>KafkaParams {
+            topic_name,
+            config_name,
+            params,
+        } = params;
 
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(producer) = <span class="self">self</span>.reused_producers.get(<span class="kw-2">&amp;</span>config_name) {
-                    <span class="self">self</span>.producers.insert(
-                        topic,
-                        Producer::Single(SingleProducer {
-                            topic_name: (<span class="kw-2">*</span>topic_name).to_string(),
-                            producer: Arc::clone(producer),
-                        }),
-                    );
-                    <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="self">self</span>);
-                }
+        <span class="kw">let </span>config_name = config_name.map(str::to_string);
 
-                <span class="kw">for </span>config_p <span class="kw">in </span><span class="kw-2">*</span>params {
-                    client_config.set(config_p.name.as_str(), config_p.value.as_str());
-                }
-
-                <span class="kw">let </span>producer = Arc::new(
-                    client_config
-                        .create_with_context(CaptureErrorContext)
-                        .map_err(ClientError::InvalidConfig)<span class="question-mark">?</span>,
-                );
-
-                <span class="self">self</span>.reused_producers
-                    .insert(config_name, Arc::clone(<span class="kw-2">&amp;</span>producer));
-                <span class="self">self</span>.producers.insert(
-                    topic,
-                    Producer::Single(SingleProducer {
-                        topic_name: (<span class="kw-2">*</span>topic_name).to_string(),
-                        producer,
-                    }),
-                );
-                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(producer) = <span class="self">self</span>.reused_producers.get(<span class="kw-2">&amp;</span>config_name) {
+            <span class="kw">let </span>producer = Producer::new((<span class="kw-2">*</span>topic_name).to_string(), Arc::clone(producer));
+            <span class="kw">if </span>validate_topic {
+                producer.validate_topic()<span class="question-mark">?</span>;
             }
-            KafkaConfig::Sharded { shards, configs } =&gt; {
-                <span class="kw">let </span><span class="kw-2">mut </span>producers = BTreeMap::new();
-                <span class="kw">for </span>(shard, kafka_params) <span class="kw">in </span>configs {
-                    <span class="kw">let </span>config_name = kafka_params.config_name.map(str::to_string);
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(producer) = <span class="self">self</span>.reused_producers.get(<span class="kw-2">&amp;</span>config_name) {
-                        <span class="kw">let </span>cached_producer = Arc::clone(producer);
-                        producers.insert(
-                            <span class="kw-2">*</span>shard,
-                            (kafka_params.topic_name.to_string(), cached_producer),
-                        );
-                        <span class="kw">continue</span>;
-                    }
-                    <span class="kw">for </span>config_p <span class="kw">in </span>kafka_params.params {
-                        client_config.set(config_p.name.as_str(), config_p.value.as_str());
-                    }
-                    <span class="kw">let </span>producer = Arc::new(
-                        client_config
-                            .create_with_context(CaptureErrorContext)
-                            .map_err(ClientError::InvalidConfig)<span class="question-mark">?</span>,
-                    );
-                    <span class="self">self</span>.reused_producers
-                        .insert(config_name, Arc::clone(<span class="kw-2">&amp;</span>producer));
-                    producers.insert(<span class="kw-2">*</span>shard, (kafka_params.topic_name.to_string(), producer));
-                }
-                <span class="self">self</span>.producers.insert(
-                    topic,
-                    Producer::Sharded(ShardedProducer {
-                        shards: <span class="kw-2">*</span>shards,
-                        producers,
-                    }),
-                );
-                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
-            }
+            <span class="self">self</span>.producers.insert(topic, producer);
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="self">self</span>);
         }
+
+        <span class="kw">for </span>config_p <span class="kw">in </span><span class="kw-2">*</span>params {
+            client_config.set(config_p.name.as_str(), config_p.value.as_str());
+        }
+
+        <span class="kw">let </span>producer = Arc::new(
+            client_config
+                .create_with_context(Context)
+                .map_err(ClientError::InvalidConfig)<span class="question-mark">?</span>,
+        );
+
+        <span class="self">self</span>.reused_producers
+            .insert(config_name, Arc::clone(<span class="kw-2">&amp;</span>producer));
+
+        <span class="kw">let </span>producer = Producer::new((<span class="kw-2">*</span>topic_name).to_string(), producer);
+        <span class="kw">if </span>validate_topic {
+            producer.validate_topic()<span class="question-mark">?</span>;
+        }
+        <span class="self">self</span>.producers.insert(topic, producer);
+
+        <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Consumes self and returns the built [`KafkaClient`].
     </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; KafkaClient {
         KafkaClient {
             producers: <span class="self">self</span>.producers,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;schemas&quot;</span>)]
-            </span>schema_validator: schemas::Validator::default().into(),
+            <span class="attr">#[cfg(feature = <span class="string">"schemas"</span>)]
+            </span>schema_validator: schemas::Validator::default(),
         }
     }
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>KafkaClientBuilder {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;KafkaClientBuilder&quot;</span>)
-            .field(<span class="string">&quot;reused_producers&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;&lt;CachedProducers&gt;&quot;</span>)
-            .field(<span class="string">&quot;producers&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.producers)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"KafkaClientBuilder"</span>)
+            .field(<span class="string">"reused_producers"</span>, <span class="kw-2">&amp;</span><span class="string">"&lt;CachedProducers&gt;"</span>)
+            .field(<span class="string">"producers"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.producers)
             .finish()
     }
-}
-
-<span class="doccomment">/// This object contains the Kafka producer variants for single and sharded configurations.
-</span><span class="attr">#[derive(Debug)]
-</span><span class="kw">enum </span>Producer {
-    <span class="doccomment">/// Configuration variant for the single kafka producer.
-    </span>Single(SingleProducer),
-    <span class="doccomment">/// Configuration variant for sharded kafka producer, when one topic has different producers
-    /// dedicated to the range of the shards.
-    </span>Sharded(ShardedProducer),
 }
 
 <span class="kw">impl </span>Producer {
     <span class="doccomment">/// Sends the payload to the correct producer for the current topic.
     </span><span class="kw">fn </span>send(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        organization_id: u64,
         key: <span class="kw-2">&amp;</span>[u8; <span class="number">16</span>],
         headers: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>BTreeMap&lt;String, String&gt;&gt;,
         variant: <span class="kw-2">&amp;</span>str,
         payload: <span class="kw-2">&amp;</span>[u8],
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ClientError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>str, ClientError&gt; {
         <span class="macro">metric!</span>(
             histogram(KafkaHistograms::KafkaMessageSize) = payload.len() <span class="kw">as </span>u64,
             variant = variant
         );
-        <span class="kw">let </span>(topic_name, producer) = <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::Single(SingleProducer {
-                topic_name,
-                producer,
-            }) =&gt; (topic_name.as_str(), producer.as_ref()),
 
-            <span class="self">Self</span>::Sharded(sharded) =&gt; sharded.get_producer(organization_id)<span class="question-mark">?</span>,
-        };
+        <span class="kw">let </span>topic_name = <span class="self">self</span>.topic_name.as_str();
         <span class="kw">let </span><span class="kw-2">mut </span>record = BaseRecord::to(topic_name).key(key).payload(payload);
 
         <span class="comment">// Make sure to set the headers if provided.
@@ -748,14 +697,95 @@
             record = record.headers(kafka_headers);
         }
 
-        producer.send(record).map_err(|(error, _message)| {
-            <span class="macro">relay_log::error!</span>(
-                error = <span class="kw-2">&amp;</span>error <span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>std::error::Error,
-                tags.variant = variant,
-                <span class="string">&quot;error sending kafka message&quot;
-            </span>);
-            ClientError::SendFailed(error)
-        })
+        <span class="self">self</span>.metrics.debounce(|| {
+            <span class="macro">metric!</span>(
+                gauge(KafkaGauges::InFlightCount) = <span class="self">self</span>.producer.in_flight_count() <span class="kw">as </span>u64,
+                variant = variant,
+                topic = topic_name
+            );
+        });
+
+        <span class="self">self</span>.producer
+            .send(record)
+            .map(|<span class="kw">_</span>| topic_name)
+            .map_err(|(error, _message)| {
+                <span class="macro">relay_log::error!</span>(
+                    error = <span class="kw-2">&amp;</span>error <span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>std::error::Error,
+                    tags.variant = variant,
+                    tags.topic = topic_name,
+                    <span class="string">"error sending kafka message"</span>,
+                );
+                <span class="macro">metric!</span>(
+                    counter(KafkaCounters::ProducerEnqueueError) += <span class="number">1</span>,
+                    variant = variant,
+                    topic = topic_name
+                );
+                ClientError::SendFailed(error)
+            })
+    }
+}
+
+<span class="kw">struct </span>Debounced {
+    <span class="doccomment">/// Time of last activation in seconds.
+    </span>last_activation: AtomicU64,
+    <span class="doccomment">/// Debounce interval in seconds.
+    </span>interval: u64,
+    <span class="doccomment">/// Relative instant used for measurements.
+    </span>instant: Instant,
+}
+
+<span class="kw">impl </span>Debounced {
+    <span class="kw">pub fn </span>new(interval: u64) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            last_activation: AtomicU64::new(<span class="number">0</span>),
+            interval,
+            instant: Instant::now(),
+        }
+    }
+
+    <span class="kw">fn </span>debounce(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw">impl </span>FnOnce()) -&gt; bool {
+        <span class="comment">// Add interval to make sure it always triggers immediately.
+        </span><span class="kw">let </span>now = <span class="self">self</span>.instant.elapsed().as_secs() + <span class="self">self</span>.interval;
+
+        <span class="kw">let </span>prev = <span class="self">self</span>.last_activation.load(Ordering::Relaxed);
+        <span class="kw">if </span>now.saturating_sub(prev) &lt; <span class="self">self</span>.interval {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+
+        <span class="kw">if </span><span class="self">self
+            </span>.last_activation
+            .compare_exchange(prev, now, Ordering::SeqCst, Ordering::Acquire)
+            .is_ok()
+        {
+            f();
+            <span class="kw">return </span><span class="bool-val">true</span>;
+        }
+
+        <span class="bool-val">false
+    </span>}
+}
+
+<span class="attr">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span>std::thread;
+
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_debounce() {
+        <span class="kw">let </span>d = Debounced::new(<span class="number">1</span>);
+
+        <span class="macro">assert!</span>(d.debounce(|| {}));
+        <span class="kw">for _ in </span><span class="number">0</span>..<span class="number">10 </span>{
+            <span class="macro">assert!</span>(!d.debounce(|| {}));
+        }
+
+        thread::sleep(Duration::from_secs(<span class="number">1</span>));
+
+        <span class="macro">assert!</span>(d.debounce(|| {}));
+        <span class="kw">for _ in </span><span class="number">0</span>..<span class="number">10 </span>{
+            <span class="macro">assert!</span>(!d.debounce(|| {}));
+        }
     }
 }
 </code></pre></div></section></main></body></html>

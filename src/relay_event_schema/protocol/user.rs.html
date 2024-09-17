@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-schema/src/protocol/user.rs`."><title>user.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_event_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_event_schema/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-schema/src/protocol/user.rs`."><title>user.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_event_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -219,32 +219,47 @@
 <a href="#219" id="219">219</a>
 <a href="#220" id="220">220</a>
 <a href="#221" id="221">221</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;jsonschema&quot;</span>)]
-</span><span class="kw">use </span>relay_jsonschema_derive::JsonSchema;
-<span class="kw">use </span>relay_protocol::{Annotated, Empty, FromValue, IntoValue, Object, Value};
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>relay_protocol::{Annotated, Empty, FromValue, IntoValue, Object, Value};
 
 <span class="kw">use </span><span class="kw">crate</span>::processor::ProcessValue;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{IpAddr, LenientString};
 
 <span class="doccomment">/// Geographical location of the end user or device.
 </span><span class="attr">#[derive(Clone, Debug, Default, PartialEq, Empty, FromValue, IntoValue, ProcessValue)]
-#[cfg_attr(feature = <span class="string">&quot;jsonschema&quot;</span>, derive(JsonSchema))]
-#[metastructure(process_func = <span class="string">&quot;process_geo&quot;</span>)]
+#[metastructure(process_func = <span class="string">"process_geo"</span>)]
 </span><span class="kw">pub struct </span>Geo {
     <span class="doccomment">/// Two-letter country code (ISO 3166-1 alpha-2).
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, max_chars = <span class="string">&quot;summary&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, max_chars = <span class="number">102</span>, max_chars_allowance = <span class="number">1004</span>)]
     </span><span class="kw">pub </span>country_code: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Human readable city name.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, max_chars = <span class="string">&quot;summary&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, max_chars = <span class="number">1024</span>, max_chars_allowance = <span class="number">100</span>)]
     </span><span class="kw">pub </span>city: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Human readable subdivision name.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, max_chars = <span class="string">&quot;summary&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, max_chars = <span class="number">1024</span>, max_chars_allowance = <span class="number">100</span>)]
     </span><span class="kw">pub </span>subdivision: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Human readable region name or code.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, max_chars = <span class="string">&quot;summary&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, max_chars = <span class="number">1024</span>, max_chars_allowance = <span class="number">100</span>)]
     </span><span class="kw">pub </span>region: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Additional arbitrary fields for forwards compatibility.
@@ -256,54 +271,61 @@
 ///
 /// ```json
 /// {
-///   &quot;user&quot;: {
-///     &quot;id&quot;: &quot;unique_id&quot;,
-///     &quot;username&quot;: &quot;my_user&quot;,
-///     &quot;email&quot;: &quot;foo@example.com&quot;,
-///     &quot;ip_address&quot;: &quot;127.0.0.1&quot;,
-///     &quot;subscription&quot;: &quot;basic&quot;
+///   "user": {
+///     "id": "unique_id",
+///     "username": "my_user",
+///     "email": "foo@example.com",
+///     "ip_address": "127.0.0.1",
+///     "subscription": "basic"
 ///   }
 /// }
 /// ```
 </span><span class="attr">#[derive(Clone, Debug, Default, PartialEq, Empty, FromValue, IntoValue, ProcessValue)]
-#[cfg_attr(feature = <span class="string">&quot;jsonschema&quot;</span>, derive(JsonSchema))]
-#[metastructure(process_func = <span class="string">&quot;process_user&quot;</span>, value_type = <span class="string">&quot;User&quot;</span>)]
+#[metastructure(process_func = <span class="string">"process_user"</span>, value_type = <span class="string">"User"</span>)]
 </span><span class="kw">pub struct </span>User {
     <span class="doccomment">/// Unique identifier of the user.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, max_chars = <span class="string">&quot;enumlike&quot;</span>, skip_serialization = <span class="string">&quot;empty&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, max_chars = <span class="number">128</span>, skip_serialization = <span class="string">"empty"</span>)]
     </span><span class="kw">pub </span>id: Annotated&lt;LenientString&gt;,
 
     <span class="doccomment">/// Email address of the user.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, max_chars = <span class="string">&quot;email&quot;</span>, skip_serialization = <span class="string">&quot;empty&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, max_chars = <span class="number">75</span>, skip_serialization = <span class="string">"empty"</span>)]
     </span><span class="kw">pub </span>email: Annotated&lt;String&gt;,
 
-    <span class="doccomment">/// Remote IP address of the user. Defaults to &quot;{{auto}}&quot;.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, skip_serialization = <span class="string">&quot;empty&quot;</span>)]
+    <span class="doccomment">/// Remote IP address of the user. Defaults to "{{auto}}".
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, skip_serialization = <span class="string">"empty"</span>)]
     </span><span class="kw">pub </span>ip_address: Annotated&lt;IpAddr&gt;,
 
     <span class="doccomment">/// Username of the user.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, max_chars = <span class="string">&quot;enumlike&quot;</span>, skip_serialization = <span class="string">&quot;empty&quot;</span>)]
-    </span><span class="kw">pub </span>username: Annotated&lt;String&gt;,
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, max_chars = <span class="number">128</span>, skip_serialization = <span class="string">"empty"</span>)]
+    </span><span class="kw">pub </span>username: Annotated&lt;LenientString&gt;,
 
     <span class="doccomment">/// Human readable name of the user.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, max_chars = <span class="string">&quot;enumlike&quot;</span>, skip_serialization = <span class="string">&quot;empty&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, max_chars = <span class="number">128</span>, skip_serialization = <span class="string">"empty"</span>)]
     </span><span class="kw">pub </span>name: Annotated&lt;String&gt;,
 
+    <span class="doccomment">/// The user string representation as handled in Sentry.
+    ///
+    /// This field is computed by concatenating the name of specific fields of the `User`
+    /// struct with their value. For example, if `id` is set, `sentry_user` will be equal to
+    /// `"id:id-of-the-user".
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, skip_serialization = <span class="string">"empty"</span>)]
+    </span><span class="kw">pub </span>sentry_user: Annotated&lt;String&gt;,
+
     <span class="doccomment">/// Approximate geographical location of the end user or device.
-    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">&quot;empty&quot;</span>)]
+    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">"empty"</span>)]
     </span><span class="kw">pub </span>geo: Annotated&lt;Geo&gt;,
 
     <span class="doccomment">/// The user segment, for apps that divide users in user segments.
-    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">&quot;empty&quot;</span>)]
+    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">"empty"</span>)]
     </span><span class="kw">pub </span>segment: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Additional arbitrary fields, as stored in the database (and sometimes as sent by clients).
     /// All data from `self.other` should end up here after store normalization.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>, skip_serialization = <span class="string">&quot;empty&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, skip_serialization = <span class="string">"empty"</span>)]
     </span><span class="kw">pub </span>data: Annotated&lt;Object&lt;Value&gt;&gt;,
 
     <span class="doccomment">/// Additional arbitrary fields, as sent by clients.
-    </span><span class="attr">#[metastructure(additional_properties, pii = <span class="string">&quot;true&quot;</span>)]
+    </span><span class="attr">#[metastructure(additional_properties, pii = <span class="string">"true"</span>)]
     </span><span class="kw">pub </span>other: Object&lt;Value&gt;,
 }
 
@@ -316,23 +338,23 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_geo_roundtrip() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-  &quot;country_code&quot;: &quot;US&quot;,
-  &quot;city&quot;: &quot;San Francisco&quot;,
-  &quot;subdivision&quot;: &quot;California&quot;,
-  &quot;region&quot;: &quot;CA&quot;,
-  &quot;other&quot;: &quot;value&quot;
-}&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+  "country_code": "US",
+  "city": "San Francisco",
+  "subdivision": "California",
+  "region": "CA",
+  "other": "value"
+}"#</span>;
         <span class="kw">let </span>geo = Annotated::new(Geo {
-            country_code: Annotated::new(<span class="string">&quot;US&quot;</span>.to_string()),
-            city: Annotated::new(<span class="string">&quot;San Francisco&quot;</span>.to_string()),
-            subdivision: Annotated::new(<span class="string">&quot;California&quot;</span>.to_string()),
-            region: Annotated::new(<span class="string">&quot;CA&quot;</span>.to_string()),
+            country_code: Annotated::new(<span class="string">"US"</span>.to_string()),
+            city: Annotated::new(<span class="string">"San Francisco"</span>.to_string()),
+            subdivision: Annotated::new(<span class="string">"California"</span>.to_string()),
+            region: Annotated::new(<span class="string">"CA"</span>.to_string()),
             other: {
                 <span class="kw">let </span><span class="kw-2">mut </span>map = Map::new();
                 map.insert(
-                    <span class="string">&quot;other&quot;</span>.to_string(),
-                    Annotated::new(Value::String(<span class="string">&quot;value&quot;</span>.to_string())),
+                    <span class="string">"other"</span>.to_string(),
+                    Annotated::new(Value::String(<span class="string">"value"</span>.to_string())),
                 );
                 map
             },
@@ -344,7 +366,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_geo_default_values() {
-        <span class="kw">let </span>json = <span class="string">&quot;{}&quot;</span>;
+        <span class="kw">let </span>json = <span class="string">"{}"</span>;
         <span class="kw">let </span>geo = Annotated::new(Geo {
             country_code: Annotated::empty(),
             city: Annotated::empty(),
@@ -359,42 +381,43 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_user_roundtrip() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-  &quot;id&quot;: &quot;e4e24881-8238-4539-a32b-d3c3ecd40568&quot;,
-  &quot;email&quot;: &quot;mail@example.org&quot;,
-  &quot;ip_address&quot;: &quot;{{auto}}&quot;,
-  &quot;username&quot;: &quot;john_doe&quot;,
-  &quot;name&quot;: &quot;John Doe&quot;,
-  &quot;segment&quot;: &quot;vip&quot;,
-  &quot;data&quot;: {
-    &quot;data&quot;: &quot;value&quot;
+        <span class="kw">let </span>json = <span class="string">r#"{
+  "id": "e4e24881-8238-4539-a32b-d3c3ecd40568",
+  "email": "mail@example.org",
+  "ip_address": "{{auto}}",
+  "username": "john_doe",
+  "name": "John Doe",
+  "segment": "vip",
+  "data": {
+    "data": "value"
   },
-  &quot;other&quot;: &quot;value&quot;
-}&quot;#</span>;
+  "other": "value"
+}"#</span>;
         <span class="kw">let </span>user = Annotated::new(User {
-            id: Annotated::new(<span class="string">&quot;e4e24881-8238-4539-a32b-d3c3ecd40568&quot;</span>.to_string().into()),
-            email: Annotated::new(<span class="string">&quot;mail@example.org&quot;</span>.to_string()),
+            id: Annotated::new(<span class="string">"e4e24881-8238-4539-a32b-d3c3ecd40568"</span>.to_string().into()),
+            email: Annotated::new(<span class="string">"mail@example.org"</span>.to_string()),
             ip_address: Annotated::new(IpAddr::auto()),
-            name: Annotated::new(<span class="string">&quot;John Doe&quot;</span>.to_string()),
-            username: Annotated::new(<span class="string">&quot;john_doe&quot;</span>.to_string()),
+            name: Annotated::new(<span class="string">"John Doe"</span>.to_string()),
+            username: Annotated::new(LenientString(<span class="string">"john_doe"</span>.to_owned())),
             geo: Annotated::empty(),
-            segment: Annotated::new(<span class="string">&quot;vip&quot;</span>.to_string()),
+            segment: Annotated::new(<span class="string">"vip"</span>.to_string()),
             data: {
                 <span class="kw">let </span><span class="kw-2">mut </span>map = Object::new();
                 map.insert(
-                    <span class="string">&quot;data&quot;</span>.to_string(),
-                    Annotated::new(Value::String(<span class="string">&quot;value&quot;</span>.to_string())),
+                    <span class="string">"data"</span>.to_string(),
+                    Annotated::new(Value::String(<span class="string">"value"</span>.to_string())),
                 );
                 Annotated::new(map)
             },
             other: {
                 <span class="kw">let </span><span class="kw-2">mut </span>map = Object::new();
                 map.insert(
-                    <span class="string">&quot;other&quot;</span>.to_string(),
-                    Annotated::new(Value::String(<span class="string">&quot;value&quot;</span>.to_string())),
+                    <span class="string">"other"</span>.to_string(),
+                    Annotated::new(Value::String(<span class="string">"value"</span>.to_string())),
                 );
                 map
             },
+            ..Default::default()
         });
 
         <span class="macro">assert_eq!</span>(user, Annotated::from_json(json).unwrap());
@@ -403,10 +426,23 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_user_lenient_id() {
-        <span class="kw">let </span>input = <span class="string">r#&quot;{&quot;id&quot;:42}&quot;#</span>;
-        <span class="kw">let </span>output = <span class="string">r#&quot;{&quot;id&quot;:&quot;42&quot;}&quot;#</span>;
+        <span class="kw">let </span>input = <span class="string">r#"{"id":42}"#</span>;
+        <span class="kw">let </span>output = <span class="string">r#"{"id":"42"}"#</span>;
         <span class="kw">let </span>user = Annotated::new(User {
-            id: Annotated::new(<span class="string">&quot;42&quot;</span>.to_string().into()),
+            id: Annotated::new(<span class="string">"42"</span>.to_string().into()),
+            ..User::default()
+        });
+
+        <span class="macro">assert_eq!</span>(user, Annotated::from_json(input).unwrap());
+        <span class="macro">assert_eq!</span>(output, user.to_json().unwrap());
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_user_lenient_username() {
+        <span class="kw">let </span>input = <span class="string">r#"{"username":42}"#</span>;
+        <span class="kw">let </span>output = <span class="string">r#"{"username":"42"}"#</span>;
+        <span class="kw">let </span>user = Annotated::new(User {
+            username: Annotated::new(<span class="string">"42"</span>.to_string().into()),
             ..User::default()
         });
 
@@ -416,10 +452,10 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_user_invalid_id() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{&quot;id&quot;:[]}&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{"id":[]}"#</span>;
         <span class="kw">let </span>user = Annotated::new(User {
             id: Annotated::from_error(
-                Error::expected(<span class="string">&quot;a primitive value&quot;</span>),
+                Error::expected(<span class="string">"a primitive value"</span>),
                 <span class="prelude-val">Some</span>(Value::Array(<span class="macro">vec!</span>[])),
             ),
             ..User::default()
@@ -430,14 +466,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_explicit_none() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-  &quot;id&quot;: null
-}&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+  "id": null
+}"#</span>;
 
         <span class="kw">let </span>user = Annotated::new(User::default());
 
         <span class="macro">assert_eq!</span>(user, Annotated::from_json(json).unwrap());
-        <span class="macro">assert_eq!</span>(<span class="string">&quot;{}&quot;</span>, user.to_json_pretty().unwrap());
+        <span class="macro">assert_eq!</span>(<span class="string">"{}"</span>, user.to_json_pretty().unwrap());
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-filter/src/browser_extensions.rs`."><title>browser_extensions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_filter" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_filter/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-filter/src/browser_extensions.rs`."><title>browser_extensions.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_filter" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -290,17 +290,31 @@
 <a href="#290" id="290">290</a>
 <a href="#291" id="291">291</a>
 <a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Implements filtering for events caused by problematic browsers extensions.
 
 </span><span class="kw">use </span>once_cell::sync::Lazy;
 <span class="kw">use </span>regex::Regex;
-<span class="kw">use </span>relay_event_schema::protocol::{Event, Exception};
+<span class="kw">use </span>relay_event_schema::protocol::Exception;
 
-<span class="kw">use crate</span>::{FilterConfig, FilterStatKey};
+<span class="kw">use crate</span>::{FilterConfig, FilterStatKey, Filterable};
 
 <span class="kw">static </span>EXTENSION_EXC_VALUES: Lazy&lt;Regex&gt; = Lazy::new(|| {
     Regex::new(
-        <span class="string">r#&quot;(?ix)
+        <span class="string">r#"(?ix)
         # Random plugins/extensions
         top\.GLOBALS|
         # See: http://blog.errorception.com/2012/03/tale-of-unfindable-js-error.html
@@ -308,14 +322,14 @@
         canvas.contentDocument|
         MyApp_RemoveAllHighlights|
         http://tt\.epicplay\.com|
-        Can&#39;t\sfind\svariable:\sZiteReader|
+        Can't\sfind\svariable:\sZiteReader|
         jigsaw\sis\snot\sdefined|
         ComboSearch\sis\snot\sdefined|
         http://loading\.retry\.widdit\.com/|
         atomicFindClose|
         # Facebook borked
         fb_xd_fragment|
-        # ISP &quot;optimizing&quot; proxy - `Cache-Control: no-transform` seems to
+        # ISP "optimizing" proxy - `Cache-Control: no-transform` seems to
         # reduce this. (thanks @acdha)
         # See http://stackoverflow.com/questions/4113268
         bmi_SafeAddOnload|
@@ -326,7 +340,7 @@
         conduitPage|
         # Google Search app (iOS)
         # See: https://github.com/getsentry/raven-js/issues/756
-        null\sis\snot\san\sobject\s\(evaluating\s&#39;elt.parentNode&#39;\)|
+        null\sis\snot\san\sobject\s\(evaluating\s'elt.parentNode'\)|
         # Dragon Web Extension from Nuance Communications
         # See: https://forum.sentry.io/t/error-in-raven-js-plugin-setsuspendstate/481/
         plugin\.setSuspendState\sis\snot\sa\sfunction|
@@ -335,15 +349,23 @@
         webkit-masked-url:|
         # Firefox message when an extension tries to modify a no-longer-existing DOM node
         # See https://blog.mozilla.org/addons/2012/09/12/what-does-cant-access-dead-object-mean/
-        can&#39;t\saccess\sdead\sobject
-    &quot;#</span>,
+        can't\saccess\sdead\sobject|
+        # Cryptocurrency related extension errors solana|ethereum
+        # Googletag is also very similar, caused by adblockers
+        Cannot\sredefine\sproperty:\s(solana|ethereum|googletag)|
+        # Translation service errors in Chrome on iOS
+        undefined\sis\snot\san\sobject\s\(evaluating\s'a.L'\)|
+        # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Property_access_denied
+        # Usually caused by extensions that do stuff that isn't allowed
+        Permission\sdenied\sto\saccess\sproperty\s
+    "#</span>,
     )
-    .expect(<span class="string">&quot;Invalid browser extensions filter (Exec Vals) Regex&quot;</span>)
+    .expect(<span class="string">"Invalid browser extensions filter (Exec Vals) Regex"</span>)
 });
 
 <span class="kw">static </span>EXTENSION_EXC_SOURCES: Lazy&lt;Regex&gt; = Lazy::new(|| {
     Regex::new(
-        <span class="string">r&quot;(?ix)
+        <span class="string">r"(?ix)
         graph\.facebook\.com|                           # Facebook flakiness
         connect\.facebook\.net|                         # Facebook blocked
         eatdifferent\.com\.woopra-ns\.com|              # Woopra flakiness
@@ -356,25 +378,25 @@
         webappstoolbarba\.texthelp\.com/|               # Other
         metrics\.itunes\.apple\.com\.edgesuite\.net/|
         kaspersky-labs\.com                             # Kaspersky Protection browser extension
-    &quot;</span>,
+    "</span>,
     )
-    .expect(<span class="string">&quot;Invalid browser extensions filter (Exec Sources) Regex&quot;</span>)
+    .expect(<span class="string">"Invalid browser extensions filter (Exec Sources) Regex"</span>)
 });
 
 <span class="doccomment">/// Frames which do not have defined function, method or type name. Or frames which come from the
 /// native V8 code.
 ///
 /// These frames do not give us any information about the exception source and can be ignored.
-</span><span class="kw">const </span>ANONYMOUS_FRAMES: [<span class="kw-2">&amp;</span>str; <span class="number">2</span>] = [<span class="string">&quot;&lt;anonymous&gt;&quot;</span>, <span class="string">&quot;[native code]&quot;</span>];
+</span><span class="kw">const </span>ANONYMOUS_FRAMES: [<span class="kw-2">&amp;</span>str; <span class="number">2</span>] = [<span class="string">"&lt;anonymous&gt;"</span>, <span class="string">"[native code]"</span>];
 
 <span class="doccomment">/// Check if the event originates from known problematic browser extensions.
-</span><span class="kw">pub fn </span>matches(event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(ex_val) = get_exception_value(event) {
+</span><span class="kw">fn </span>matches&lt;F: Filterable&gt;(item: <span class="kw-2">&amp;</span>F) -&gt; bool {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(ex_val) = get_exception_value(item) {
         <span class="kw">if </span>EXTENSION_EXC_VALUES.is_match(ex_val) {
             <span class="kw">return </span><span class="bool-val">true</span>;
         }
     }
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(ex_source) = get_exception_source(event) {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(ex_source) = get_exception_source(item) {
         <span class="kw">if </span>EXTENSION_EXC_SOURCES.is_match(ex_source) {
             <span class="kw">return </span><span class="bool-val">true</span>;
         }
@@ -383,31 +405,31 @@
 </span>}
 
 <span class="doccomment">/// Filters events originating from known problematic browser extensions.
-</span><span class="kw">pub fn </span>should_filter(event: <span class="kw-2">&amp;</span>Event, config: <span class="kw-2">&amp;</span>FilterConfig) -&gt; <span class="prelude-ty">Result</span>&lt;(), FilterStatKey&gt; {
+</span><span class="kw">pub fn </span>should_filter&lt;F: Filterable&gt;(item: <span class="kw-2">&amp;</span>F, config: <span class="kw-2">&amp;</span>FilterConfig) -&gt; <span class="prelude-ty">Result</span>&lt;(), FilterStatKey&gt; {
     <span class="kw">if </span>!config.is_enabled {
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
-    <span class="kw">if </span>matches(event) {
+    <span class="kw">if </span>matches(item) {
         <span class="prelude-val">Err</span>(FilterStatKey::BrowserExtensions)
     } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">fn </span>get_first_exception(event: <span class="kw-2">&amp;</span>Event) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Exception&gt; {
-    <span class="kw">let </span>values = event.exceptions.value()<span class="question-mark">?</span>;
+<span class="kw">fn </span>get_first_exception&lt;F: Filterable&gt;(item: <span class="kw-2">&amp;</span>F) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Exception&gt; {
+    <span class="kw">let </span>values = item.exceptions()<span class="question-mark">?</span>;
     <span class="kw">let </span>exceptions = values.values.value()<span class="question-mark">?</span>;
     exceptions.first()<span class="question-mark">?</span>.value()
 }
 
-<span class="kw">fn </span>get_exception_value(event: <span class="kw-2">&amp;</span>Event) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
-    <span class="kw">let </span>exception = get_first_exception(event)<span class="question-mark">?</span>;
+<span class="kw">fn </span>get_exception_value&lt;F: Filterable&gt;(item: <span class="kw-2">&amp;</span>F) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
+    <span class="kw">let </span>exception = get_first_exception(item)<span class="question-mark">?</span>;
     <span class="prelude-val">Some</span>(exception.value.value()<span class="question-mark">?</span>.as_str())
 }
 
-<span class="kw">fn </span>get_exception_source(event: <span class="kw-2">&amp;</span>Event) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
-    <span class="kw">let </span>exception = get_first_exception(event)<span class="question-mark">?</span>;
+<span class="kw">fn </span>get_exception_source&lt;F: Filterable&gt;(item: <span class="kw-2">&amp;</span>F) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
+    <span class="kw">let </span>exception = get_first_exception(item)<span class="question-mark">?</span>;
     <span class="kw">let </span>frames = exception.stacktrace.value()<span class="question-mark">?</span>.frames.value()<span class="question-mark">?</span>;
     <span class="comment">// Iterate from the tail and get the first frame which is not anonymous.
     </span><span class="kw">for </span>f <span class="kw">in </span>frames.iter().rev() {
@@ -423,7 +445,7 @@
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use </span>relay_event_schema::protocol::{
-        Frame, JsonLenientString, RawStacktrace, Stacktrace, Values,
+        Event, Frame, JsonLenientString, RawStacktrace, Stacktrace, Values,
     };
     <span class="kw">use </span>relay_protocol::Annotated;
 
@@ -455,11 +477,11 @@
                         ..Frame::default()
                     }),
                     Annotated::new(Frame {
-                        abs_path: Annotated::new(<span class="string">&quot;&lt;anonymous&gt;&quot;</span>.into()),
+                        abs_path: Annotated::new(<span class="string">"&lt;anonymous&gt;"</span>.into()),
                         ..Frame::default()
                     }),
                     Annotated::new(Frame {
-                        abs_path: Annotated::new(<span class="string">&quot;&lt;anonymous&gt;&quot;</span>.into()),
+                        abs_path: Annotated::new(<span class="string">"&lt;anonymous&gt;"</span>.into()),
                         ..Frame::default()
                     }),
                 ]),
@@ -482,8 +504,8 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_dont_filter_when_disabled() {
         <span class="kw">let </span>events = [
-            get_event_with_exception_source(<span class="string">&quot;https://fscr.kaspersky-labs.com/B-9B72-7B7/main.js&quot;</span>),
-            get_event_with_exception_value(<span class="string">&quot;fb_xd_fragment&quot;</span>),
+            get_event_with_exception_source(<span class="string">"https://fscr.kaspersky-labs.com/B-9B72-7B7/main.js"</span>),
+            get_event_with_exception_value(<span class="string">"fb_xd_fragment"</span>),
         ];
 
         <span class="kw">for </span>event <span class="kw">in </span><span class="kw-2">&amp;</span>events {
@@ -491,7 +513,7 @@
             <span class="macro">assert_eq!</span>(
                 filter_result,
                 <span class="prelude-val">Ok</span>(()),
-                <span class="string">&quot;Event filtered although filter should have been disabled&quot;
+                <span class="string">"Event filtered although filter should have been disabled"
             </span>)
         }
     }
@@ -499,20 +521,20 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_filter_known_browser_extension_source() {
         <span class="kw">let </span>sources = [
-            <span class="string">&quot;https://graph.facebook.com/&quot;</span>,
-            <span class="string">&quot;https://connect.facebook.net/en_US/sdk.js&quot;</span>,
-            <span class="string">&quot;https://eatdifferent.com.woopra-ns.com/main.js&quot;</span>,
-            <span class="string">&quot;https://static.woopra.com/js/woopra.js&quot;</span>,
-            <span class="string">&quot;chrome-extension://my-extension/or/something&quot;</span>,
-            <span class="string">&quot;chrome://my-extension/or/something&quot;</span>,
-            <span class="string">&quot;moz-extension://my-extension/or/something&quot;</span>,
-            <span class="string">&quot;safari-extension://my-extension/or/something&quot;</span>,
-            <span class="string">&quot;safari-web-extension://my-extension/or/something&quot;</span>,
-            <span class="string">&quot;127.0.0.1:4001/isrunning&quot;</span>,
-            <span class="string">&quot;webappstoolbarba.texthelp.com/&quot;</span>,
-            <span class="string">&quot;http://metrics.itunes.apple.com.edgesuite.net/itunespreview/itunes/browser:firefo&quot;</span>,
-            <span class="string">&quot;https://fscr.kaspersky-labs.com/B-9B72-7B7/main.js&quot;</span>,
-            <span class="string">&quot;webkit-masked-url:&quot;</span>,
+            <span class="string">"https://graph.facebook.com/"</span>,
+            <span class="string">"https://connect.facebook.net/en_US/sdk.js"</span>,
+            <span class="string">"https://eatdifferent.com.woopra-ns.com/main.js"</span>,
+            <span class="string">"https://static.woopra.com/js/woopra.js"</span>,
+            <span class="string">"chrome-extension://my-extension/or/something"</span>,
+            <span class="string">"chrome://my-extension/or/something"</span>,
+            <span class="string">"moz-extension://my-extension/or/something"</span>,
+            <span class="string">"safari-extension://my-extension/or/something"</span>,
+            <span class="string">"safari-web-extension://my-extension/or/something"</span>,
+            <span class="string">"127.0.0.1:4001/isrunning"</span>,
+            <span class="string">"webappstoolbarba.texthelp.com/"</span>,
+            <span class="string">"http://metrics.itunes.apple.com.edgesuite.net/itunespreview/itunes/browser:firefo"</span>,
+            <span class="string">"https://fscr.kaspersky-labs.com/B-9B72-7B7/main.js"</span>,
+            <span class="string">"webkit-masked-url:"</span>,
         ];
 
         <span class="kw">for </span>source_name <span class="kw">in </span><span class="kw-2">&amp;</span>sources {
@@ -522,7 +544,7 @@
             <span class="macro">assert_ne!</span>(
                 filter_result,
                 <span class="prelude-val">Ok</span>(()),
-                <span class="string">&quot;Event filter not recognizing events with known source {source_name}&quot;
+                <span class="string">"Event filter not recognizing events with known source {source_name}"
             </span>)
         }
     }
@@ -530,28 +552,34 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_filter_known_browser_extension_values() {
         <span class="kw">let </span>exceptions = [
-            <span class="string">&quot;what does conduitPage even do&quot;</span>,
-            <span class="string">&quot;null is not an object (evaluating &#39;elt.parentNode&#39;)&quot;</span>,
-            <span class="string">&quot;some error on top.GLOBALS&quot;</span>,
-            <span class="string">&quot;biiig problem on originalCreateNotification&quot;</span>,
-            <span class="string">&quot;canvas.contentDocument&quot;</span>,
-            <span class="string">&quot;MyApp_RemoveAllHighlights&quot;</span>,
-            <span class="string">&quot;http://tt.epicplay.com/not/very/good&quot;</span>,
-            <span class="string">&quot;Can&#39;t find variable: ZiteReader, I wonder why?&quot;</span>,
-            <span class="string">&quot;jigsaw is not defined and I&#39;m not happy about it&quot;</span>,
-            <span class="string">&quot;ComboSearch is not defined&quot;</span>,
-            <span class="string">&quot;http://loading.retry.widdit.com/some/obscure/error&quot;</span>,
-            <span class="string">&quot;atomicFindClose has messed up&quot;</span>,
-            <span class="string">&quot;bad news, we have a fb_xd_fragment&quot;</span>,
-            <span class="string">&quot;oh no! we have a case of: bmi_SafeAddOnload, again !&quot;</span>,
-            <span class="string">&quot;watch out ! EBCallBackMessageReceived&quot;</span>,
-            <span class="string">&quot;error _gCrWeb&quot;</span>,
-            <span class="string">&quot;conduitPage&quot;</span>,
-            <span class="string">&quot;null is not an object (evaluating &#39;elt.parentNode&#39;)&quot;</span>,
-            <span class="string">&quot;plugin.setSuspendState is not a function&quot;</span>,
-            <span class="string">&quot;Extension context invalidated&quot;</span>,
-            <span class="string">&quot;useless error webkit-masked-url: please filter&quot;</span>,
-            <span class="string">&quot;TypeError: can&#39;t access dead object because dead stuff smells bad&quot;</span>,
+            <span class="string">"what does conduitPage even do"</span>,
+            <span class="string">"null is not an object (evaluating 'elt.parentNode')"</span>,
+            <span class="string">"some error on top.GLOBALS"</span>,
+            <span class="string">"biiig problem on originalCreateNotification"</span>,
+            <span class="string">"canvas.contentDocument"</span>,
+            <span class="string">"MyApp_RemoveAllHighlights"</span>,
+            <span class="string">"http://tt.epicplay.com/not/very/good"</span>,
+            <span class="string">"Can't find variable: ZiteReader, I wonder why?"</span>,
+            <span class="string">"jigsaw is not defined and I'm not happy about it"</span>,
+            <span class="string">"ComboSearch is not defined"</span>,
+            <span class="string">"http://loading.retry.widdit.com/some/obscure/error"</span>,
+            <span class="string">"atomicFindClose has messed up"</span>,
+            <span class="string">"bad news, we have a fb_xd_fragment"</span>,
+            <span class="string">"oh no! we have a case of: bmi_SafeAddOnload, again !"</span>,
+            <span class="string">"watch out ! EBCallBackMessageReceived"</span>,
+            <span class="string">"error _gCrWeb"</span>,
+            <span class="string">"conduitPage"</span>,
+            <span class="string">"null is not an object (evaluating 'elt.parentNode')"</span>,
+            <span class="string">"plugin.setSuspendState is not a function"</span>,
+            <span class="string">"Extension context invalidated"</span>,
+            <span class="string">"useless error webkit-masked-url: please filter"</span>,
+            <span class="string">"TypeError: can't access dead object because dead stuff smells bad"</span>,
+            <span class="string">"Cannot redefine property: solana"</span>,
+            <span class="string">"Cannot redefine property: ethereum"</span>,
+            <span class="string">"Cannot redefine property: googletag"</span>,
+            <span class="string">"undefined is not an object (evaluating 'a.L')"</span>,
+            <span class="string">"Permission denied to access property \"correspondingUseElement\""</span>,
+            <span class="string">"Permission denied to access property \"document\""</span>,
         ];
 
         <span class="kw">for </span>exc_value <span class="kw">in </span><span class="kw-2">&amp;</span>exceptions {
@@ -560,7 +588,7 @@
             <span class="macro">assert_ne!</span>(
                 filter_result,
                 <span class="prelude-val">Ok</span>(()),
-                <span class="string">&quot;Event filter not recognizing events with known value &#39;{exc_value}&#39;&quot;
+                <span class="string">"Event filter not recognizing events with known value '{exc_value}'"
             </span>)
         }
     }
@@ -568,8 +596,8 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_dont_filter_unkown_browser_extension() {
         <span class="kw">let </span>events = [
-            get_event_with_exception_source(<span class="string">&quot;https://some/resonable/source.js&quot;</span>),
-            get_event_with_exception_value(<span class="string">&quot;some perfectly reasonable value&quot;</span>),
+            get_event_with_exception_source(<span class="string">"https://some/resonable/source.js"</span>),
+            get_event_with_exception_value(<span class="string">"some perfectly reasonable value"</span>),
         ];
 
         <span class="kw">for </span>event <span class="kw">in </span><span class="kw-2">&amp;</span>events {
@@ -577,7 +605,7 @@
             <span class="macro">assert_eq!</span>(
                 filter_result,
                 <span class="prelude-val">Ok</span>(()),
-                <span class="string">&quot;Event filter although the source or value are ok &quot;
+                <span class="string">"Event filter although the source or value are ok "
             </span>)
         }
     }

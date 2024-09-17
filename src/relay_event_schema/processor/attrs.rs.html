@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-schema/src/processor/attrs.rs`."><title>attrs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_event_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_event_schema/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-schema/src/processor/attrs.rs`."><title>attrs.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_event_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -578,109 +578,6 @@
 <a href="#578" id="578">578</a>
 <a href="#579" id="579">579</a>
 <a href="#580" id="580">580</a>
-<a href="#581" id="581">581</a>
-<a href="#582" id="582">582</a>
-<a href="#583" id="583">583</a>
-<a href="#584" id="584">584</a>
-<a href="#585" id="585">585</a>
-<a href="#586" id="586">586</a>
-<a href="#587" id="587">587</a>
-<a href="#588" id="588">588</a>
-<a href="#589" id="589">589</a>
-<a href="#590" id="590">590</a>
-<a href="#591" id="591">591</a>
-<a href="#592" id="592">592</a>
-<a href="#593" id="593">593</a>
-<a href="#594" id="594">594</a>
-<a href="#595" id="595">595</a>
-<a href="#596" id="596">596</a>
-<a href="#597" id="597">597</a>
-<a href="#598" id="598">598</a>
-<a href="#599" id="599">599</a>
-<a href="#600" id="600">600</a>
-<a href="#601" id="601">601</a>
-<a href="#602" id="602">602</a>
-<a href="#603" id="603">603</a>
-<a href="#604" id="604">604</a>
-<a href="#605" id="605">605</a>
-<a href="#606" id="606">606</a>
-<a href="#607" id="607">607</a>
-<a href="#608" id="608">608</a>
-<a href="#609" id="609">609</a>
-<a href="#610" id="610">610</a>
-<a href="#611" id="611">611</a>
-<a href="#612" id="612">612</a>
-<a href="#613" id="613">613</a>
-<a href="#614" id="614">614</a>
-<a href="#615" id="615">615</a>
-<a href="#616" id="616">616</a>
-<a href="#617" id="617">617</a>
-<a href="#618" id="618">618</a>
-<a href="#619" id="619">619</a>
-<a href="#620" id="620">620</a>
-<a href="#621" id="621">621</a>
-<a href="#622" id="622">622</a>
-<a href="#623" id="623">623</a>
-<a href="#624" id="624">624</a>
-<a href="#625" id="625">625</a>
-<a href="#626" id="626">626</a>
-<a href="#627" id="627">627</a>
-<a href="#628" id="628">628</a>
-<a href="#629" id="629">629</a>
-<a href="#630" id="630">630</a>
-<a href="#631" id="631">631</a>
-<a href="#632" id="632">632</a>
-<a href="#633" id="633">633</a>
-<a href="#634" id="634">634</a>
-<a href="#635" id="635">635</a>
-<a href="#636" id="636">636</a>
-<a href="#637" id="637">637</a>
-<a href="#638" id="638">638</a>
-<a href="#639" id="639">639</a>
-<a href="#640" id="640">640</a>
-<a href="#641" id="641">641</a>
-<a href="#642" id="642">642</a>
-<a href="#643" id="643">643</a>
-<a href="#644" id="644">644</a>
-<a href="#645" id="645">645</a>
-<a href="#646" id="646">646</a>
-<a href="#647" id="647">647</a>
-<a href="#648" id="648">648</a>
-<a href="#649" id="649">649</a>
-<a href="#650" id="650">650</a>
-<a href="#651" id="651">651</a>
-<a href="#652" id="652">652</a>
-<a href="#653" id="653">653</a>
-<a href="#654" id="654">654</a>
-<a href="#655" id="655">655</a>
-<a href="#656" id="656">656</a>
-<a href="#657" id="657">657</a>
-<a href="#658" id="658">658</a>
-<a href="#659" id="659">659</a>
-<a href="#660" id="660">660</a>
-<a href="#661" id="661">661</a>
-<a href="#662" id="662">662</a>
-<a href="#663" id="663">663</a>
-<a href="#664" id="664">664</a>
-<a href="#665" id="665">665</a>
-<a href="#666" id="666">666</a>
-<a href="#667" id="667">667</a>
-<a href="#668" id="668">668</a>
-<a href="#669" id="669">669</a>
-<a href="#670" id="670">670</a>
-<a href="#671" id="671">671</a>
-<a href="#672" id="672">672</a>
-<a href="#673" id="673">673</a>
-<a href="#674" id="674">674</a>
-<a href="#675" id="675">675</a>
-<a href="#676" id="676">676</a>
-<a href="#677" id="677">677</a>
-<a href="#678" id="678">678</a>
-<a href="#679" id="679">679</a>
-<a href="#680" id="680">680</a>
-<a href="#681" id="681">681</a>
-<a href="#682" id="682">682</a>
-<a href="#683" id="683">683</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::ops::{Deref, RangeInclusive};
@@ -695,8 +592,8 @@
 </span><span class="kw">pub struct </span>UnknownValueTypeError;
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>UnknownValueTypeError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;unknown value type&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"unknown value type"</span>)
     }
 }
 
@@ -748,135 +645,31 @@
 }
 
 <span class="macro">relay_common::derive_fromstr_and_display!</span>(ValueType, UnknownValueTypeError, {
-    ValueType::String =&gt; <span class="string">&quot;string&quot;</span>,
-    ValueType::Binary =&gt; <span class="string">&quot;binary&quot;</span>,
-    ValueType::Number =&gt; <span class="string">&quot;number&quot;</span>,
-    ValueType::Boolean =&gt; <span class="string">&quot;boolean&quot; </span>| <span class="string">&quot;bool&quot;</span>,
-    ValueType::DateTime =&gt; <span class="string">&quot;datetime&quot;</span>,
-    ValueType::Array =&gt; <span class="string">&quot;array&quot; </span>| <span class="string">&quot;list&quot;</span>,
-    ValueType::Object =&gt; <span class="string">&quot;object&quot;</span>,
-    ValueType::Event =&gt; <span class="string">&quot;event&quot;</span>,
-    ValueType::Attachments =&gt; <span class="string">&quot;attachments&quot;</span>,
-    ValueType::Replay =&gt; <span class="string">&quot;replay&quot;</span>,
-    ValueType::Exception =&gt; <span class="string">&quot;error&quot; </span>| <span class="string">&quot;exception&quot;</span>,
-    ValueType::Stacktrace =&gt; <span class="string">&quot;stack&quot; </span>| <span class="string">&quot;stacktrace&quot;</span>,
-    ValueType::Frame =&gt; <span class="string">&quot;frame&quot;</span>,
-    ValueType::Request =&gt; <span class="string">&quot;http&quot; </span>| <span class="string">&quot;request&quot;</span>,
-    ValueType::User =&gt; <span class="string">&quot;user&quot;</span>,
-    ValueType::LogEntry =&gt; <span class="string">&quot;logentry&quot;</span>,
-    ValueType::Message =&gt; <span class="string">&quot;message&quot;</span>,
-    ValueType::Thread =&gt; <span class="string">&quot;thread&quot;</span>,
-    ValueType::Breadcrumb =&gt; <span class="string">&quot;breadcrumb&quot;</span>,
-    ValueType::Span =&gt; <span class="string">&quot;span&quot;</span>,
-    ValueType::ClientSdkInfo =&gt; <span class="string">&quot;sdk&quot;</span>,
-    ValueType::Minidump =&gt; <span class="string">&quot;minidump&quot;</span>,
-    ValueType::HeapMemory =&gt; <span class="string">&quot;heap_memory&quot;</span>,
-    ValueType::StackMemory =&gt; <span class="string">&quot;stack_memory&quot;</span>,
+    ValueType::String =&gt; <span class="string">"string"</span>,
+    ValueType::Binary =&gt; <span class="string">"binary"</span>,
+    ValueType::Number =&gt; <span class="string">"number"</span>,
+    ValueType::Boolean =&gt; <span class="string">"boolean" </span>| <span class="string">"bool"</span>,
+    ValueType::DateTime =&gt; <span class="string">"datetime"</span>,
+    ValueType::Array =&gt; <span class="string">"array" </span>| <span class="string">"list"</span>,
+    ValueType::Object =&gt; <span class="string">"object"</span>,
+    ValueType::Event =&gt; <span class="string">"event"</span>,
+    ValueType::Attachments =&gt; <span class="string">"attachments"</span>,
+    ValueType::Replay =&gt; <span class="string">"replay"</span>,
+    ValueType::Exception =&gt; <span class="string">"error" </span>| <span class="string">"exception"</span>,
+    ValueType::Stacktrace =&gt; <span class="string">"stack" </span>| <span class="string">"stacktrace"</span>,
+    ValueType::Frame =&gt; <span class="string">"frame"</span>,
+    ValueType::Request =&gt; <span class="string">"http" </span>| <span class="string">"request"</span>,
+    ValueType::User =&gt; <span class="string">"user"</span>,
+    ValueType::LogEntry =&gt; <span class="string">"logentry"</span>,
+    ValueType::Message =&gt; <span class="string">"message"</span>,
+    ValueType::Thread =&gt; <span class="string">"thread"</span>,
+    ValueType::Breadcrumb =&gt; <span class="string">"breadcrumb"</span>,
+    ValueType::Span =&gt; <span class="string">"span"</span>,
+    ValueType::ClientSdkInfo =&gt; <span class="string">"sdk"</span>,
+    ValueType::Minidump =&gt; <span class="string">"minidump"</span>,
+    ValueType::HeapMemory =&gt; <span class="string">"heap_memory"</span>,
+    ValueType::StackMemory =&gt; <span class="string">"stack_memory"</span>,
 });
-
-<span class="doccomment">/// The maximum length of a field.
-</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Hash)]
-</span><span class="kw">pub enum </span>MaxChars {
-    Hash,
-    EnumLike,
-    Summary,
-    Message,
-    Symbol,
-    Path,
-    ShortPath,
-    Logger,
-    Email,
-    Culprit,
-    TagKey,
-    TagValue,
-    Environment,
-    Distribution,
-    Hard(usize),
-    Soft(usize),
-}
-
-<span class="kw">impl </span>MaxChars {
-    <span class="doccomment">/// The cap in number of unicode characters.
-    </span><span class="kw">pub fn </span>limit(<span class="self">self</span>) -&gt; usize {
-        <span class="kw">match </span><span class="self">self </span>{
-            MaxChars::Hash =&gt; <span class="number">128</span>,
-            MaxChars::EnumLike =&gt; <span class="number">128</span>,
-            MaxChars::Summary =&gt; <span class="number">1024</span>,
-            MaxChars::Message =&gt; <span class="number">8192</span>,
-            MaxChars::Symbol =&gt; <span class="number">256</span>,
-            MaxChars::Path =&gt; <span class="number">256</span>,
-            MaxChars::ShortPath =&gt; <span class="number">128</span>,
-            <span class="comment">// These limits below were initially derived from Sentry&#39;s original implementation in
-            // Python. Before changing any of these limits, check if the values are inserted into
-            // the database by the Sentry processing pipeline, and if there are limits on the
-            // database column.
-            </span>MaxChars::Logger =&gt; <span class="number">64</span>,       <span class="comment">// src/sentry/constants.py:???
-            </span>MaxChars::Email =&gt; <span class="number">75</span>,        <span class="comment">// src/sentry/constants.py:MAX_EMAIL_FIELD_LENGTH
-            </span>MaxChars::Culprit =&gt; <span class="number">200</span>,     <span class="comment">// src/sentry/constants.py:MAX_CULPRIT_LENGTH
-            </span>MaxChars::TagKey =&gt; <span class="number">200</span>,      <span class="comment">// src/sentry/constants.py:MAX_TAG_KEY_LENGTH
-            </span>MaxChars::TagValue =&gt; <span class="number">200</span>,    <span class="comment">// src/sentry/constants.py:MAX_TAG_VALUE_LENGTH
-            </span>MaxChars::Environment =&gt; <span class="number">64</span>,  <span class="comment">// src/sentry/constants.py:ENVIRONMENT_NAME_MAX_LENGTH
-            </span>MaxChars::Distribution =&gt; <span class="number">64</span>, <span class="comment">// src/sentry/models/distribution.py
-            </span>MaxChars::Soft(len) | MaxChars::Hard(len) =&gt; len,
-        }
-    }
-
-    <span class="doccomment">/// The number of extra characters permitted.
-    </span><span class="kw">pub fn </span>allowance(<span class="self">self</span>) -&gt; usize {
-        <span class="kw">match </span><span class="self">self </span>{
-            MaxChars::Hash =&gt; <span class="number">0</span>,
-            MaxChars::EnumLike =&gt; <span class="number">0</span>,
-            MaxChars::Summary =&gt; <span class="number">100</span>,
-            MaxChars::Message =&gt; <span class="number">200</span>,
-            MaxChars::Symbol =&gt; <span class="number">20</span>,
-            MaxChars::Path =&gt; <span class="number">40</span>,
-            MaxChars::ShortPath =&gt; <span class="number">20</span>,
-            MaxChars::Logger =&gt; <span class="number">0</span>,
-            MaxChars::Email =&gt; <span class="number">0</span>,
-            MaxChars::Culprit =&gt; <span class="number">0</span>,
-            MaxChars::TagKey =&gt; <span class="number">0</span>,
-            MaxChars::TagValue =&gt; <span class="number">0</span>,
-            MaxChars::Environment =&gt; <span class="number">0</span>,
-            MaxChars::Distribution =&gt; <span class="number">0</span>,
-            MaxChars::Soft(<span class="kw">_</span>) =&gt; <span class="number">10</span>,
-            MaxChars::Hard(<span class="kw">_</span>) =&gt; <span class="number">0</span>,
-        }
-    }
-}
-
-<span class="doccomment">/// The maximum size of a databag.
-</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Hash)]
-</span><span class="kw">pub enum </span>BagSize {
-    Small,
-    Medium,
-    Large,
-    Larger,
-    Massive,
-}
-
-<span class="kw">impl </span>BagSize {
-    <span class="doccomment">/// Maximum depth of the structure.
-    </span><span class="kw">pub fn </span>max_depth(<span class="self">self</span>) -&gt; usize {
-        <span class="kw">match </span><span class="self">self </span>{
-            BagSize::Small =&gt; <span class="number">3</span>,
-            BagSize::Medium =&gt; <span class="number">5</span>,
-            BagSize::Large =&gt; <span class="number">7</span>,
-            BagSize::Larger =&gt; <span class="number">7</span>,
-            BagSize::Massive =&gt; <span class="number">7</span>,
-        }
-    }
-
-    <span class="doccomment">/// Maximum estimated JSON bytes.
-    </span><span class="kw">pub fn </span>max_size(<span class="self">self</span>) -&gt; usize {
-        <span class="kw">match </span><span class="self">self </span>{
-            BagSize::Small =&gt; <span class="number">1024</span>,
-            BagSize::Medium =&gt; <span class="number">2048</span>,
-            BagSize::Large =&gt; <span class="number">8192</span>,
-            BagSize::Larger =&gt; <span class="number">16384</span>,
-            BagSize::Massive =&gt; <span class="number">262_144</span>,
-        }
-    }
-}
 
 <span class="doccomment">/// Whether an attribute should be PII-strippable/should be subject to datascrubbers
 </span><span class="attr">#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
@@ -894,7 +687,7 @@
 </span><span class="attr">#[derive(Debug, Clone, Copy)]
 </span><span class="kw">pub struct </span>FieldAttrs {
     <span class="doccomment">/// Optionally the name of the field.
-    </span><span class="kw">pub </span>name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;,
+    </span><span class="kw">pub </span>name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;,
     <span class="doccomment">/// If the field is required.
     </span><span class="kw">pub </span>required: bool,
     <span class="doccomment">/// If the field should be non-empty.
@@ -904,33 +697,39 @@
     <span class="doccomment">/// A set of allowed or denied character ranges for this string.
     </span><span class="kw">pub </span>characters: <span class="prelude-ty">Option</span>&lt;CharacterSet&gt;,
     <span class="doccomment">/// The maximum char length of this field.
-    </span><span class="kw">pub </span>max_chars: <span class="prelude-ty">Option</span>&lt;MaxChars&gt;,
-    <span class="doccomment">/// The maximum bag size of this field.
-    </span><span class="kw">pub </span>bag_size: <span class="prelude-ty">Option</span>&lt;BagSize&gt;,
+    </span><span class="kw">pub </span>max_chars: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    <span class="doccomment">/// The extra char length allowance on top of max_chars.
+    </span><span class="kw">pub </span>max_chars_allowance: usize,
+    <span class="doccomment">/// The maximum depth of this field.
+    </span><span class="kw">pub </span>max_depth: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    <span class="doccomment">/// The maximum number of bytes of this field.
+    </span><span class="kw">pub </span>max_bytes: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// The type of PII on the field.
     </span><span class="kw">pub </span>pii: Pii,
     <span class="doccomment">/// Whether additional properties should be retained during normalization.
     </span><span class="kw">pub </span>retain: bool,
+    <span class="doccomment">/// Whether the trimming processor is allowed to shorten or drop this field.
+    </span><span class="kw">pub </span>trim: bool,
 }
 
 <span class="doccomment">/// A set of characters allowed or denied for a (string) field.
 ///
-/// Note that this field is generated in the derive, it can&#39;t be constructed easily in tests.
+/// Note that this field is generated in the derive, it can't be constructed easily in tests.
 </span><span class="attr">#[derive(Clone, Copy)]
 </span><span class="kw">pub struct </span>CharacterSet {
     <span class="doccomment">/// Generated in derive for performance. Can be left out when set is created manually.
     </span><span class="kw">pub </span>char_is_valid: <span class="kw">fn</span>(char) -&gt; bool,
     <span class="doccomment">/// A set of ranges that are allowed/denied within the character set
-    </span><span class="kw">pub </span>ranges: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[RangeInclusive&lt;char&gt;],
+    </span><span class="kw">pub </span>ranges: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[RangeInclusive&lt;char&gt;],
     <span class="doccomment">/// Whether the character set is inverted
     </span><span class="kw">pub </span>is_negative: bool,
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>CharacterSet {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;CharacterSet&quot;</span>)
-            .field(<span class="string">&quot;ranges&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.ranges)
-            .field(<span class="string">&quot;is_negative&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_negative)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"CharacterSet"</span>)
+            .field(<span class="string">"ranges"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.ranges)
+            .field(<span class="string">"is_negative"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.is_negative)
             .finish()
     }
 }
@@ -945,9 +744,12 @@
             trim_whitespace: <span class="bool-val">false</span>,
             characters: <span class="prelude-val">None</span>,
             max_chars: <span class="prelude-val">None</span>,
-            bag_size: <span class="prelude-val">None</span>,
+            max_chars_allowance: <span class="number">0</span>,
+            max_depth: <span class="prelude-val">None</span>,
+            max_bytes: <span class="prelude-val">None</span>,
             pii: Pii::False,
             retain: <span class="bool-val">false</span>,
+            trim: <span class="bool-val">true</span>,
         }
     }
 
@@ -959,8 +761,8 @@
 
     <span class="doccomment">/// Sets whether this field can have an empty value.
     ///
-    /// This is distinct from `required`. An empty string (`&quot;&quot;`) passes the &quot;required&quot; check but not the
-    /// &quot;nonempty&quot; one.
+    /// This is distinct from `required`. An empty string (`""`) passes the "required" check but not the
+    /// "nonempty" one.
     </span><span class="kw">pub const fn </span>nonempty(<span class="kw-2">mut </span><span class="self">self</span>, nonempty: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.nonempty = nonempty;
         <span class="self">self
@@ -979,16 +781,8 @@
     </span>}
 
     <span class="doccomment">/// Sets the maximum number of characters allowed in the field.
-    </span><span class="kw">pub const fn </span>max_chars(<span class="kw-2">mut </span><span class="self">self</span>, max_chars: MaxChars) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub const fn </span>max_chars(<span class="kw-2">mut </span><span class="self">self</span>, max_chars: usize) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.max_chars = <span class="prelude-val">Some</span>(max_chars);
-        <span class="self">self
-    </span>}
-
-    <span class="doccomment">/// Sets the maximum size of all children in this field.
-    ///
-    /// This applies particularly to objects and arrays, but also to structures.
-    </span><span class="kw">pub const fn </span>bag_size(<span class="kw-2">mut </span><span class="self">self</span>, bag_size: BagSize) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.bag_size = <span class="prelude-val">Some</span>(bag_size);
         <span class="self">self
     </span>}
 
@@ -1010,19 +804,19 @@
 }
 
 <span class="attr">#[derive(Debug, Clone, Eq, Ord, PartialOrd)]
-</span><span class="kw">enum </span>PathItem&lt;<span class="lifetime">&#39;a</span>&gt; {
-    StaticKey(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
+</span><span class="kw">enum </span>PathItem&lt;<span class="lifetime">'a</span>&gt; {
+    StaticKey(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str),
     OwnedKey(String),
     Index(usize),
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; PartialEq <span class="kw">for </span>PathItem&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>PathItem&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; bool {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; PartialEq <span class="kw">for </span>PathItem&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>PathItem&lt;<span class="lifetime">'a</span>&gt;) -&gt; bool {
         <span class="self">self</span>.key() == other.key() &amp;&amp; <span class="self">self</span>.index() == other.index()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; PathItem&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; PathItem&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Returns the key if there is one
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
@@ -1043,12 +837,12 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; fmt::Display <span class="kw">for </span>PathItem&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; fmt::Display <span class="kw">for </span>PathItem&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
             PathItem::StaticKey(s) =&gt; f.pad(s),
             PathItem::OwnedKey(s) =&gt; f.pad(s.as_str()),
-            PathItem::Index(val) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;{val}&quot;</span>),
+            PathItem::Index(val) =&gt; <span class="macro">write!</span>(f, <span class="string">"{val}"</span>),
         }
     }
 }
@@ -1059,16 +853,16 @@
 /// cannot be computed, for example
 ///
 /// ```rust,ignore
-/// struct Foo&lt;&#39;a&gt;(Cow&lt;&#39;a, Foo&lt;&#39;a&gt;&gt;); // will not compile
-/// struct Bar&lt;&#39;a&gt;(BoxCow&lt;&#39;a, Bar&lt;&#39;a&gt;&gt;); // will compile
+/// struct Foo&lt;'a&gt;(Cow&lt;'a, Foo&lt;'a&gt;&gt;); // will not compile
+/// struct Bar&lt;'a&gt;(BoxCow&lt;'a, Bar&lt;'a&gt;&gt;); // will compile
 /// ```
 </span><span class="attr">#[derive(Debug, Clone)]
-</span><span class="kw">enum </span>BoxCow&lt;<span class="lifetime">&#39;a</span>, T&gt; {
-    Borrowed(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T),
+</span><span class="kw">enum </span>BoxCow&lt;<span class="lifetime">'a</span>, T&gt; {
+    Borrowed(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T),
     Owned(Box&lt;T&gt;),
 }
 
-<span class="kw">impl</span>&lt;T&gt; Deref <span class="kw">for </span>BoxCow&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T&gt; Deref <span class="kw">for </span>BoxCow&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
@@ -1079,24 +873,24 @@
     }
 }
 
-<span class="doccomment">/// An event&#39;s processing state.
+<span class="doccomment">/// An event's processing state.
 ///
 /// The processing state describes an item in an event which is being processed, an example
 /// of processing might be scrubbing the event for PII.  The processing state itself
-/// describes the current item and it&#39;s parent, which allows you to follow all the items up
+/// describes the current item and it's parent, which allows you to follow all the items up
 /// to the root item.  You can think of processing an event as a visitor pattern visiting
 /// all items in the event and the processing state is a stack describing the currently
-/// visited item and all it&#39;s parents.
+/// visited item and all it's parents.
 </span><span class="attr">#[derive(Debug, Clone)]
-</span><span class="kw">pub struct </span>ProcessingState&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>ProcessingState&lt;<span class="lifetime">'a</span>&gt; {
     <span class="comment">// In event scrubbing, every state holds a reference to its parent.
     // In Replay scrubbing, we do not call `process_*` recursively,
     // but instead hold a single `ProcessingState` that represents the current item.
     // This item owns its parent (plus ancestors) exclusively, which is why we use `BoxCow` here
     // rather than `Rc` / `Arc`.
-    </span>parent: <span class="prelude-ty">Option</span>&lt;BoxCow&lt;<span class="lifetime">&#39;a</span>, ProcessingState&lt;<span class="lifetime">&#39;a</span>&gt;&gt;&gt;,
-    path_item: <span class="prelude-ty">Option</span>&lt;PathItem&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
-    attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, FieldAttrs&gt;&gt;,
+    </span>parent: <span class="prelude-ty">Option</span>&lt;BoxCow&lt;<span class="lifetime">'a</span>, ProcessingState&lt;<span class="lifetime">'a</span>&gt;&gt;&gt;,
+    path_item: <span class="prelude-ty">Option</span>&lt;PathItem&lt;<span class="lifetime">'a</span>&gt;&gt;,
+    attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, FieldAttrs&gt;&gt;,
     value_type: EnumSet&lt;ValueType&gt;,
     depth: usize,
 }
@@ -1109,17 +903,17 @@
     depth: <span class="number">0</span>,
 };
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ProcessingState&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ProcessingState&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Returns the root processing state.
-    </span><span class="kw">pub fn </span>root() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ProcessingState&lt;<span class="lifetime">&#39;static</span>&gt; {
+    </span><span class="kw">pub fn </span>root() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ProcessingState&lt;<span class="lifetime">'static</span>&gt; {
         <span class="kw-2">&amp;</span>ROOT_STATE
     }
 
     <span class="doccomment">/// Creates a new root state.
     </span><span class="kw">pub fn </span>new_root(
-        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;static</span>, FieldAttrs&gt;&gt;,
+        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'static</span>, FieldAttrs&gt;&gt;,
         value_type: <span class="kw">impl </span>IntoIterator&lt;Item = ValueType&gt;,
-    ) -&gt; ProcessingState&lt;<span class="lifetime">&#39;static</span>&gt; {
+    ) -&gt; ProcessingState&lt;<span class="lifetime">'static</span>&gt; {
         ProcessingState {
             parent: <span class="prelude-val">None</span>,
             path_item: <span class="prelude-val">None</span>,
@@ -1131,9 +925,9 @@
 
     <span class="doccomment">/// Derives a processing state by entering a static key.
     </span><span class="kw">pub fn </span>enter_static(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        key: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;static</span>, FieldAttrs&gt;&gt;,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'static</span>, FieldAttrs&gt;&gt;,
         value_type: <span class="kw">impl </span>IntoIterator&lt;Item = ValueType&gt;,
     ) -&gt; <span class="self">Self </span>{
         ProcessingState {
@@ -1147,9 +941,9 @@
 
     <span class="doccomment">/// Derives a processing state by entering a borrowed key.
     </span><span class="kw">pub fn </span>enter_borrowed(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        key: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
-        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, FieldAttrs&gt;&gt;,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        key: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
+        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, FieldAttrs&gt;&gt;,
         value_type: <span class="kw">impl </span>IntoIterator&lt;Item = ValueType&gt;,
     ) -&gt; <span class="self">Self </span>{
         ProcessingState {
@@ -1167,7 +961,7 @@
     </span><span class="kw">pub fn </span>enter_owned(
         <span class="self">self</span>,
         key: String,
-        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, FieldAttrs&gt;&gt;,
+        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, FieldAttrs&gt;&gt;,
         value_type: <span class="kw">impl </span>IntoIterator&lt;Item = ValueType&gt;,
     ) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>depth = <span class="self">self</span>.depth + <span class="number">1</span>;
@@ -1182,9 +976,9 @@
 
     <span class="doccomment">/// Derives a processing state by entering an index.
     </span><span class="kw">pub fn </span>enter_index(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
         idx: usize,
-        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, FieldAttrs&gt;&gt;,
+        attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, FieldAttrs&gt;&gt;,
         value_type: <span class="kw">impl </span>IntoIterator&lt;Item = ValueType&gt;,
     ) -&gt; <span class="self">Self </span>{
         ProcessingState {
@@ -1197,7 +991,7 @@
     }
 
     <span class="doccomment">/// Derives a processing state without adding a path segment. Useful in newtype structs.
-    </span><span class="kw">pub fn </span>enter_nothing(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>, attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, FieldAttrs&gt;&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>enter_nothing(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>, attrs: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, FieldAttrs&gt;&gt;) -&gt; <span class="self">Self </span>{
         ProcessingState {
             attrs,
             path_item: <span class="prelude-val">None</span>,
@@ -1207,7 +1001,7 @@
     }
 
     <span class="doccomment">/// Returns the path in the processing state.
-    </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Path&lt;<span class="lifetime">&#39;a</span>&gt; {
+    </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; Path&lt;<span class="lifetime">'a</span>&gt; {
         Path(<span class="self">self</span>)
     }
 
@@ -1224,7 +1018,7 @@
     }
 
     <span class="doccomment">/// Derives the attrs for recursion.
-    </span><span class="kw">pub fn </span>inner_attrs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;_</span>, FieldAttrs&gt;&gt; {
+    </span><span class="kw">pub fn </span>inner_attrs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'_</span>, FieldAttrs&gt;&gt; {
         <span class="kw">match </span><span class="self">self</span>.attrs().pii {
             Pii::True =&gt; <span class="prelude-val">Some</span>(Cow::Borrowed(<span class="kw-2">&amp;</span>PII_TRUE_FIELD_ATTRS)),
             Pii::False =&gt; <span class="prelude-val">None</span>,
@@ -1236,7 +1030,7 @@
     ///
     /// This starts at the top of the stack of processing states and ends at the root.  Thus
     /// the first item returned is the currently visited leaf of the event structure.
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; ProcessingStateIter&lt;<span class="lifetime">&#39;a</span>&gt; {
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; ProcessingStateIter&lt;<span class="lifetime">'a</span>&gt; {
         ProcessingStateIter {
             state: <span class="prelude-val">Some</span>(<span class="self">self</span>),
             size: <span class="self">self</span>.depth,
@@ -1256,14 +1050,14 @@
     }
 
     <span class="doccomment">/// Return the depth (~ indentation level) of the currently processed value.
-    </span><span class="kw">pub fn </span>depth(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; usize {
+    </span><span class="kw">pub fn </span>depth(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; usize {
         <span class="self">self</span>.depth
     }
 
     <span class="doccomment">/// Return whether the depth changed between parent and self.
     ///
     /// This is `false` when we entered a newtype struct.
-    </span><span class="kw">pub fn </span>entered_anything(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">pub fn </span>entered_anything(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>) -&gt; bool {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(parent) = <span class="kw-2">&amp;</span><span class="self">self</span>.parent {
             parent.depth() != <span class="self">self</span>.depth()
         } <span class="kw">else </span>{
@@ -1271,10 +1065,10 @@
         </span>}
     }
 
-    <span class="doccomment">/// Returns the last path item if there is one. Skips over &quot;dummy&quot; path segments that exist
+    <span class="doccomment">/// Returns the last path item if there is one. Skips over "dummy" path segments that exist
     /// because of newtypes.
     </span><span class="attr">#[inline]
-    </span><span class="kw">fn </span>path_item(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PathItem&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    </span><span class="kw">fn </span>path_item(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PathItem&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="kw">for </span>state <span class="kw">in </span><span class="self">self</span>.iter() {
             <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>path_item) = state.path_item {
                 <span class="kw">return </span><span class="prelude-val">Some</span>(path_item);
@@ -1284,13 +1078,13 @@
     </span>}
 }
 
-<span class="kw">pub struct </span>ProcessingStateIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    state: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ProcessingState&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+<span class="kw">pub struct </span>ProcessingStateIter&lt;<span class="lifetime">'a</span>&gt; {
+    state: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>ProcessingState&lt;<span class="lifetime">'a</span>&gt;&gt;,
     size: usize,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>ProcessingStateIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ProcessingState&lt;<span class="lifetime">&#39;a</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>ProcessingStateIter&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>ProcessingState&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">let </span>current = <span class="self">self</span>.state<span class="question-mark">?</span>;
@@ -1303,9 +1097,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ExactSizeIterator <span class="kw">for </span>ProcessingStateIter&lt;<span class="lifetime">&#39;a</span>&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ExactSizeIterator <span class="kw">for </span>ProcessingStateIter&lt;<span class="lifetime">'a</span>&gt; {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Default <span class="kw">for </span>ProcessingState&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Default <span class="kw">for </span>ProcessingState&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         ProcessingState::root().clone()
     }
@@ -1315,9 +1109,9 @@
 ///
 /// This is a view of a [`ProcessingState`] which treats the stack of states as a path.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>Path&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ProcessingState&lt;<span class="lifetime">&#39;a</span>&gt;);
+</span><span class="kw">pub struct </span>Path&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>ProcessingState&lt;<span class="lifetime">'a</span>&gt;);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Path&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Path&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Returns the current key if there is one
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
@@ -1341,13 +1135,13 @@
     }
 
     <span class="doccomment">/// Iterates through the states in this path.
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ProcessingStateIter&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ProcessingStateIter&lt;<span class="lifetime">'_</span>&gt; {
         <span class="self">self</span>.<span class="number">0</span>.iter()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; fmt::Display <span class="kw">for </span>Path&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; fmt::Display <span class="kw">for </span>Path&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">let </span><span class="kw-2">mut </span>items = Vec::with_capacity(<span class="self">self</span>.<span class="number">0</span>.depth);
         <span class="kw">for </span>state <span class="kw">in </span><span class="self">self</span>.<span class="number">0</span>.iter() {
             <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>path_item) = state.path_item {
@@ -1357,9 +1151,9 @@
 
         <span class="kw">for </span>(idx, item) <span class="kw">in </span>items.into_iter().rev().enumerate() {
             <span class="kw">if </span>idx &gt; <span class="number">0 </span>{
-                <span class="macro">write!</span>(f, <span class="string">&quot;.&quot;</span>)<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(f, <span class="string">"."</span>)<span class="question-mark">?</span>;
             }
-            <span class="macro">write!</span>(f, <span class="string">&quot;{item}&quot;</span>)<span class="question-mark">?</span>;
+            <span class="macro">write!</span>(f, <span class="string">"{item}"</span>)<span class="question-mark">?</span>;
         }
         <span class="prelude-val">Ok</span>(())
     }

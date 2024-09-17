@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-normalization/src/replay.rs`."><title>replay.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_event_normalization" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_event_normalization/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-normalization/src/replay.rs`."><title>replay.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_event_normalization" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -374,14 +374,109 @@
 <a href="#374" id="374">374</a>
 <a href="#375" id="375">375</a>
 <a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Validation and normalization of [`Replay`] events.
 
 </span><span class="kw">use </span>std::net::IpAddr <span class="kw">as </span>StdIpAddr;
 
+<span class="kw">use </span>relay_event_schema::processor::{<span class="self">self</span>, ProcessingState, Processor};
 <span class="kw">use </span>relay_event_schema::protocol::{Contexts, IpAddr, Replay};
 <span class="kw">use </span>relay_protocol::Annotated;
 
 <span class="kw">use </span><span class="kw">crate</span>::normalize::user_agent;
+<span class="kw">use </span><span class="kw">crate</span>::trimming;
 <span class="kw">use </span><span class="kw">crate</span>::user_agent::RawUserAgentInfo;
 
 <span class="doccomment">/// Replay validation or normalization error.
@@ -390,23 +485,23 @@
 </span><span class="attr">#[derive(Debug, thiserror::Error)]
 </span><span class="kw">pub enum </span>ReplayError {
     <span class="doccomment">/// The Replay event could not be parsed from JSON.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid json&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid json"</span>)]
     </span>CouldNotParse(<span class="attr">#[from] </span>serde_json::Error),
 
     <span class="doccomment">/// The Replay event was parsed but did not match the schema.
-    </span><span class="attr">#[error(<span class="string">&quot;no data found&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"no data found"</span>)]
     </span>NoContent,
 
     <span class="doccomment">/// The Replay contains invalid data or is missing a required field.
     ///
     /// This is returned from [`validate`].
-    </span><span class="attr">#[error(<span class="string">&quot;invalid payload {0}&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid payload {0}"</span>)]
     </span>InvalidPayload(String),
 
     <span class="doccomment">/// An error occurred during PII scrubbing of the Replay.
     ///
     /// This erorr is usually returned when the PII configuration fails to parse.
-    </span><span class="attr">#[error(<span class="string">&quot;failed to scrub PII: {0}&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"failed to scrub PII: {0}"</span>)]
     </span>CouldNotScrub(String),
 }
 
@@ -418,16 +513,34 @@
     replay
         .replay_id
         .value()
-        .ok_or_else(|| ReplayError::InvalidPayload(<span class="string">&quot;missing replay_id&quot;</span>.to_string()))<span class="question-mark">?</span>;
+        .ok_or_else(|| ReplayError::InvalidPayload(<span class="string">"missing replay_id"</span>.to_string()))<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>segment_id = <span class="kw-2">*</span>replay
+    replay
         .segment_id
         .value()
-        .ok_or_else(|| ReplayError::InvalidPayload(<span class="string">&quot;missing segment_id&quot;</span>.to_string()))<span class="question-mark">?</span>;
+        .ok_or_else(|| ReplayError::InvalidPayload(<span class="string">"missing segment_id"</span>.to_string()))<span class="question-mark">?</span>;
 
-    <span class="kw">if </span>segment_id &gt; u16::MAX <span class="kw">as </span>u64 {
+    <span class="kw">if </span>replay
+        .error_ids
+        .value()
+        .into_iter()
+        .flat_map(|v| v.iter())
+        .any(|v| v.meta().has_errors())
+    {
         <span class="kw">return </span><span class="prelude-val">Err</span>(ReplayError::InvalidPayload(
-            <span class="string">&quot;segment_id exceeded u16 limit&quot;</span>.to_string(),
+            <span class="string">"Invalid error-id specified."</span>.to_string(),
+        ));
+    }
+
+    <span class="kw">if </span>replay
+        .trace_ids
+        .value()
+        .into_iter()
+        .flat_map(|v| v.iter())
+        .any(|v| v.meta().has_errors())
+    {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ReplayError::InvalidPayload(
+            <span class="string">"Invalid trace-id specified."</span>.to_string(),
         ));
     }
 
@@ -436,15 +549,23 @@
 
 <span class="doccomment">/// Adds default fields and normalizes all values in to their standard representation.
 </span><span class="kw">pub fn </span>normalize(
-    replay: <span class="kw-2">&amp;mut </span>Replay,
+    replay: <span class="kw-2">&amp;mut </span>Annotated&lt;Replay&gt;,
     client_ip: <span class="prelude-ty">Option</span>&lt;StdIpAddr&gt;,
     user_agent: <span class="kw-2">&amp;</span>RawUserAgentInfo&lt;<span class="kw-2">&amp;</span>str&gt;,
 ) {
-    normalize_platform(replay);
-    normalize_ip_address(replay, client_ip);
-    normalize_user_agent(replay, user_agent);
-    normalize_type(replay);
-    normalize_array_fields(replay);
+    <span class="kw">let _ </span>= processor::apply(replay, |replay_value, meta| {
+        normalize_platform(replay_value);
+        normalize_ip_address(replay_value, client_ip);
+        normalize_user_agent(replay_value, user_agent);
+        normalize_type(replay_value);
+        normalize_array_fields(replay_value);
+        <span class="kw">let _ </span>= trimming::TrimmingProcessor::new().process_replay(
+            replay_value,
+            meta,
+            ProcessingState::root(),
+        );
+        <span class="prelude-val">Ok</span>(())
+    });
 }
 
 <span class="kw">fn </span>normalize_array_fields(replay: <span class="kw-2">&amp;mut </span>Replay) {
@@ -464,12 +585,12 @@
 }
 
 <span class="kw">fn </span>normalize_ip_address(replay: <span class="kw-2">&amp;mut </span>Replay, ip_address: <span class="prelude-ty">Option</span>&lt;StdIpAddr&gt;) {
-    <span class="kw">crate</span>::normalize_ip_addresses(
+    <span class="kw">crate</span>::event::normalize_ip_addresses(
         <span class="kw-2">&amp;mut </span>replay.request,
         <span class="kw-2">&amp;mut </span>replay.user,
         replay.platform.as_str(),
         ip_address.map(|ip| IpAddr(ip.to_string())).as_ref(),
-    )
+    );
 }
 
 <span class="kw">fn </span>normalize_user_agent(replay: <span class="kw-2">&amp;mut </span>Replay, default_user_agent: <span class="kw-2">&amp;</span>RawUserAgentInfo&lt;<span class="kw-2">&amp;</span>str&gt;) {
@@ -496,16 +617,16 @@
 
 <span class="kw">fn </span>normalize_platform(replay: <span class="kw-2">&amp;mut </span>Replay) {
     <span class="comment">// Null platforms are permitted but must be defaulted before continuing.
-    </span><span class="kw">let </span>platform = replay.platform.get_or_insert_with(|| <span class="string">&quot;other&quot;</span>.to_string());
+    </span><span class="kw">let </span>platform = replay.platform.get_or_insert_with(|| <span class="string">"other"</span>.to_string());
 
-    <span class="comment">// Normalize bad platforms to &quot;other&quot; type.
+    <span class="comment">// Normalize bad platforms to "other" type.
     </span><span class="kw">if </span>!<span class="kw">crate</span>::is_valid_platform(platform) {
-        replay.platform = Annotated::from(<span class="string">&quot;other&quot;</span>.to_string());
+        replay.platform = Annotated::from(<span class="string">"other"</span>.to_string());
     }
 }
 
 <span class="kw">fn </span>normalize_type(replay: <span class="kw-2">&amp;mut </span>Replay) {
-    replay.ty = Annotated::from(<span class="string">&quot;replay_event&quot;</span>.to_string());
+    replay.ty = Annotated::from(<span class="string">"replay_event"</span>.to_string());
 }
 
 <span class="attr">#[cfg(test)]
@@ -513,6 +634,8 @@
     <span class="kw">use </span>std::net::{IpAddr, Ipv4Addr};
 
     <span class="kw">use </span>chrono::{TimeZone, Utc};
+    <span class="kw">use </span>relay_protocol::{assert_annotated_snapshot, get_value};
+    <span class="kw">use </span>uuid::Uuid;
 
     <span class="kw">use </span>relay_event_schema::protocol::{
         BrowserContext, Context, DeviceContext, EventId, OsContext, TagEntry, Tags,
@@ -523,54 +646,54 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_event_roundtrip() {
         <span class="comment">// NOTE: Interfaces will be tested separately.
-        </span><span class="kw">let </span>json = <span class="string">r#&quot;{
-  &quot;event_id&quot;: &quot;52df9022835246eeb317dbd739ccd059&quot;,
-  &quot;replay_id&quot;: &quot;52df9022835246eeb317dbd739ccd059&quot;,
-  &quot;segment_id&quot;: 0,
-  &quot;replay_type&quot;: &quot;session&quot;,
-  &quot;error_sample_rate&quot;: 0.5,
-  &quot;session_sample_rate&quot;: 0.5,
-  &quot;timestamp&quot;: 946684800.0,
-  &quot;replay_start_timestamp&quot;: 946684800.0,
-  &quot;urls&quot;: [&quot;localhost:9000&quot;],
-  &quot;error_ids&quot;: [&quot;52df9022835246eeb317dbd739ccd059&quot;],
-  &quot;trace_ids&quot;: [&quot;52df9022835246eeb317dbd739ccd059&quot;],
-  &quot;platform&quot;: &quot;myplatform&quot;,
-  &quot;release&quot;: &quot;myrelease&quot;,
-  &quot;dist&quot;: &quot;mydist&quot;,
-  &quot;environment&quot;: &quot;myenv&quot;,
-  &quot;tags&quot;: [
+        </span><span class="kw">let </span>json = <span class="string">r#"{
+  "event_id": "52df9022835246eeb317dbd739ccd059",
+  "replay_id": "52df9022835246eeb317dbd739ccd059",
+  "segment_id": 0,
+  "replay_type": "session",
+  "error_sample_rate": 0.5,
+  "session_sample_rate": 0.5,
+  "timestamp": 946684800.0,
+  "replay_start_timestamp": 946684800.0,
+  "urls": ["localhost:9000"],
+  "error_ids": ["52df9022835246eeb317dbd739ccd059"],
+  "trace_ids": ["52df9022835246eeb317dbd739ccd059"],
+  "platform": "myplatform",
+  "release": "myrelease",
+  "dist": "mydist",
+  "environment": "myenv",
+  "tags": [
     [
-      &quot;tag&quot;,
-      &quot;value&quot;
+      "tag",
+      "value"
     ]
   ]
-}&quot;#</span>;
+}"#</span>;
 
         <span class="kw">let </span>replay = Annotated::new(Replay {
-            event_id: Annotated::new(EventId(<span class="string">&quot;52df9022835246eeb317dbd739ccd059&quot;</span>.parse().unwrap())),
-            replay_id: Annotated::new(EventId(<span class="string">&quot;52df9022835246eeb317dbd739ccd059&quot;</span>.parse().unwrap())),
-            replay_type: Annotated::new(<span class="string">&quot;session&quot;</span>.to_string()),
+            event_id: Annotated::new(EventId(<span class="string">"52df9022835246eeb317dbd739ccd059"</span>.parse().unwrap())),
+            replay_id: Annotated::new(EventId(<span class="string">"52df9022835246eeb317dbd739ccd059"</span>.parse().unwrap())),
+            replay_type: Annotated::new(<span class="string">"session"</span>.to_string()),
             segment_id: Annotated::new(<span class="number">0</span>),
             timestamp: Annotated::new(Utc.with_ymd_and_hms(<span class="number">2000</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>).unwrap().into()),
             replay_start_timestamp: Annotated::new(
                 Utc.with_ymd_and_hms(<span class="number">2000</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>).unwrap().into(),
             ),
-            urls: Annotated::new(<span class="macro">vec!</span>[Annotated::new(<span class="string">&quot;localhost:9000&quot;</span>.to_string())]),
+            urls: Annotated::new(<span class="macro">vec!</span>[Annotated::new(<span class="string">"localhost:9000"</span>.to_string())]),
             error_ids: Annotated::new(<span class="macro">vec!</span>[Annotated::new(
-                <span class="string">&quot;52df9022835246eeb317dbd739ccd059&quot;</span>.to_string(),
+                Uuid::parse_str(<span class="string">"52df9022835246eeb317dbd739ccd059"</span>).unwrap(),
             )]),
             trace_ids: Annotated::new(<span class="macro">vec!</span>[Annotated::new(
-                <span class="string">&quot;52df9022835246eeb317dbd739ccd059&quot;</span>.to_string(),
+                Uuid::parse_str(<span class="string">"52df9022835246eeb317dbd739ccd059"</span>).unwrap(),
             )]),
-            platform: Annotated::new(<span class="string">&quot;myplatform&quot;</span>.to_string()),
-            release: Annotated::new(<span class="string">&quot;myrelease&quot;</span>.to_string().into()),
-            dist: Annotated::new(<span class="string">&quot;mydist&quot;</span>.to_string()),
-            environment: Annotated::new(<span class="string">&quot;myenv&quot;</span>.to_string()),
+            platform: Annotated::new(<span class="string">"myplatform"</span>.to_string()),
+            release: Annotated::new(<span class="string">"myrelease"</span>.to_string().into()),
+            dist: Annotated::new(<span class="string">"mydist"</span>.to_string()),
+            environment: Annotated::new(<span class="string">"myenv"</span>.to_string()),
             tags: {
                 <span class="kw">let </span>items = <span class="macro">vec!</span>[Annotated::new(TagEntry(
-                    Annotated::new(<span class="string">&quot;tag&quot;</span>.to_string()),
-                    Annotated::new(<span class="string">&quot;value&quot;</span>.to_string()),
+                    Annotated::new(<span class="string">"tag"</span>.to_string()),
+                    Annotated::new(<span class="string">"value"</span>.to_string()),
                 ))];
                 Annotated::new(Tags(items.into()))
             },
@@ -582,10 +705,10 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_lenient_release() {
-        <span class="kw">let </span>input = <span class="string">r#&quot;{&quot;release&quot;:42}&quot;#</span>;
-        <span class="kw">let </span>output = <span class="string">r#&quot;{&quot;release&quot;:&quot;42&quot;}&quot;#</span>;
+        <span class="kw">let </span>input = <span class="string">r#"{"release":42}"#</span>;
+        <span class="kw">let </span>output = <span class="string">r#"{"release":"42"}"#</span>;
         <span class="kw">let </span>event = Annotated::new(Replay {
-            release: Annotated::new(<span class="string">&quot;42&quot;</span>.to_string().into()),
+            release: Annotated::new(<span class="string">"42"</span>.to_string().into()),
             ..Default::default()
         });
 
@@ -596,35 +719,34 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_user_agent_meta() {
         <span class="comment">// Parse user input.
-        </span><span class="kw">let </span>payload = <span class="macro">include_str!</span>(<span class="string">&quot;../../tests/fixtures/replay.json&quot;</span>);
+        </span><span class="kw">let </span>payload = <span class="macro">include_str!</span>(<span class="string">"../../tests/fixtures/replay.json"</span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>replay: Annotated&lt;Replay&gt; = Annotated::from_json(payload).unwrap();
-        <span class="kw">let </span>replay_value = replay.value_mut().as_mut().unwrap();
-        normalize(replay_value, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
+        normalize(<span class="kw-2">&amp;mut </span>replay, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
 
-        <span class="kw">let </span>contexts = replay_value.contexts.value().unwrap();
+        <span class="kw">let </span>contexts = <span class="macro">get_value!</span>(replay.<span class="macro">contexts!</span>);
         <span class="macro">assert_eq!</span>(
             contexts.get::&lt;BrowserContext&gt;(),
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>BrowserContext {
-                name: Annotated::new(<span class="string">&quot;Safari&quot;</span>.to_string()),
-                version: Annotated::new(<span class="string">&quot;15.5&quot;</span>.to_string()),
+                name: Annotated::new(<span class="string">"Safari"</span>.to_string()),
+                version: Annotated::new(<span class="string">"15.5"</span>.to_string()),
                 ..Default::default()
             })
         );
         <span class="macro">assert_eq!</span>(
-            contexts.get_key(<span class="string">&quot;client_os&quot;</span>),
+            contexts.get_key(<span class="string">"client_os"</span>),
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>Context::Os(Box::new(OsContext {
-                name: Annotated::new(<span class="string">&quot;Mac OS X&quot;</span>.to_string()),
-                version: Annotated::new(<span class="string">&quot;&gt;=10.15.7&quot;</span>.to_string()),
+                name: Annotated::new(<span class="string">"Mac OS X"</span>.to_string()),
+                version: Annotated::new(<span class="string">"&gt;=10.15.7"</span>.to_string()),
                 ..Default::default()
             })))
         );
         <span class="macro">assert_eq!</span>(
             contexts.get::&lt;DeviceContext&gt;(),
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>DeviceContext {
-                family: Annotated::new(<span class="string">&quot;Mac&quot;</span>.to_string()),
-                brand: Annotated::new(<span class="string">&quot;Apple&quot;</span>.to_string()),
-                model: Annotated::new(<span class="string">&quot;Mac&quot;</span>.to_string()),
+                family: Annotated::new(<span class="string">"Mac"</span>.to_string()),
+                brand: Annotated::new(<span class="string">"Apple"</span>.to_string()),
+                model: Annotated::new(<span class="string">"Mac"</span>.to_string()),
                 ..Default::default()
             })
         );
@@ -632,21 +754,20 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_missing_user() {
-        <span class="kw">let </span>payload = <span class="macro">include_str!</span>(<span class="string">&quot;../../tests/fixtures/replay_missing_user.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_str!</span>(<span class="string">"../../tests/fixtures/replay_missing_user.json"</span>);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>annotated_replay: Annotated&lt;Replay&gt; = Annotated::from_json(payload).unwrap();
-        <span class="kw">let </span>replay = annotated_replay.value_mut().as_mut().unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>replay: Annotated&lt;Replay&gt; = Annotated::from_json(payload).unwrap();
 
         <span class="comment">// No user object and no ip-address was provided.
-        </span>normalize(replay, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
-        <span class="macro">assert_eq!</span>(replay.user.value(), <span class="prelude-val">None</span>);
+        </span>normalize(<span class="kw-2">&amp;mut </span>replay, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
+        <span class="macro">assert_eq!</span>(<span class="macro">get_value!</span>(replay.user), <span class="prelude-val">None</span>);
 
         <span class="comment">// No user object but an ip-address was provided.
         </span><span class="kw">let </span>ip_address = IpAddr::V4(Ipv4Addr::new(<span class="number">127</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>));
-        normalize(replay, <span class="prelude-val">Some</span>(ip_address), <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
+        normalize(<span class="kw-2">&amp;mut </span>replay, <span class="prelude-val">Some</span>(ip_address), <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
 
-        <span class="kw">let </span>ipaddr = replay.user.value().unwrap().ip_address.as_str();
-        <span class="macro">assert_eq!</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;127.0.0.1&quot;</span>), ipaddr);
+        <span class="kw">let </span>ipaddr = <span class="macro">get_value!</span>(replay.<span class="macro">user!</span>).ip_address.as_str();
+        <span class="macro">assert_eq!</span>(<span class="prelude-val">Some</span>(<span class="string">"127.0.0.1"</span>), ipaddr);
     }
 
     <span class="attr">#[test]
@@ -654,43 +775,41 @@
         <span class="kw">let </span>ip_address = IpAddr::V4(Ipv4Addr::new(<span class="number">127</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>));
 
         <span class="comment">// IP-Address set.
-        </span><span class="kw">let </span>payload = <span class="macro">include_str!</span>(<span class="string">&quot;../../tests/fixtures/replay_missing_user_ip_address.json&quot;</span>);
+        </span><span class="kw">let </span>payload = <span class="macro">include_str!</span>(<span class="string">"../../tests/fixtures/replay_missing_user_ip_address.json"</span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>replay: Annotated&lt;Replay&gt; = Annotated::from_json(payload).unwrap();
-        <span class="kw">let </span>replay_value = replay.value_mut().as_mut().unwrap();
-        normalize(replay_value, <span class="prelude-val">Some</span>(ip_address), <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
+        normalize(<span class="kw-2">&amp;mut </span>replay, <span class="prelude-val">Some</span>(ip_address), <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
 
-        <span class="kw">let </span>ipaddr = replay_value.user.value().unwrap().ip_address.as_str();
-        <span class="macro">assert_eq!</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;127.0.0.1&quot;</span>), ipaddr);
+        <span class="kw">let </span>ipaddr = <span class="macro">get_value!</span>(replay.<span class="macro">user!</span>).ip_address.as_str();
+        <span class="macro">assert_eq!</span>(<span class="prelude-val">Some</span>(<span class="string">"127.0.0.1"</span>), ipaddr);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_loose_type_requirements() {
-        <span class="kw">let </span>payload = <span class="macro">include_str!</span>(<span class="string">&quot;../../tests/fixtures/replay_failure_22_08_31.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_str!</span>(<span class="string">"../../tests/fixtures/replay_failure_22_08_31.json"</span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>replay: Annotated&lt;Replay&gt; = Annotated::from_json(payload).unwrap();
-        <span class="kw">let </span>replay_value = replay.value_mut().as_mut().unwrap();
-        normalize(replay_value, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
+        normalize(<span class="kw-2">&amp;mut </span>replay, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
 
-        <span class="kw">let </span>user = replay_value.user.value().unwrap();
-        <span class="macro">assert_eq!</span>(user.ip_address.as_str(), <span class="prelude-val">Some</span>(<span class="string">&quot;127.1.1.1&quot;</span>));
+        <span class="kw">let </span>user = <span class="macro">get_value!</span>(replay.<span class="macro">user!</span>);
+        <span class="macro">assert_eq!</span>(user.ip_address.as_str(), <span class="prelude-val">Some</span>(<span class="string">"127.1.1.1"</span>));
         <span class="macro">assert_eq!</span>(user.username.value(), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(user.email.as_str(), <span class="prelude-val">Some</span>(<span class="string">&quot;email@sentry.io&quot;</span>));
-        <span class="macro">assert_eq!</span>(user.id.as_str(), <span class="prelude-val">Some</span>(<span class="string">&quot;1&quot;</span>));
+        <span class="macro">assert_eq!</span>(user.email.as_str(), <span class="prelude-val">Some</span>(<span class="string">"email@sentry.io"</span>));
+        <span class="macro">assert_eq!</span>(user.id.as_str(), <span class="prelude-val">Some</span>(<span class="string">"1"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_capped_values() {
         <span class="kw">let </span>urls: Vec&lt;Annotated&lt;String&gt;&gt; = (<span class="number">0</span>..<span class="number">101</span>)
-            .map(|<span class="kw">_</span>| Annotated::new(<span class="string">&quot;localhost:9000&quot;</span>.to_string()))
+            .map(|<span class="kw">_</span>| Annotated::new(<span class="string">"localhost:9000"</span>.to_string()))
             .collect();
 
-        <span class="kw">let </span>error_ids: Vec&lt;Annotated&lt;String&gt;&gt; = (<span class="number">0</span>..<span class="number">101</span>)
-            .map(|<span class="kw">_</span>| Annotated::new(<span class="string">&quot;52df9022835246eeb317dbd739ccd059&quot;</span>.to_string()))
+        <span class="kw">let </span>error_ids: Vec&lt;Annotated&lt;Uuid&gt;&gt; = (<span class="number">0</span>..<span class="number">101</span>)
+            .map(|<span class="kw">_</span>| Annotated::new(Uuid::parse_str(<span class="string">"52df9022835246eeb317dbd739ccd059"</span>).unwrap()))
             .collect();
 
-        <span class="kw">let </span>trace_ids: Vec&lt;Annotated&lt;String&gt;&gt; = (<span class="number">0</span>..<span class="number">101</span>)
-            .map(|<span class="kw">_</span>| Annotated::new(<span class="string">&quot;52df9022835246eeb317dbd739ccd059&quot;</span>.to_string()))
+        <span class="kw">let </span>trace_ids: Vec&lt;Annotated&lt;Uuid&gt;&gt; = (<span class="number">0</span>..<span class="number">101</span>)
+            .map(|<span class="kw">_</span>| Annotated::new(Uuid::parse_str(<span class="string">"52df9022835246eeb317dbd739ccd059"</span>).unwrap()))
             .collect();
 
         <span class="kw">let </span><span class="kw-2">mut </span>replay = Annotated::new(Replay {
@@ -709,31 +828,6 @@
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_validate_u16_segment_id() {
-        <span class="comment">// Does not fit within a u16.
-        </span><span class="kw">let </span>replay_id =
-            Annotated::new(EventId(<span class="string">&quot;52df9022835246eeb317dbd739ccd059&quot;</span>.parse().unwrap()));
-        <span class="kw">let </span>segment_id: Annotated&lt;u64&gt; = Annotated::new(u16::MAX <span class="kw">as </span>u64 + <span class="number">1</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>replay = Annotated::new(Replay {
-            replay_id,
-            segment_id,
-            ..Default::default()
-        });
-        <span class="macro">assert!</span>(validate(replay.value_mut().as_mut().unwrap()).is_err());
-
-        <span class="comment">// Fits within a u16.
-        </span><span class="kw">let </span>replay_id =
-            Annotated::new(EventId(<span class="string">&quot;52df9022835246eeb317dbd739ccd059&quot;</span>.parse().unwrap()));
-        <span class="kw">let </span>segment_id: Annotated&lt;u64&gt; = Annotated::new(u16::MAX <span class="kw">as </span>u64);
-        <span class="kw">let </span><span class="kw-2">mut </span>replay = Annotated::new(Replay {
-            replay_id,
-            segment_id,
-            ..Default::default()
-        });
-        <span class="macro">assert!</span>(validate(replay.value_mut().as_mut().unwrap()).is_ok());
-    }
-
-    <span class="attr">#[test]
     </span><span class="kw">fn </span>test_truncated_list_less_than_limit() {
         <span class="kw">let </span><span class="kw-2">mut </span>replay = Annotated::new(Replay {
             urls: Annotated::new(Vec::new()),
@@ -748,6 +842,98 @@
         <span class="macro">assert!</span>(replay_value.error_ids.value().unwrap().is_empty());
         <span class="macro">assert!</span>(replay_value.trace_ids.value().unwrap().is_empty());
         <span class="macro">assert!</span>(replay_value.urls.value().unwrap().is_empty());
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_error_id_validation() {
+        <span class="comment">// NOTE: Interfaces will be tested separately.
+        </span><span class="kw">let </span>json = <span class="string">r#"{
+  "event_id": "52df9022835246eeb317dbd739ccd059",
+  "replay_id": "52df9022835246eeb317dbd739ccd059",
+  "segment_id": 0,
+  "replay_type": "session",
+  "error_sample_rate": 0.5,
+  "session_sample_rate": 0.5,
+  "timestamp": 946684800.0,
+  "replay_start_timestamp": 946684800.0,
+  "urls": ["localhost:9000"],
+  "error_ids": ["test"],
+  "trace_ids": [],
+  "platform": "myplatform",
+  "release": "myrelease",
+  "dist": "mydist",
+  "environment": "myenv",
+  "tags": [
+    [
+      "tag",
+      "value"
+    ]
+  ]
+}"#</span>;
+
+        <span class="kw">let </span><span class="kw-2">mut </span>replay = Annotated::&lt;Replay&gt;::from_json(json).unwrap();
+        <span class="kw">let </span>validation_result = validate(replay.value_mut().as_mut().unwrap());
+        <span class="macro">assert!</span>(validation_result.is_err());
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_trace_id_validation() {
+        <span class="comment">// NOTE: Interfaces will be tested separately.
+        </span><span class="kw">let </span>json = <span class="string">r#"{
+  "event_id": "52df9022835246eeb317dbd739ccd059",
+  "replay_id": "52df9022835246eeb317dbd739ccd059",
+  "segment_id": 0,
+  "replay_type": "session",
+  "error_sample_rate": 0.5,
+  "session_sample_rate": 0.5,
+  "timestamp": 946684800.0,
+  "replay_start_timestamp": 946684800.0,
+  "urls": ["localhost:9000"],
+  "error_ids": [],
+  "trace_ids": ["123"],
+  "platform": "myplatform",
+  "release": "myrelease",
+  "dist": "mydist",
+  "environment": "myenv",
+  "tags": [
+    [
+      "tag",
+      "value"
+    ]
+  ]
+}"#</span>;
+
+        <span class="kw">let </span><span class="kw-2">mut </span>replay = Annotated::&lt;Replay&gt;::from_json(json).unwrap();
+        <span class="kw">let </span>validation_result = validate(replay.value_mut().as_mut().unwrap());
+        <span class="macro">assert!</span>(validation_result.is_err());
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_maxchars_trimming() {
+        <span class="kw">let </span>json = <span class="macro">format!</span>(<span class="string">r#"{{"dist": "{}"}}"#</span>, <span class="string">"0"</span>.repeat(<span class="number">100</span>));
+        <span class="kw">let </span><span class="kw-2">mut </span>replay = Annotated::&lt;Replay&gt;::from_json(json.as_str()).unwrap();
+
+        normalize(<span class="kw-2">&amp;mut </span>replay, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>RawUserAgentInfo::default());
+        <span class="macro">assert_annotated_snapshot!</span>(replay, @<span class="string">r#"{
+  "platform": "other",
+  "dist": "0000000000000000000000000000000000000000000000000000000000000...",
+  "type": "replay_event",
+  "_meta": {
+    "dist": {
+      "": {
+        "rem": [
+          [
+            "!limit",
+            "s",
+            61,
+            64
+          ]
+        ],
+        "len": 100
+      }
+    }
+  }
+}"#</span>);
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-profiling/src/android.rs`."><title>android.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_profiling" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_profiling/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-profiling/src/android.rs`."><title>android.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_profiling" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -334,17 +334,62 @@
 <a href="#334" id="334">334</a>
 <a href="#335" id="335">335</a>
 <a href="#336" id="336">336</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::{BTreeMap, HashMap};
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! Android Format
+//!
+//! Relay is expecting a JSON object with some mandatory metadata and a `sampled_profile` key
+//! containing the raw Android profile.
+//!
+//! `android` has a specific binary representation of its profile and Relay is responsible to
+//! unpack it before it's forwarded down the line.
+//!
+</span><span class="kw">use </span>std::collections::{BTreeMap, HashMap};
 
 <span class="kw">use </span>android_trace_log::chrono::{DateTime, Utc};
 <span class="kw">use </span>android_trace_log::{AndroidTraceLog, Clock, Vm};
 <span class="kw">use </span>data_encoding::BASE64_NOPAD;
-<span class="kw">use </span>relay_event_schema::protocol::EventId;
+<span class="kw">use </span>relay_event_schema::protocol::{EventId, SpanId};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="kw">use </span><span class="kw">crate</span>::measurements::Measurement;
 <span class="kw">use </span><span class="kw">crate</span>::native_debug_image::NativeDebugImage;
-<span class="kw">use </span><span class="kw">crate</span>::sample::SampleProfile;
+<span class="kw">use </span><span class="kw">crate</span>::sample::v1::SampleProfile;
 <span class="kw">use </span><span class="kw">crate</span>::transaction_metadata::TransactionMetadata;
 <span class="kw">use </span><span class="kw">crate</span>::utils::{deserialize_number_from_string, is_zero};
 <span class="kw">use crate</span>::{ProfileError, MAX_PROFILE_DURATION};
@@ -353,7 +398,7 @@
 </span><span class="kw">pub struct </span>ProfileMetadata {
     android_api_level: u16,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;String::is_empty&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"String::is_empty"</span>)]
     </span>build_id: String,
 
     device_cpu_frequencies: Vec&lt;u32&gt;,
@@ -364,61 +409,70 @@
     device_os_name: String,
     device_os_version: String,
 
-    <span class="attr">#[serde(deserialize_with = <span class="string">&quot;deserialize_number_from_string&quot;</span>)]
+    <span class="attr">#[serde(deserialize_with = <span class="string">"deserialize_number_from_string"</span>)]
     </span>device_physical_memory_bytes: u64,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;String::is_empty&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"String::is_empty"</span>)]
     </span>environment: String,
 
     platform: String,
     profile_id: EventId,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span>timestamp: <span class="prelude-ty">Option</span>&lt;DateTime&lt;Utc&gt;&gt;,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;String::is_empty&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"String::is_empty"</span>)]
     </span>release: String,
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;String::is_empty&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"String::is_empty"</span>)]
     </span>dist: String,
 
     version_code: String,
     version_name: String,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;EventId::is_nil&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"EventId::is_nil"</span>)]
     </span>transaction_id: EventId,
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;String::is_empty&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"String::is_empty"</span>)]
     </span>transaction_name: String,
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;EventId::is_nil&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"EventId::is_nil"</span>)]
     </span>trace_id: EventId,
     <span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;deserialize_number_from_string&quot;</span>,
-        skip_serializing_if = <span class="string">&quot;is_zero&quot;
+        deserialize_with = <span class="string">"deserialize_number_from_string"</span>,
+        skip_serializing_if = <span class="string">"is_zero"
     </span>)]
     </span>duration_ns: u64,
     <span class="attr">#[serde(
         default,
-        deserialize_with = <span class="string">&quot;deserialize_number_from_string&quot;</span>,
-        skip_serializing_if = <span class="string">&quot;is_zero&quot;
+        deserialize_with = <span class="string">"deserialize_number_from_string"</span>,
+        skip_serializing_if = <span class="string">"is_zero"
     </span>)]
     </span>active_thread_id: u64,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Vec::is_empty&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Vec::is_empty"</span>)]
     </span>transactions: Vec&lt;TransactionMetadata&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span>transaction: <span class="prelude-ty">Option</span>&lt;TransactionMetadata&gt;,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span>measurements: <span class="prelude-ty">Option</span>&lt;HashMap&lt;String, Measurement&gt;&gt;,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;BTreeMap::is_empty&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"BTreeMap::is_empty"</span>)]
     </span>transaction_metadata: BTreeMap&lt;String, String&gt;,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;BTreeMap::is_empty&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"BTreeMap::is_empty"</span>)]
     </span>transaction_tags: BTreeMap&lt;String, String&gt;,
 
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span>debug_meta: <span class="prelude-ty">Option</span>&lt;DebugMeta&gt;,
+
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span>client_sdk: <span class="prelude-ty">Option</span>&lt;ClientSdk&gt;,
+}
+
+<span class="attr">#[derive(Debug, Serialize, Deserialize, Clone)]
+</span><span class="kw">pub struct </span>ClientSdk {
+    name: String,
+    version: String,
 }
 
 <span class="attr">#[derive(Debug, Serialize, Deserialize, Clone)]
@@ -429,10 +483,10 @@
     <span class="attr">#[serde(default, skip_serializing)]
     </span>sampled_profile: String,
 
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span>js_profile: <span class="prelude-ty">Option</span>&lt;SampleProfile&gt;,
 
-    <span class="attr">#[serde(default = <span class="string">&quot;AndroidProfilingEvent::default&quot;</span>)]
+    <span class="attr">#[serde(default = <span class="string">"AndroidProfilingEvent::default"</span>)]
     </span>profile: AndroidTraceLog,
 }
 
@@ -492,7 +546,10 @@
         profile.metadata.duration_ns = transaction.duration_ns();
         profile.metadata.trace_id = transaction.trace_id;
         profile.metadata.transaction_id = transaction.id;
-        profile.metadata.transaction_name = transaction.name.clone();
+        profile
+            .metadata
+            .transaction_name
+            .clone_from(<span class="kw-2">&amp;</span>transaction.name);
 
         profile.metadata.transaction = <span class="prelude-val">Some</span>(transaction);
     } <span class="kw">else if </span>profile.has_transaction_metadata() {
@@ -508,7 +565,7 @@
     }
 
     <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>js_profile) = profile.js_profile {
-        js_profile.normalize(profile.metadata.platform.as_str(), <span class="string">&quot;&quot;</span>)<span class="question-mark">?</span>;
+        js_profile.normalize(profile.metadata.platform.as_str(), <span class="string">""</span>)<span class="question-mark">?</span>;
     }
 
     <span class="kw">if </span>!profile.sampled_profile.is_empty() {
@@ -533,26 +590,45 @@
 ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;u8&gt;, ProfileError&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>profile = parse_profile(payload)<span class="question-mark">?</span>;
 
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(transaction_name) = transaction_metadata.get(<span class="string">&quot;transaction&quot;</span>) {
-        profile.metadata.transaction_name = transaction_name.to_owned();
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(transaction_name) = transaction_metadata.get(<span class="string">"transaction"</span>) {
+        transaction_name.clone_into(<span class="kw-2">&amp;mut </span>profile.metadata.transaction_name);
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>transaction) = profile.metadata.transaction {
-            transaction.name = profile.metadata.transaction_name.to_owned();
+            profile
+                .metadata
+                .transaction_name
+                .clone_into(<span class="kw-2">&amp;mut </span>transaction.name);
         }
     }
 
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(release) = transaction_metadata.get(<span class="string">&quot;release&quot;</span>) {
-        profile.metadata.release = release.to_owned();
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(release) = transaction_metadata.get(<span class="string">"release"</span>) {
+        release.clone_into(<span class="kw-2">&amp;mut </span>profile.metadata.release);
     }
 
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(dist) = transaction_metadata.get(<span class="string">&quot;dist&quot;</span>) {
-        profile.metadata.dist = dist.to_owned();
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(dist) = transaction_metadata.get(<span class="string">"dist"</span>) {
+        dist.clone_into(<span class="kw-2">&amp;mut </span>profile.metadata.dist);
     }
 
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(environment) = transaction_metadata.get(<span class="string">&quot;environment&quot;</span>) {
-        profile.metadata.environment = environment.to_owned();
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(environment) = transaction_metadata.get(<span class="string">"environment"</span>) {
+        environment.clone_into(<span class="kw-2">&amp;mut </span>profile.metadata.environment);
     }
 
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(segment_id) = transaction_metadata.get(<span class="string">"segment_id"</span>) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(transaction_metadata) = profile.metadata.transaction.as_mut() {
+            transaction_metadata.segment_id = <span class="prelude-val">Some</span>(SpanId(segment_id.to_owned()));
+        }
+    }
+
+    profile.metadata.client_sdk = <span class="kw">match </span>(
+        transaction_metadata.get(<span class="string">"client_sdk.name"</span>),
+        transaction_metadata.get(<span class="string">"client_sdk.version"</span>),
+    ) {
+        (<span class="prelude-val">Some</span>(name), <span class="prelude-val">Some</span>(version)) =&gt; <span class="prelude-val">Some</span>(ClientSdk {
+            name: name.to_owned(),
+            version: version.to_owned(),
+        }),
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+    };
     profile.metadata.transaction_metadata = transaction_metadata;
     profile.metadata.transaction_tags = transaction_tags;
 
@@ -565,7 +641,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_roundtrip_android() {
-        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">&quot;../tests/fixtures/profiles/android/roundtrip.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">"../tests/fixtures/android/roundtrip.json"</span>);
         <span class="kw">let </span>profile = parse_profile(payload);
         <span class="macro">assert!</span>(profile.is_ok());
         <span class="kw">let </span>data = serde_json::to_vec(<span class="kw-2">&amp;</span>profile.unwrap());
@@ -576,7 +652,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_roundtrip_react_native() {
-        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">&quot;../tests/fixtures/profiles/android/roundtrip.rn.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">"../tests/fixtures/android/roundtrip.rn.json"</span>);
         <span class="kw">let </span>profile = parse_profile(payload);
         <span class="macro">assert!</span>(profile.is_ok());
         <span class="kw">let </span>data = serde_json::to_vec(<span class="kw-2">&amp;</span>profile.unwrap());
@@ -587,52 +663,50 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_no_transaction() {
-        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">&quot;../tests/fixtures/profiles/android/no_transaction.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">"../tests/fixtures/android/no_transaction.json"</span>);
         <span class="kw">let </span>data = parse_android_profile(payload, BTreeMap::new(), BTreeMap::new());
         <span class="macro">assert!</span>(data.is_err());
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_remove_invalid_events() {
-        <span class="kw">let </span>payload =
-            <span class="macro">include_bytes!</span>(<span class="string">&quot;../tests/fixtures/profiles/android/remove_invalid_events.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">"../tests/fixtures/android/remove_invalid_events.json"</span>);
         <span class="kw">let </span>data = parse_android_profile(payload, BTreeMap::new(), BTreeMap::new());
         <span class="macro">assert!</span>(data.is_err());
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_transactions_to_top_level() {
-        <span class="kw">let </span>payload =
-            <span class="macro">include_bytes!</span>(<span class="string">&quot;../tests/fixtures/profiles/android/multiple_transactions.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">"../tests/fixtures/android/multiple_transactions.json"</span>);
 
         <span class="kw">let </span>profile = <span class="kw">match </span>parse_profile(payload) {
-            <span class="prelude-val">Err</span>(err) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;cannot parse profile: {err:?}&quot;</span>),
+            <span class="prelude-val">Err</span>(err) =&gt; <span class="macro">panic!</span>(<span class="string">"cannot parse profile: {err:?}"</span>),
             <span class="prelude-val">Ok</span>(profile) =&gt; profile,
         };
         <span class="macro">assert_eq!</span>(
             profile.metadata.transaction_id,
-            <span class="string">&quot;7d6db784355e4d7dbf98671c69cbcc77&quot;</span>.parse().unwrap()
+            <span class="string">"7d6db784355e4d7dbf98671c69cbcc77"</span>.parse().unwrap()
         );
         <span class="macro">assert_eq!</span>(
             profile.metadata.trace_id,
-            <span class="string">&quot;7d6db784355e4d7dbf98671c69cbcc77&quot;</span>.parse().unwrap()
+            <span class="string">"7d6db784355e4d7dbf98671c69cbcc77"</span>.parse().unwrap()
         );
         <span class="macro">assert_eq!</span>(profile.metadata.active_thread_id, <span class="number">12345</span>);
-        <span class="macro">assert_eq!</span>(profile.metadata.transaction_name, <span class="string">&quot;transaction1&quot;</span>);
+        <span class="macro">assert_eq!</span>(profile.metadata.transaction_name, <span class="string">"transaction1"</span>);
         <span class="macro">assert_eq!</span>(profile.metadata.duration_ns, <span class="number">1000000000</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_extract_transaction_metadata() {
         <span class="kw">let </span>transaction_metadata = BTreeMap::from([
-            (<span class="string">&quot;release&quot;</span>.to_string(), <span class="string">&quot;some-random-release&quot;</span>.to_string()),
+            (<span class="string">"release"</span>.to_string(), <span class="string">"some-random-release"</span>.to_string()),
             (
-                <span class="string">&quot;transaction&quot;</span>.to_string(),
-                <span class="string">&quot;some-random-transaction&quot;</span>.to_string(),
+                <span class="string">"transaction"</span>.to_string(),
+                <span class="string">"some-random-transaction"</span>.to_string(),
             ),
         ]);
 
-        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">&quot;../tests/fixtures/profiles/android/valid.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">"../tests/fixtures/android/valid.json"</span>);
         <span class="kw">let </span>profile_json = parse_android_profile(payload, transaction_metadata, BTreeMap::new());
         <span class="macro">assert!</span>(profile_json.is_ok());
 
@@ -641,20 +715,20 @@
         <span class="kw">let </span>output: AndroidProfilingEvent = serde_path_to_error::deserialize(d)
             .map_err(ProfileError::InvalidJson)
             .unwrap();
-        <span class="macro">assert_eq!</span>(output.metadata.release, <span class="string">&quot;some-random-release&quot;</span>.to_string());
+        <span class="macro">assert_eq!</span>(output.metadata.release, <span class="string">"some-random-release"</span>.to_string());
         <span class="macro">assert_eq!</span>(
             output.metadata.transaction_name,
-            <span class="string">&quot;some-random-transaction&quot;</span>.to_string()
+            <span class="string">"some-random-transaction"</span>.to_string()
         );
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(transaction) = output.metadata.transaction {
-            <span class="macro">assert_eq!</span>(transaction.name, <span class="string">&quot;some-random-transaction&quot;</span>.to_string());
+            <span class="macro">assert_eq!</span>(transaction.name, <span class="string">"some-random-transaction"</span>.to_string());
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_timestamp() {
-        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">&quot;../tests/fixtures/profiles/android/roundtrip.json&quot;</span>);
+        <span class="kw">let </span>payload = <span class="macro">include_bytes!</span>(<span class="string">"../tests/fixtures/android/roundtrip.json"</span>);
         <span class="kw">let </span>profile = parse_profile(payload);
 
         <span class="macro">assert!</span>(profile.is_ok());

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-filter/src/legacy_browsers.rs`."><title>legacy_browsers.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_filter" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_filter/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-filter/src/legacy_browsers.rs`."><title>legacy_browsers.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_filter" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -437,66 +437,82 @@
 <a href="#437" id="437">437</a>
 <a href="#438" id="438">438</a>
 <a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Implements filtering for events originating from legacy browsers.
 
 </span><span class="kw">use </span>std::collections::BTreeSet;
 
-<span class="kw">use </span>relay_event_schema::protocol::Event;
 <span class="kw">use </span>relay_ua::UserAgent;
 
-<span class="kw">use crate</span>::{FilterStatKey, LegacyBrowser, LegacyBrowsersFilterConfig};
+<span class="kw">use crate</span>::{FilterStatKey, Filterable, LegacyBrowser, LegacyBrowsersFilterConfig};
 
 <span class="doccomment">/// Checks if the event originates from legacy browsers.
-</span><span class="kw">pub fn </span>matches(event: <span class="kw-2">&amp;</span>Event, browsers: <span class="kw-2">&amp;</span>BTreeSet&lt;LegacyBrowser&gt;) -&gt; bool {
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(user_agent_string) = event.user_agent() {
-        <span class="kw">let </span>user_agent = relay_ua::parse_user_agent(user_agent_string);
+</span><span class="kw">fn </span>matches(user_agent: <span class="kw-2">&amp;</span>str, browsers: <span class="kw-2">&amp;</span>BTreeSet&lt;LegacyBrowser&gt;) -&gt; bool {
+    <span class="kw">let </span>user_agent = relay_ua::parse_user_agent(user_agent);
 
-        <span class="comment">// remap IE Mobile to IE (sentry python, filter compatibility)
-        </span><span class="kw">let </span>family = <span class="kw">match </span>user_agent.family.as_ref() {
-            <span class="string">&quot;IE Mobile&quot; </span>=&gt; <span class="string">&quot;IE&quot;</span>,
-            other =&gt; other,
-        };
+    <span class="comment">// remap IE Mobile to IE (sentry python, filter compatibility)
+    </span><span class="kw">let </span>family = <span class="kw">match </span>user_agent.family.as_ref() {
+        <span class="string">"IE Mobile" </span>=&gt; <span class="string">"IE"</span>,
+        other =&gt; other,
+    };
 
-        <span class="kw">if </span>browsers.contains(<span class="kw-2">&amp;</span>LegacyBrowser::Default) {
-            <span class="kw">return </span>default_filter(family, <span class="kw-2">&amp;</span>user_agent);
-        }
+    <span class="kw">if </span>browsers.contains(<span class="kw-2">&amp;</span>LegacyBrowser::Default) {
+        <span class="kw">return </span>default_filter(family, <span class="kw-2">&amp;</span>user_agent);
+    }
 
-        <span class="kw">for </span>browser_type <span class="kw">in </span>browsers {
-            <span class="kw">let </span>should_filter = <span class="kw">match </span>browser_type {
-                LegacyBrowser::IePre9 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;IE&quot;</span>, |x| x &lt;= <span class="number">8</span>),
-                LegacyBrowser::Ie9 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;IE&quot;</span>, |x| x == <span class="number">9</span>),
-                LegacyBrowser::Ie10 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;IE&quot;</span>, |x| x == <span class="number">10</span>),
-                LegacyBrowser::Ie11 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;IE&quot;</span>, |x| x == <span class="number">11</span>),
-                LegacyBrowser::OperaMiniPre8 =&gt; {
-                    filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;Opera Mini&quot;</span>, |x| x &lt; <span class="number">8</span>)
-                }
-                LegacyBrowser::OperaPre15 =&gt; {
-                    filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;Opera&quot;</span>, |x| x &lt; <span class="number">15</span>)
-                }
-                LegacyBrowser::AndroidPre4 =&gt; {
-                    filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;Android&quot;</span>, |x| x &lt; <span class="number">4</span>)
-                }
-                LegacyBrowser::SafariPre6 =&gt; {
-                    filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;Safari&quot;</span>, |x| x &lt; <span class="number">6</span>)
-                }
-                LegacyBrowser::EdgePre79 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">&quot;Edge&quot;</span>, |x| x &lt; <span class="number">79</span>),
-                LegacyBrowser::Unknown(<span class="kw">_</span>) =&gt; {
-                    <span class="comment">// unknown browsers should not be filtered
-                    </span><span class="bool-val">false
-                </span>}
-                LegacyBrowser::Default =&gt; <span class="macro">unreachable!</span>(),
-            };
-            <span class="kw">if </span>should_filter {
-                <span class="kw">return </span><span class="bool-val">true</span>;
+    <span class="kw">for </span>browser_type <span class="kw">in </span>browsers {
+        <span class="kw">let </span>should_filter = <span class="kw">match </span>browser_type {
+            LegacyBrowser::IePre9 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"IE"</span>, |x| x &lt;= <span class="number">8</span>),
+            LegacyBrowser::Ie9 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"IE"</span>, |x| x == <span class="number">9</span>),
+            LegacyBrowser::Ie10 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"IE"</span>, |x| x == <span class="number">10</span>),
+            LegacyBrowser::Ie11 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"IE"</span>, |x| x == <span class="number">11</span>),
+            LegacyBrowser::OperaMiniPre8 =&gt; {
+                filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Opera Mini"</span>, |x| x &lt; <span class="number">8</span>)
             }
+            LegacyBrowser::OperaPre15 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Opera"</span>, |x| x &lt; <span class="number">15</span>),
+            LegacyBrowser::AndroidPre4 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Android"</span>, |x| x &lt; <span class="number">4</span>),
+            LegacyBrowser::SafariPre6 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Safari"</span>, |x| x &lt; <span class="number">6</span>),
+            LegacyBrowser::EdgePre79 =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Edge"</span>, |x| x &lt; <span class="number">79</span>),
+            LegacyBrowser::Ie =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"IE"</span>, |x| x &lt; <span class="number">12</span>),
+            LegacyBrowser::OperaMini =&gt; {
+                filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Opera Mini"</span>, |x| x &lt; <span class="number">35</span>)
+            }
+            LegacyBrowser::Opera =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Opera"</span>, |x| x &lt; <span class="number">51</span>),
+            LegacyBrowser::Android =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Android"</span>, |x| x &lt; <span class="number">4</span>),
+            LegacyBrowser::Safari =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Safari"</span>, |x| x &lt; <span class="number">12</span>),
+            LegacyBrowser::Edge =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Edge"</span>, |x| x &lt; <span class="number">79</span>),
+            LegacyBrowser::Chrome =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Chrome"</span>, |x| x &lt; <span class="number">63</span>),
+            LegacyBrowser::Firefox =&gt; filter_browser(family, <span class="kw-2">&amp;</span>user_agent, <span class="string">"Firefox"</span>, |x| x &lt; <span class="number">67</span>),
+            LegacyBrowser::Unknown(<span class="kw">_</span>) =&gt; {
+                <span class="comment">// unknown browsers should not be filtered
+                </span><span class="bool-val">false
+            </span>}
+            LegacyBrowser::Default =&gt; <span class="macro">unreachable!</span>(),
+        };
+        <span class="kw">if </span>should_filter {
+            <span class="kw">return </span><span class="bool-val">true</span>;
         }
     }
     <span class="bool-val">false
 </span>}
 
 <span class="doccomment">/// Filters events originating from legacy browsers.
-</span><span class="kw">pub fn </span>should_filter(
-    event: <span class="kw-2">&amp;</span>Event,
+</span><span class="kw">pub fn </span>should_filter&lt;F: Filterable&gt;(
+    item: <span class="kw-2">&amp;</span>F,
     config: <span class="kw-2">&amp;</span>LegacyBrowsersFilterConfig,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), FilterStatKey&gt; {
     <span class="kw">if </span>!config.is_enabled || config.browsers.is_empty() {
@@ -504,7 +520,7 @@
     </span>}
 
     <span class="kw">let </span>browsers = <span class="kw-2">&amp;</span>config.browsers;
-    <span class="kw">if </span>matches(event, browsers) {
+    <span class="kw">if </span>item.user_agent().map_or(<span class="bool-val">false</span>, |ua| matches(ua, browsers)) {
         <span class="prelude-val">Err</span>(FilterStatKey::LegacyBrowsers)
     } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(())
@@ -523,14 +539,14 @@
 
 <span class="kw">fn </span>min_version(family: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;i32&gt; {
     <span class="kw">match </span>family {
-        <span class="string">&quot;Chrome&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">0</span>),
-        <span class="string">&quot;IE&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">10</span>),
-        <span class="string">&quot;Firefox&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">0</span>),
-        <span class="string">&quot;Safari&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">6</span>),
-        <span class="string">&quot;Edge&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">0</span>),
-        <span class="string">&quot;Opera&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">15</span>),
-        <span class="string">&quot;Android&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">4</span>),
-        <span class="string">&quot;Opera Mini&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">8</span>),
+        <span class="string">"Chrome" </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">0</span>),
+        <span class="string">"IE" </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">10</span>),
+        <span class="string">"Firefox" </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">0</span>),
+        <span class="string">"Safari" </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">6</span>),
+        <span class="string">"Edge" </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">0</span>),
+        <span class="string">"Opera" </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">15</span>),
+        <span class="string">"Android" </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">4</span>),
+        <span class="string">"Opera Mini" </span>=&gt; <span class="prelude-val">Some</span>(<span class="number">8</span>),
         <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
     }
 }
@@ -567,37 +583,43 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
-    <span class="kw">const </span>IE8_UA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)&quot;</span>;
+    <span class="kw">const </span>IE8_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)"</span>;
     <span class="kw">const </span>IE_MOBILE9_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; NOKIA; Lumia 710)&quot;</span>;
-    <span class="kw">const </span>IE9_UA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 7.1; Trident/5.0)&quot;</span>;
-    <span class="kw">const </span>IE10_UA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)&quot;</span>;
-    <span class="kw">const </span>IE11_UA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko&quot;</span>;
+        <span class="string">"Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; NOKIA; Lumia 710)"</span>;
+    <span class="kw">const </span>IE9_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 7.1; Trident/5.0)"</span>;
+    <span class="kw">const </span>IE10_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)"</span>;
+    <span class="kw">const </span>IE11_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko"</span>;
     <span class="kw">const </span>OPERA_MINI_PRE8_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Opera/9.80 (J2ME/MIDP; Opera Mini/7.0.32796/59.323; U; fr) Presto/2.12.423 Version/12.16&quot;</span>;
+        <span class="string">"Opera/9.80 (J2ME/MIDP; Opera Mini/7.0.32796/59.323; U; fr) Presto/2.12.423 Version/12.16"</span>;
     <span class="kw">const </span>OPERA_MINI_8_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Opera/9.80 (J2ME/MIDP; Opera Mini/8.0.35158/36.2534; U; en) Presto/2.12.423 Version/12.16&quot;</span>;
+        <span class="string">"Opera/9.80 (J2ME/MIDP; Opera Mini/8.0.35158/36.2534; U; en) Presto/2.12.423 Version/12.16"</span>;
     <span class="kw">const </span>OPERA_PRE15_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.12 Safari/537.36 OPR/14.0.1116.4&quot;</span>;
+        <span class="string">"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.12 Safari/537.36 OPR/14.0.1116.4"</span>;
     <span class="kw">const </span>OPERA_15_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.45 Safari/537.36 OPR/15.0.1147.61 (Edition Next)&quot;</span>;
+        <span class="string">"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.45 Safari/537.36 OPR/15.0.1147.61 (Edition Next)"</span>;
     <span class="kw">const </span>ANDROID_PRE4_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Linux; U; Android 3.2; nl-nl; GT-P6800 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13&quot;</span>;
+        <span class="string">"Mozilla/5.0 (Linux; U; Android 3.2; nl-nl; GT-P6800 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13"</span>;
     <span class="kw">const </span>ANDROID_4_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30&quot;</span>;
+        <span class="string">"Mozilla/5.0 (Linux; U; Android 4.1.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30"</span>;
     <span class="kw">const </span>SAFARI_PRE6_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Macintosh; U; Intel Mac OS X 1063; tr-DE) AppleWebKit/533.16 (KHTML like Gecko) Version/5.0 Safari/533.16&quot;</span>;
+        <span class="string">"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 1063; tr-DE) AppleWebKit/533.16 (KHTML like Gecko) Version/5.0 Safari/533.16"</span>;
     <span class="kw">const </span>SAFARI_6_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.17.4; en-GB) AppleWebKit/605.1.5 (KHTML, like Gecko) Version/6.0 Safari/605.1.5&quot;</span>;
+        <span class="string">"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.17.4; en-GB) AppleWebKit/605.1.5 (KHTML, like Gecko) Version/6.0 Safari/605.1.5"</span>;
     <span class="kw">const </span>EDGE_ANDROID_118_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.80 Mobile Safari/537.36 EdgA/118.0.2088.58&quot;</span>;
-    <span class="kw">const </span>EDGE_79_UA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3919.0 Safari/537.36 Edg/79.0.294.1&quot;</span>;
+        <span class="string">"Mozilla/5.0 (Linux; Android 10; Pixel 3 XL) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.80 Mobile Safari/537.36 EdgA/118.0.2088.58"</span>;
+    <span class="kw">const </span>EDGE_79_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3919.0 Safari/537.36 Edg/79.0.294.1"</span>;
     <span class="kw">const </span>EDGE_18_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582&quot;</span>;
+        <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582"</span>;
     <span class="kw">const </span>EDGE_12_UA: <span class="kw-2">&amp;</span>str =
-        <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246&quot;</span>;
-
-    <span class="kw">use </span>std::collections::BTreeSet;
+        <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246"</span>;
+    <span class="kw">const </span>OPERA_UA : <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.45 Safari/537.36 OPR/49.0.1147.61"</span>;
+    <span class="kw">const </span>OPERA_MINI_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Opera/20.80 (J2ME/MIDP; Opera Mini/16.0.35158/36.2534; U; en) Presto/2.12.423 Version/12.16"</span>;
+    <span class="kw">const </span>CHROME_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.2228.0 Safari/537.36"</span>;
+    <span class="kw">const </span>FIREFOX_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Windows NT 6.1; rv:60.0) Gecko/20100101 Firefox/60.0"</span>;
+    <span class="kw">const </span>IE_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko"</span>;
+    <span class="kw">const </span>EDGE_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582"</span>;
+    <span class="kw">const </span>SAFARI_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.17.4; en-GB) AppleWebKit/605.1.5 (KHTML, like Gecko) Version/6.0 Safari/605.1.5"</span>;
+    <span class="kw">const </span>ANDROID_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Linux; U; Android 3.2; nl-nl; GT-P6800 Build/HTJ85B) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13"</span>;
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="kw">use </span><span class="kw">crate</span>::testutils;
@@ -628,7 +650,7 @@
         <span class="macro">assert_eq!</span>(
             filter_result,
             <span class="prelude-val">Ok</span>(()),
-            <span class="string">&quot;Event filtered although filter should have been disabled&quot;
+            <span class="string">"Event filtered although filter should have been disabled"
         </span>)
     }
 
@@ -650,7 +672,7 @@
             <span class="macro">assert_ne!</span>(
                 filter_result,
                 <span class="prelude-val">Ok</span>(()),
-                <span class="string">&quot;Default filter should have filtered User Agent\n{old_user_agent}&quot;
+                <span class="string">"Default filter should have filtered User Agent\n{old_user_agent}"
             </span>)
         }
     }
@@ -672,7 +694,7 @@
             <span class="macro">assert_eq!</span>(
                 filter_result,
                 <span class="prelude-val">Ok</span>(()),
-                <span class="string">&quot;Default filter shouldn&#39;t have filtered User Agent\n{old_user_agent}&quot;
+                <span class="string">"Default filter shouldn't have filtered User Agent\n{old_user_agent}"
             </span>)
         }
     }
@@ -722,6 +744,14 @@
                 EDGE_18_UA,
                 <span class="kw-2">&amp;</span>[LegacyBrowser::OperaPre15, LegacyBrowser::EdgePre79][..],
             ),
+            (OPERA_UA, <span class="kw-2">&amp;</span>[LegacyBrowser::Opera][..]),
+            (OPERA_MINI_UA, <span class="kw-2">&amp;</span>[LegacyBrowser::OperaMini][..]),
+            (CHROME_UA, <span class="kw-2">&amp;</span>[LegacyBrowser::Chrome][..]),
+            (FIREFOX_UA, <span class="kw-2">&amp;</span>[LegacyBrowser::Firefox][..]),
+            (IE_UA, <span class="kw-2">&amp;</span>[LegacyBrowser::Ie][..]),
+            (EDGE_UA, <span class="kw-2">&amp;</span>[LegacyBrowser::Edge][..]),
+            (SAFARI_UA, <span class="kw-2">&amp;</span>[LegacyBrowser::Safari][..]),
+            (ANDROID_UA, <span class="kw-2">&amp;</span>[LegacyBrowser::Android][..]),
         ];
 
         <span class="kw">for </span>(<span class="kw-2">ref </span>user_agent, <span class="kw-2">ref </span>active_filters) <span class="kw">in </span><span class="kw-2">&amp;</span>test_configs {
@@ -731,7 +761,7 @@
             <span class="macro">assert_ne!</span>(
                 filter_result,
                 <span class="prelude-val">Ok</span>(()),
-                <span class="string">&quot;Filters {active_filters:?} should have filtered User Agent\n{user_agent} for &quot;
+                <span class="string">"Filters {active_filters:?} should have filtered User Agent\n{user_agent} for "
             </span>)
         }
     }
@@ -762,7 +792,7 @@
             <span class="macro">assert_eq!</span>(
                 filter_result,
                 <span class="prelude-val">Ok</span>(()),
-                <span class="string">&quot;Filter {active_filter:?} shouldn&#39;t have filtered User Agent\n{user_agent} for &quot;
+                <span class="string">"Filter {active_filter:?} shouldn't have filtered User Agent\n{user_agent} for "
             </span>)
         }
     }
@@ -775,37 +805,37 @@
 
         <span class="comment">// User agents used by Sentry tests
         </span><span class="kw">const </span>ANDROID2_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (Linux; U; Android 2.3.5; en-us; HTC Vision Build/GRI40) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1&quot;</span>;
+            <span class="string">"Mozilla/5.0 (Linux; U; Android 2.3.5; en-us; HTC Vision Build/GRI40) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"</span>;
         <span class="kw">const </span>ANDROID4_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19&quot;</span>;
+            <span class="string">"Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"</span>;
         <span class="kw">const </span>IE5_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/4.0 (compatible; MSIE 5.50; Windows NT; SiteKiosk 4.9; SiteCoach 1.0)&quot;</span>;
+            <span class="string">"Mozilla/4.0 (compatible; MSIE 5.50; Windows NT; SiteKiosk 4.9; SiteCoach 1.0)"</span>;
         <span class="kw">const </span>IE8_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Win64; x64; Trident/4.0; .NET CLR 2.0.50727; SLCC2; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; MDDC; Tablet PC 2.0)&quot;</span>;
-        <span class="kw">const </span>IE9_S_UA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US))&quot;</span>;
+            <span class="string">"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Win64; x64; Trident/4.0; .NET CLR 2.0.50727; SLCC2; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; MDDC; Tablet PC 2.0)"</span>;
+        <span class="kw">const </span>IE9_S_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US))"</span>;
         <span class="kw">const </span>IE_MOBILE9_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; NOKIA; Lumia 710)&quot;</span>;
+            <span class="string">"Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; NOKIA; Lumia 710)"</span>;
         <span class="kw">const </span>IE10_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 7.0; InfoPath.3; .NET CLR 3.1.40767; Trident/6.0; en-IN)&quot;</span>;
+            <span class="string">"Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 7.0; InfoPath.3; .NET CLR 3.1.40767; Trident/6.0; en-IN)"</span>;
         <span class="kw">const </span>IE_MOBILE10_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 520)&quot;</span>;
-        <span class="kw">const </span>OPERA11_S_UA: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Opera/9.80 (Windows NT 5.1; U; it) Presto/2.7.62 Version/11.00&quot;</span>;
+            <span class="string">"Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ARM; Touch; NOKIA; Lumia 520)"</span>;
+        <span class="kw">const </span>OPERA11_S_UA: <span class="kw-2">&amp;</span>str = <span class="string">"Opera/9.80 (Windows NT 5.1; U; it) Presto/2.7.62 Version/11.00"</span>;
         <span class="kw">const </span>OPERA_12_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Opera/9.80 (X11; Linux i686; Ubuntu/14.10) Presto/2.12.388 Version/12.16&quot;</span>;
+            <span class="string">"Opera/9.80 (X11; Linux i686; Ubuntu/14.10) Presto/2.12.388 Version/12.16"</span>;
         <span class="kw">const </span>OPERA_15_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64; Debian) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36 OPR/15.0.1147.100&quot;</span>;
+            <span class="string">"Mozilla/5.0 (X11; Linux x86_64; Debian) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36 OPR/15.0.1147.100"</span>;
         <span class="kw">const </span>CHROME_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36&quot;</span>;
+            <span class="string">"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"</span>;
         <span class="kw">const </span>EDGE_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10136&quot;</span>;
+            <span class="string">"Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10136"</span>;
         <span class="kw">const </span>SAFARI5_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-HK) AppleWebKit/533.18.1 (KHTML, like Gecko) Version/5.0.2 Safari/533.18.5&quot;</span>;
+            <span class="string">"Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-HK) AppleWebKit/533.18.1 (KHTML, like Gecko) Version/5.0.2 Safari/533.18.5"</span>;
         <span class="kw">const </span>SAFARI7_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A&quot;</span>;
+            <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A"</span>;
         <span class="kw">const </span>OPERA_MINI8_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Opera/9.80 (J2ME/MIDP; Opera Mini/8.0.35158/36.2534; U; en) Presto/2.12.423 Version/12.16&quot;</span>;
+            <span class="string">"Opera/9.80 (J2ME/MIDP; Opera Mini/8.0.35158/36.2534; U; en) Presto/2.12.423 Version/12.16"</span>;
         <span class="kw">const </span>OPERA_MINI7_S_UA: <span class="kw-2">&amp;</span>str =
-            <span class="string">&quot;Opera/9.80 (J2ME/MIDP; Opera Mini/7.0.32796/59.323; U; fr) Presto/2.12.423 Version/12.16&quot;</span>;
+            <span class="string">"Opera/9.80 (J2ME/MIDP; Opera Mini/7.0.32796/59.323; U; fr) Presto/2.12.423 Version/12.16"</span>;
 
         <span class="attr">#[test]
         </span><span class="kw">fn </span>test_filter_sentry_user_agents() {
@@ -841,7 +871,7 @@
                 <span class="macro">assert_ne!</span>(
                     filter_result,
                     <span class="prelude-val">Ok</span>(()),
-                    <span class="string">&quot;Filter &lt;{active_filter:?}&gt; should have filtered User Agent\n{user_agent} for &quot;
+                    <span class="string">"Filter &lt;{active_filter:?}&gt; should have filtered User Agent\n{user_agent} for "
                 </span>)
             }
         }
@@ -870,7 +900,7 @@
                 <span class="macro">assert_eq!</span>(
                     filter_result,
                     <span class="prelude-val">Ok</span>(()),
-                    <span class="string">&quot;Filter {active_filter:?} shouldn&#39;t have filtered User Agent\n{user_agent} for &quot;
+                    <span class="string">"Filter {active_filter:?} shouldn't have filtered User Agent\n{user_agent} for "
                 </span>)
             }
         }

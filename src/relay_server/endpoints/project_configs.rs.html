@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/endpoints/project_configs.rs`."><title>project_configs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/endpoints/project_configs.rs`."><title>project_configs.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -209,26 +209,76 @@
 <a href="#209" id="209">209</a>
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
 <span class="kw">use </span>std::sync::Arc;
 
-<span class="kw">use </span>axum::extract::Query;
+<span class="kw">use </span>axum::extract::{Query, Request};
 <span class="kw">use </span>axum::handler::Handler;
-<span class="kw">use </span>axum::http::Request;
 <span class="kw">use </span>axum::response::{IntoResponse, <span class="prelude-ty">Result</span>};
 <span class="kw">use </span>axum::{Json, RequestExt};
-<span class="kw">use </span>futures::future;
+<span class="kw">use </span>futures::stream::FuturesUnordered;
+<span class="kw">use </span>futures::StreamExt;
 <span class="kw">use </span>relay_base_schema::project::ProjectKey;
 <span class="kw">use </span>relay_dynamic_config::{ErrorBoundary, GlobalConfig};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="kw">use </span><span class="kw">crate</span>::actors::global_config::{<span class="self">self</span>, StatusResponse};
-<span class="kw">use </span><span class="kw">crate</span>::actors::project::{LimitedProjectState, ProjectState};
-<span class="kw">use </span><span class="kw">crate</span>::actors::project_cache::{GetCachedProjectState, GetProjectState};
 <span class="kw">use </span><span class="kw">crate</span>::endpoints::common::ServiceUnavailable;
 <span class="kw">use </span><span class="kw">crate</span>::endpoints::forward;
 <span class="kw">use </span><span class="kw">crate</span>::extractors::SignedJson;
 <span class="kw">use </span><span class="kw">crate</span>::service::ServiceState;
+<span class="kw">use </span><span class="kw">crate</span>::services::global_config::{<span class="self">self</span>, StatusResponse};
+<span class="kw">use </span><span class="kw">crate</span>::services::project::{LimitedParsedProjectState, ParsedProjectState, ProjectState};
+<span class="kw">use </span><span class="kw">crate</span>::services::project_cache::{GetCachedProjectState, GetProjectState};
 
 <span class="doccomment">/// V2 version of this endpoint.
 ///
@@ -260,13 +310,13 @@
 </span><span class="attr">#[derive(Debug, Clone, Serialize)]
 #[serde(untagged)]
 </span><span class="kw">enum </span>ProjectStateWrapper {
-    Full(ProjectState),
-    Limited(<span class="attr">#[serde(with = <span class="string">&quot;LimitedProjectState&quot;</span>)] </span>ProjectState),
+    Full(ParsedProjectState),
+    Limited(<span class="attr">#[serde(with = <span class="string">"LimitedParsedProjectState"</span>)] </span>ParsedProjectState),
 }
 
 <span class="kw">impl </span>ProjectStateWrapper {
     <span class="doccomment">/// Create a wrapper which forces serialization into external or internal format
-    </span><span class="kw">pub fn </span>new(state: ProjectState, full: bool) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(state: ParsedProjectState, full: bool) -&gt; <span class="self">Self </span>{
         <span class="kw">if </span>full {
             <span class="self">Self</span>::Full(state)
         } <span class="kw">else </span>{
@@ -279,37 +329,71 @@
 ///
 /// Either the project config is returned or `None` in case the requesting Relay did not have
 /// permission for the config, or the config does not exist.  The latter happens if the request was
-/// made by an external relay who&#39;s public key is not configured as authorised on the project.
+/// made by an external relay who's public key is not configured as authorised on the project.
 ///
 /// Version 3 also adds a list of projects whose response is pending.  A [`ProjectKey`] should never
 /// be in both collections. This list is always empty before V3. If `global` is
 /// enabled, version 3 also responds with [`GlobalConfig`].
 </span><span class="attr">#[derive(Debug, Serialize)]
-#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
+#[serde(rename_all = <span class="string">"camelCase"</span>)]
 </span><span class="kw">struct </span>GetProjectStatesResponseWrapper {
-    configs: HashMap&lt;ProjectKey, <span class="prelude-ty">Option</span>&lt;ProjectStateWrapper&gt;&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Vec::is_empty&quot;</span>)]
+    configs: HashMap&lt;ProjectKey, ProjectStateWrapper&gt;,
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Vec::is_empty"</span>)]
     </span>pending: Vec&lt;ProjectKey&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Vec::is_empty"</span>)]
+    </span>unchanged: Vec&lt;ProjectKey&gt;,
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span>global: <span class="prelude-ty">Option</span>&lt;Arc&lt;GlobalConfig&gt;&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span>global_status: <span class="prelude-ty">Option</span>&lt;StatusResponse&gt;,
 }
 
 <span class="doccomment">/// Request payload of the project config endpoint.
 ///
-/// This is a replica of [`GetProjectStates`](crate::actors::project_upstream::GetProjectStates)
+/// This is a replica of [`GetProjectStates`](crate::services::project_upstream::GetProjectStates)
 /// which allows skipping invalid project keys.
 </span><span class="attr">#[derive(Debug, Deserialize)]
-#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
+#[serde(rename_all = <span class="string">"camelCase"</span>)]
 </span><span class="kw">struct </span>GetProjectStatesRequest {
-    public_keys: Vec&lt;ErrorBoundary&lt;ProjectKey&gt;&gt;,
+    <span class="doccomment">/// The list of all requested project configs.
+    </span>public_keys: Vec&lt;ErrorBoundary&lt;ProjectKey&gt;&gt;,
+    <span class="doccomment">/// List of revisions for all project configs.
+    ///
+    /// This length of this list if specified must be the same length
+    /// as [`Self::public_keys`], the items are asssociated by index.
+    </span>revisions: <span class="prelude-ty">Option</span>&lt;ErrorBoundary&lt;Vec&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;&gt;&gt;,
     <span class="attr">#[serde(default)]
     </span>full_config: bool,
     <span class="attr">#[serde(default)]
     </span>no_cache: bool,
     <span class="attr">#[serde(default)]
     </span>global: bool,
+}
+
+<span class="kw">fn </span>into_valid_keys(
+    public_keys: Vec&lt;ErrorBoundary&lt;ProjectKey&gt;&gt;,
+    revisions: <span class="prelude-ty">Option</span>&lt;ErrorBoundary&lt;Vec&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;&gt;&gt;,
+) -&gt; <span class="kw">impl </span>Iterator&lt;Item = (ProjectKey, <span class="prelude-ty">Option</span>&lt;String&gt;)&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>revisions = revisions.and_then(|e| e.ok()).unwrap_or_default();
+    <span class="kw">if </span>!revisions.is_empty() &amp;&amp; revisions.len() != public_keys.len() {
+        <span class="comment">// The downstream sent us a different amount of revisions than project keys,
+        // this indicates an error in the downstream code. Just to be safe, discard
+        // all revisions and carry on as if the downstream never sent any revisions.
+        </span><span class="macro">relay_log::warn!</span>(
+            <span class="string">"downstream sent {} project keys but {} revisions, discarding all revisions"</span>,
+            public_keys.len(),
+            revisions.len()
+        );
+        revisions.clear();
+    }
+    <span class="kw">let </span>revisions = revisions.into_iter().chain(std::iter::repeat(<span class="prelude-val">None</span>));
+
+    std::iter::zip(public_keys, revisions).filter_map(|(public_key, revision)| {
+        <span class="comment">// Skip unparsable public keys.
+        // The downstream Relay will consider them `ProjectState::missing`.
+        </span><span class="kw">let </span>public_key = public_key.ok()<span class="question-mark">?</span>;
+        <span class="prelude-val">Some</span>((public_key, revision))
+    })
 }
 
 <span class="kw">async fn </span>inner(
@@ -323,27 +407,26 @@
     <span class="kw">let </span>no_cache = inner.no_cache;
     <span class="kw">let </span>keys_len = inner.public_keys.len();
 
-    <span class="comment">// Skip unparsable public keys. The downstream Relay will consider them `ProjectState::missing`.
-    </span><span class="kw">let </span>valid_keys = inner.public_keys.into_iter().filter_map(|e| e.ok());
-    <span class="kw">let </span>futures = valid_keys.map(|project_key| <span class="kw">async move </span>{
-        <span class="kw">let </span>state_result = <span class="kw">if </span>version.version &gt;= ENDPOINT_V3 &amp;&amp; !no_cache {
-            project_cache
-                .send(GetCachedProjectState::new(project_key))
-                .<span class="kw">await
-        </span>} <span class="kw">else </span>{
-            project_cache
-                .send(GetProjectState::new(project_key).no_cache(no_cache))
-                .<span class="kw">await
-                </span>.map(<span class="prelude-val">Some</span>)
-        };
+    <span class="kw">let </span><span class="kw-2">mut </span>futures: FuturesUnordered&lt;<span class="kw">_</span>&gt; = into_valid_keys(inner.public_keys, inner.revisions)
+        .map(|(project_key, revision)| <span class="kw">async move </span>{
+            <span class="kw">let </span>state_result = <span class="kw">if </span>version.version &gt;= ENDPOINT_V3 &amp;&amp; !no_cache {
+                project_cache
+                    .send(GetCachedProjectState::new(project_key))
+                    .<span class="kw">await
+            </span>} <span class="kw">else </span>{
+                project_cache
+                    .send(GetProjectState::new(project_key).no_cache(no_cache))
+                    .<span class="kw">await
+            </span>};
 
-        (project_key, state_result)
-    });
+            (project_key, revision, state_result)
+        })
+        .collect();
 
     <span class="kw">let </span>(global, global_status) = <span class="kw">if </span>inner.global {
         <span class="kw">match </span>state.global_config().send(global_config::Get).<span class="kw">await</span><span class="question-mark">? </span>{
             global_config::Status::Ready(config) =&gt; (<span class="prelude-val">Some</span>(config), <span class="prelude-val">Some</span>(StatusResponse::Ready)),
-            <span class="comment">// Old relays expect to get a global config no matter what, even if it&#39;s not ready
+            <span class="comment">// Old relays expect to get a global config no matter what, even if it's not ready
             // yet. We therefore give them a default global config.
             </span>global_config::Status::Pending =&gt; (
                 <span class="prelude-val">Some</span>(GlobalConfig::default().into()),
@@ -355,30 +438,51 @@
     };
 
     <span class="kw">let </span><span class="kw-2">mut </span>pending = Vec::with_capacity(keys_len);
+    <span class="kw">let </span><span class="kw-2">mut </span>unchanged = Vec::with_capacity(keys_len);
     <span class="kw">let </span><span class="kw-2">mut </span>configs = HashMap::with_capacity(keys_len);
-    <span class="kw">for </span>(project_key, state_result) <span class="kw">in </span>future::join_all(futures).<span class="kw">await </span>{
-        <span class="kw">let </span><span class="prelude-val">Some</span>(project_state) = state_result<span class="question-mark">? </span><span class="kw">else </span>{
-            pending.push(project_key);
-            <span class="kw">continue</span>;
+
+    <span class="kw">while let </span><span class="prelude-val">Some</span>((project_key, revision, state_result)) = futures.next().<span class="kw">await </span>{
+        <span class="kw">let </span>project_info = <span class="kw">match </span>state_result<span class="question-mark">? </span>{
+            ProjectState::Enabled(info) =&gt; info,
+            ProjectState::Disabled =&gt; {
+                <span class="comment">// Don't insert project config. Downstream Relay will consider it disabled.
+                </span><span class="kw">continue</span>;
+            }
+            ProjectState::Pending =&gt; {
+                pending.push(project_key);
+                <span class="kw">continue</span>;
+            }
         };
+
+        <span class="comment">// Only ever omit responses when there was a valid revision in the first place.
+        </span><span class="kw">if </span>revision.is_some() &amp;&amp; project_info.rev == revision {
+            unchanged.push(project_key);
+            <span class="kw">continue</span>;
+        }
 
         <span class="comment">// If public key is known (even if rate-limited, which is Some(false)), it has
         // access to the project config
         </span><span class="kw">let </span>has_access = relay.internal
-            || project_state
+            || project_info
                 .config
                 .trusted_relays
                 .contains(<span class="kw-2">&amp;</span>relay.public_key);
 
         <span class="kw">if </span>has_access {
             <span class="kw">let </span>full = relay.internal &amp;&amp; inner.full_config;
-            <span class="kw">let </span>wrapper = ProjectStateWrapper::new((<span class="kw-2">*</span>project_state).clone(), full);
-            configs.insert(project_key, <span class="prelude-val">Some</span>(wrapper));
+            <span class="kw">let </span>wrapper = ProjectStateWrapper::new(
+                ParsedProjectState {
+                    disabled: <span class="bool-val">false</span>,
+                    info: project_info.as_ref().clone(),
+                },
+                full,
+            );
+            configs.insert(project_key, wrapper);
         } <span class="kw">else </span>{
             <span class="macro">relay_log::debug!</span>(
                 relay = %relay.public_key,
                 project_key = %project_key,
-                <span class="string">&quot;relay does not have access to project key&quot;</span>,
+                <span class="string">"relay does not have access to project key"</span>,
             );
         };
     }
@@ -386,6 +490,7 @@
     <span class="prelude-val">Ok</span>(Json(GetProjectStatesResponseWrapper {
         configs,
         pending,
+        unchanged,
         global,
         global_status,
     }))
@@ -405,14 +510,9 @@
 /// config endpoint implementation. Otherwise, the request is forwarded to the upstream.
 ///
 /// Relays can drop compatibility with old versions of the project config endpoint, for instance the
-/// initial version 1. However, Sentry&#39;s HTTP endpoint will retain compatibility for much longer to
+/// initial version 1. However, Sentry's HTTP endpoint will retain compatibility for much longer to
 /// support old Relay versions.
-</span><span class="kw">pub async fn </span>handle&lt;B&gt;(state: ServiceState, <span class="kw-2">mut </span>req: Request&lt;B&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw">impl </span>IntoResponse&gt;
-<span class="kw">where
-    </span>B: axum::body::HttpBody + Send + <span class="lifetime">&#39;static</span>,
-    B::Data: Send,
-    B::Error: Into&lt;axum::BoxError&gt;,
-{
+</span><span class="kw">pub async fn </span>handle(state: ServiceState, <span class="kw-2">mut </span>req: Request) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw">impl </span>IntoResponse&gt; {
     <span class="kw">let </span>data = req.extract_parts().<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="kw">if </span>is_compatible(data) {
         inner.call(req, state).<span class="kw">await

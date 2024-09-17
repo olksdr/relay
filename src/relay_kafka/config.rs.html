@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-kafka/src/config.rs`."><title>config.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_kafka" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_kafka/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-kafka/src/config.rs`."><title>config.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_kafka" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -336,87 +336,11 @@
 <a href="#336" id="336">336</a>
 <a href="#337" id="337">337</a>
 <a href="#338" id="338">338</a>
-<a href="#339" id="339">339</a>
-<a href="#340" id="340">340</a>
-<a href="#341" id="341">341</a>
-<a href="#342" id="342">342</a>
-<a href="#343" id="343">343</a>
-<a href="#344" id="344">344</a>
-<a href="#345" id="345">345</a>
-<a href="#346" id="346">346</a>
-<a href="#347" id="347">347</a>
-<a href="#348" id="348">348</a>
-<a href="#349" id="349">349</a>
-<a href="#350" id="350">350</a>
-<a href="#351" id="351">351</a>
-<a href="#352" id="352">352</a>
-<a href="#353" id="353">353</a>
-<a href="#354" id="354">354</a>
-<a href="#355" id="355">355</a>
-<a href="#356" id="356">356</a>
-<a href="#357" id="357">357</a>
-<a href="#358" id="358">358</a>
-<a href="#359" id="359">359</a>
-<a href="#360" id="360">360</a>
-<a href="#361" id="361">361</a>
-<a href="#362" id="362">362</a>
-<a href="#363" id="363">363</a>
-<a href="#364" id="364">364</a>
-<a href="#365" id="365">365</a>
-<a href="#366" id="366">366</a>
-<a href="#367" id="367">367</a>
-<a href="#368" id="368">368</a>
-<a href="#369" id="369">369</a>
-<a href="#370" id="370">370</a>
-<a href="#371" id="371">371</a>
-<a href="#372" id="372">372</a>
-<a href="#373" id="373">373</a>
-<a href="#374" id="374">374</a>
-<a href="#375" id="375">375</a>
-<a href="#376" id="376">376</a>
-<a href="#377" id="377">377</a>
-<a href="#378" id="378">378</a>
-<a href="#379" id="379">379</a>
-<a href="#380" id="380">380</a>
-<a href="#381" id="381">381</a>
-<a href="#382" id="382">382</a>
-<a href="#383" id="383">383</a>
-<a href="#384" id="384">384</a>
-<a href="#385" id="385">385</a>
-<a href="#386" id="386">386</a>
-<a href="#387" id="387">387</a>
-<a href="#388" id="388">388</a>
-<a href="#389" id="389">389</a>
-<a href="#390" id="390">390</a>
-<a href="#391" id="391">391</a>
-<a href="#392" id="392">392</a>
-<a href="#393" id="393">393</a>
-<a href="#394" id="394">394</a>
-<a href="#395" id="395">395</a>
-<a href="#396" id="396">396</a>
-<a href="#397" id="397">397</a>
-<a href="#398" id="398">398</a>
-<a href="#399" id="399">399</a>
-<a href="#400" id="400">400</a>
-<a href="#401" id="401">401</a>
-<a href="#402" id="402">402</a>
-<a href="#403" id="403">403</a>
-<a href="#404" id="404">404</a>
-<a href="#405" id="405">405</a>
-<a href="#406" id="406">406</a>
-<a href="#407" id="407">407</a>
-<a href="#408" id="408">408</a>
-<a href="#409" id="409">409</a>
-<a href="#410" id="410">410</a>
-<a href="#411" id="411">411</a>
-<a href="#412" id="412">412</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Configuration primitives to configure the kafka producer and properly set up the connection.
 //!
 //! The configuration can be either;
 //! - [`TopicAssignment::Primary`] - the main and default kafka configuration,
 //! - [`TopicAssignment::Secondary`] - used to configure any additional kafka topic,
-//! - [`TopicAssignment::Sharded`] - if we want to configure multiple kafka clusters,
-//! we can create a mapping of the range of logical shards to the kafka configuration.
 
 </span><span class="kw">use </span>std::collections::BTreeMap;
 
@@ -427,10 +351,10 @@
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>ConfigError {
     <span class="doccomment">/// The user referenced a kafka config name that does not exist.
-    </span><span class="attr">#[error(<span class="string">&quot;unknown kafka config name&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"unknown kafka config name"</span>)]
     </span>UnknownKafkaConfigName,
     <span class="doccomment">/// The user did not configure 0 shard
-    </span><span class="attr">#[error(<span class="string">&quot;invalid kafka shard configuration: must have shard with index 0&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid kafka shard configuration: must have shard with index 0"</span>)]
     </span>InvalidShard,
 }
 
@@ -447,8 +371,6 @@
     </span>Outcomes,
     <span class="doccomment">/// Override for billing critical outcomes.
     </span>OutcomesBilling,
-    <span class="doccomment">/// Session health updates.
-    </span>Sessions,
     <span class="doccomment">/// Any metric that is extracted from sessions.
     </span>MetricsSessions,
     <span class="doccomment">/// Generic metrics topic, excluding sessions (release health).
@@ -463,20 +385,23 @@
     </span>Monitors,
     <span class="doccomment">/// Standalone spans without a transaction.
     </span>Spans,
+    <span class="doccomment">/// Summary for metrics collected during a span.
+    </span>MetricsSummaries,
+    <span class="doccomment">/// Feedback events topic.
+    </span>Feedback,
 }
 
 <span class="kw">impl </span>KafkaTopic {
     <span class="doccomment">/// Returns iterator over the variants of [`KafkaTopic`].
     /// It will have to be adjusted if the new variants are added.
-    </span><span class="kw">pub fn </span>iter() -&gt; std::slice::Iter&lt;<span class="lifetime">&#39;static</span>, <span class="self">Self</span>&gt; {
+    </span><span class="kw">pub fn </span>iter() -&gt; std::slice::Iter&lt;<span class="lifetime">'static</span>, <span class="self">Self</span>&gt; {
         <span class="kw">use </span>KafkaTopic::<span class="kw-2">*</span>;
-        <span class="kw">static </span>TOPICS: [KafkaTopic; <span class="number">13</span>] = [
+        <span class="kw">static </span>TOPICS: [KafkaTopic; <span class="number">14</span>] = [
             Events,
             Attachments,
             Transactions,
             Outcomes,
             OutcomesBilling,
-            Sessions,
             MetricsSessions,
             MetricsGeneric,
             Profiles,
@@ -484,91 +409,73 @@
             ReplayRecordings,
             Monitors,
             Spans,
+            MetricsSummaries,
+            Feedback,
         ];
         TOPICS.iter()
     }
 }
 
-<span class="doccomment">/// Configuration for topics.
-</span><span class="attr">#[derive(Serialize, Deserialize, Debug)]
-#[serde(default)]
-</span><span class="kw">pub struct </span>TopicAssignments {
-    <span class="doccomment">/// Simple events topic name.
-    </span><span class="kw">pub </span>events: TopicAssignment,
-    <span class="doccomment">/// Events with attachments topic name.
-    </span><span class="kw">pub </span>attachments: TopicAssignment,
-    <span class="doccomment">/// Transaction events topic name.
-    </span><span class="kw">pub </span>transactions: TopicAssignment,
-    <span class="doccomment">/// Outcomes topic name.
-    </span><span class="kw">pub </span>outcomes: TopicAssignment,
-    <span class="doccomment">/// Outcomes topic name for billing critical outcomes. Defaults to the assignment of `outcomes`.
-    </span><span class="kw">pub </span>outcomes_billing: <span class="prelude-ty">Option</span>&lt;TopicAssignment&gt;,
-    <span class="doccomment">/// Session health topic name.
-    </span><span class="kw">pub </span>sessions: TopicAssignment,
-    <span class="doccomment">/// Default topic name for all aggregate metrics. Specialized topics for session-based and
-    /// generic metrics can be configured via `metrics_sessions` and `metrics_generic` each.
-    </span><span class="kw">pub </span>metrics: TopicAssignment,
-    <span class="doccomment">/// Topic name for metrics extracted from sessions. Defaults to the assignment of `metrics`.
-    </span><span class="kw">pub </span>metrics_sessions: <span class="prelude-ty">Option</span>&lt;TopicAssignment&gt;,
-    <span class="doccomment">/// Topic name for all other kinds of metrics. Defaults to the assignment of `metrics`.
-    </span><span class="attr">#[serde(alias = <span class="string">&quot;metrics_transactions&quot;</span>)]
-    </span><span class="kw">pub </span>metrics_generic: TopicAssignment,
-    <span class="doccomment">/// Stacktrace topic name
-    </span><span class="kw">pub </span>profiles: TopicAssignment,
-    <span class="doccomment">/// Replay Events topic name.
-    </span><span class="kw">pub </span>replay_events: TopicAssignment,
-    <span class="doccomment">/// Recordings topic name.
-    </span><span class="kw">pub </span>replay_recordings: TopicAssignment,
-    <span class="doccomment">/// Monitor check-ins.
-    </span><span class="kw">pub </span>monitors: TopicAssignment,
-    <span class="doccomment">/// Standalone spans without a transaction.
-    </span><span class="kw">pub </span>spans: TopicAssignment,
-}
+<span class="macro">macro_rules!</span> define_topic_assignments {
+    ($(<span class="macro-nonterminal">$field_name</span>:ident : (<span class="macro-nonterminal">$kafka_topic</span>:path, <span class="macro-nonterminal">$default_topic</span>:literal, <span class="macro-nonterminal">$doc</span>:literal)),* $(,)<span class="question-mark">?</span>) =&gt; {
+        <span class="doccomment">/// Configuration for topics.
+        </span><span class="attr">#[derive(Serialize, Deserialize, Debug)]
+        #[serde(default)]
+        </span><span class="kw">pub struct </span>TopicAssignments {
+            $(
+                <span class="attr">#[serde(alias = <span class="macro-nonterminal">$default_topic</span>)]
+                #[doc = <span class="macro-nonterminal">$doc</span>]
+                </span><span class="kw">pub </span><span class="macro-nonterminal">$field_name</span>: TopicAssignment,
+            )*
 
-<span class="kw">impl </span>TopicAssignments {
-    <span class="doccomment">/// Get a topic assignment by [`KafkaTopic`] value
-    </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, kafka_topic: KafkaTopic) -&gt; <span class="kw-2">&amp;</span>TopicAssignment {
-        <span class="kw">match </span>kafka_topic {
-            KafkaTopic::Attachments =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.attachments,
-            KafkaTopic::Events =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.events,
-            KafkaTopic::Transactions =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.transactions,
-            KafkaTopic::Outcomes =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.outcomes,
-            KafkaTopic::OutcomesBilling =&gt; <span class="self">self</span>.outcomes_billing.as_ref().unwrap_or(<span class="kw-2">&amp;</span><span class="self">self</span>.outcomes),
-            KafkaTopic::Sessions =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.sessions,
-            KafkaTopic::MetricsSessions =&gt; <span class="self">self</span>.metrics_sessions.as_ref().unwrap_or(<span class="kw-2">&amp;</span><span class="self">self</span>.metrics),
-            KafkaTopic::MetricsGeneric =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.metrics_generic,
-            KafkaTopic::Profiles =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.profiles,
-            KafkaTopic::ReplayEvents =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.replay_events,
-            KafkaTopic::ReplayRecordings =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.replay_recordings,
-            KafkaTopic::Monitors =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.monitors,
-            KafkaTopic::Spans =&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.spans,
+            <span class="doccomment">/// Additional topic assignments configured but currently unused by this Relay instance.
+            </span><span class="attr">#[serde(flatten)]
+            </span><span class="kw">pub </span>unused: BTreeMap&lt;String, TopicAssignment&gt;,
         }
-    }
-}
 
-<span class="kw">impl </span>Default <span class="kw">for </span>TopicAssignments {
-    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            events: <span class="string">&quot;ingest-events&quot;</span>.to_owned().into(),
-            attachments: <span class="string">&quot;ingest-attachments&quot;</span>.to_owned().into(),
-            transactions: <span class="string">&quot;ingest-transactions&quot;</span>.to_owned().into(),
-            outcomes: <span class="string">&quot;outcomes&quot;</span>.to_owned().into(),
-            outcomes_billing: <span class="prelude-val">None</span>,
-            sessions: <span class="string">&quot;ingest-sessions&quot;</span>.to_owned().into(),
-            metrics: <span class="string">&quot;ingest-metrics&quot;</span>.to_owned().into(),
-            metrics_sessions: <span class="prelude-val">None</span>,
-            metrics_generic: <span class="string">&quot;ingest-performance-metrics&quot;</span>.to_owned().into(),
-            profiles: <span class="string">&quot;profiles&quot;</span>.to_owned().into(),
-            replay_events: <span class="string">&quot;ingest-replay-events&quot;</span>.to_owned().into(),
-            replay_recordings: <span class="string">&quot;ingest-replay-recordings&quot;</span>.to_owned().into(),
-            monitors: <span class="string">&quot;ingest-monitors&quot;</span>.to_owned().into(),
-            spans: <span class="string">&quot;ingest-spans&quot;</span>.to_owned().into(),
+        <span class="kw">impl </span>TopicAssignments{
+            <span class="doccomment">/// Get a topic assignment by [`KafkaTopic`] value
+            </span><span class="attr">#[must_use]
+            </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, kafka_topic: KafkaTopic) -&gt; <span class="kw-2">&amp;</span>TopicAssignment {
+                <span class="kw">match </span>kafka_topic {
+                    $(
+                        <span class="macro-nonterminal">$kafka_topic </span>=&gt; <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="macro-nonterminal">$field_name</span>,
+                    )*
+                }
+            }
         }
-    }
+
+        <span class="kw">impl </span>Default <span class="kw">for </span>TopicAssignments {
+            <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+                <span class="self">Self </span>{
+                    $(
+                        <span class="macro-nonterminal">$field_name</span>: <span class="macro-nonterminal">$default_topic</span>.to_owned().into(),
+                    )*
+                    unused: BTreeMap::new(),
+                }
+            }
+        }
+    };
 }
 
-<span class="doccomment">/// Configuration for a &quot;logical&quot; topic/datasink that Relay should forward data into.
+<span class="macro">define_topic_assignments!</span> {
+    events: (KafkaTopic::Events, <span class="string">"ingest-events"</span>, <span class="string">"Simple events topic name."</span>),
+    attachments: (KafkaTopic::Attachments, <span class="string">"ingest-attachments"</span>, <span class="string">"Events with attachments topic name."</span>),
+    transactions: (KafkaTopic::Transactions, <span class="string">"ingest-transactions"</span>, <span class="string">"Transaction events topic name."</span>),
+    outcomes: (KafkaTopic::Outcomes, <span class="string">"outcomes"</span>, <span class="string">"Outcomes topic name."</span>),
+    outcomes_billing: (KafkaTopic::OutcomesBilling, <span class="string">"outcomes-billing"</span>, <span class="string">"Outcomes topic name for billing critical outcomes."</span>),
+    metrics_sessions: (KafkaTopic::MetricsSessions, <span class="string">"ingest-metrics"</span>, <span class="string">"Topic name for metrics extracted from sessions, aka release health."</span>),
+    metrics_generic: (KafkaTopic::MetricsGeneric, <span class="string">"ingest-performance-metrics"</span>, <span class="string">"Topic name for all other kinds of metrics."</span>),
+    profiles: (KafkaTopic::Profiles, <span class="string">"profiles"</span>, <span class="string">"Stacktrace topic name"</span>),
+    replay_events: (KafkaTopic::ReplayEvents, <span class="string">"ingest-replay-events"</span>, <span class="string">"Replay Events topic name."</span>),
+    replay_recordings: (KafkaTopic::ReplayRecordings, <span class="string">"ingest-replay-recordings"</span>, <span class="string">"Recordings topic name."</span>),
+    monitors: (KafkaTopic::Monitors, <span class="string">"ingest-monitors"</span>, <span class="string">"Monitor check-ins."</span>),
+    spans: (KafkaTopic::Spans, <span class="string">"snuba-spans"</span>, <span class="string">"Standalone spans without a transaction."</span>),
+    metrics_summaries: (KafkaTopic::MetricsSummaries, <span class="string">"snuba-metrics-summaries"</span>, <span class="string">"Summary for metrics collected during a span."</span>),
+    feedback: (KafkaTopic::Feedback, <span class="string">"ingest-feedback-events"</span>, <span class="string">"Feedback events topic."</span>),
+}
+
+<span class="doccomment">/// Configuration for a "logical" topic/datasink that Relay should forward data into.
 ///
 /// Can be either a string containing the kafka topic name to produce into (using the default
 /// `kafka_config`), or an object containing keys `topic_name` and `kafka_config_name` for using a
@@ -585,81 +492,28 @@
     /// `secondary_kafka_configs`. In this case that custom kafka config will be used to produce
     /// data to the given topic name.
     </span>Secondary(KafkaTopicConfig),
-    <span class="doccomment">/// If we want to configure multiple kafka clusters, we can create a mapping of the
-    /// range of logical shards to the kafka configuration.
-    </span>Sharded(Sharded),
 }
 
 <span class="doccomment">/// Configuration for topic
 </span><span class="attr">#[derive(Serialize, Deserialize, Debug)]
 </span><span class="kw">pub struct </span>KafkaTopicConfig {
     <span class="doccomment">/// The topic name to use.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;name&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"name"</span>)]
     </span>topic_name: String,
     <span class="doccomment">/// The Kafka config name will be used to produce data to the given topic.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;config&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"config"</span>)]
     </span>kafka_config_name: String,
 }
 
-<span class="doccomment">/// Configuration for logical shards -&gt; kafka configuration mapping.
-///
-/// The configuration for this should look like:
-///
-/// ```ignore
-/// metrics:
-///    shards: 65000
-///    mapping:
-///      0:
-///          name: &quot;ingest-metrics-1&quot;
-///          config: &quot;metrics_1&quot;
-///      25000:
-///          name: &quot;ingest-metrics-2&quot;
-///          config: &quot;metrics_2&quot;
-///      45000:
-///          name: &quot;ingest-metrics-3&quot;
-///          config: &quot;metrics_3&quot;
-/// ```
-///
-/// where the `shards` defines how many logical shards must be created, and `mapping`
-/// describes the per-shard configuration. Index in the `mapping` is the initial inclusive
-/// index of the shard and the range is last till the next index or the maximum shard defined in
-/// the `shards` option. The first index must always start with 0.
-</span><span class="attr">#[derive(Serialize, Deserialize, Debug)]
-</span><span class="kw">pub struct </span>Sharded {
-    <span class="doccomment">/// The number of shards used for this topic.
-    </span>shards: u64,
-    <span class="doccomment">/// The Kafka configuration assigned to the specific shard range.
-    </span>mapping: BTreeMap&lt;u64, KafkaTopicConfig&gt;,
-}
-
-<span class="doccomment">/// Describes Kafka config, with all the parameters extracted, which will be used for creating the
-/// kafka producer.
+<span class="doccomment">/// Config for creating a Kafka producer.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>KafkaConfig&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="doccomment">/// Single config with Kafka parameters.
-    </span>Single {
-        <span class="doccomment">/// Kafka parameters to create the kafka producer.
-        </span>params: KafkaParams&lt;<span class="lifetime">&#39;a</span>&gt;,
-    },
-
-    <span class="doccomment">/// The list of the Kafka configs with related shard configs.
-    </span>Sharded {
-        <span class="doccomment">/// The maximum number of logical shards for this set of configs.
-        </span>shards: u64,
-        <span class="doccomment">/// The list of the sharded Kafka configs.
-        </span>configs: BTreeMap&lt;u64, KafkaParams&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
-    },
-}
-
-<span class="doccomment">/// Sharded Kafka config.
-</span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>KafkaParams&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>KafkaParams&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// The topic name to use.
-    </span><span class="kw">pub </span>topic_name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    </span><span class="kw">pub </span>topic_name: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="doccomment">/// The Kafka config name will be used to produce data.
-    </span><span class="kw">pub </span>config_name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;,
+    </span><span class="kw">pub </span>config_name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt;,
     <span class="doccomment">/// Parameters for the Kafka producer configuration.
-    </span><span class="kw">pub </span>params: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[KafkaConfigParam],
+    </span><span class="kw">pub </span>params: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[KafkaConfigParam],
 }
 
 <span class="kw">impl </span>From&lt;String&gt; <span class="kw">for </span>TopicAssignment {
@@ -673,52 +527,27 @@
     ///
     /// # Errors
     /// Returns [`ConfigError`] if the configuration for the current topic assignment is invalid.
-    </span><span class="kw">pub fn </span>kafka_config&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        default_config: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Vec&lt;KafkaConfigParam&gt;,
-        secondary_configs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>BTreeMap&lt;String, Vec&lt;KafkaConfigParam&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;KafkaConfig&lt;<span class="lifetime">&#39;_</span>&gt;, ConfigError&gt; {
+    </span><span class="kw">pub fn </span>kafka_config&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        default_config: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Vec&lt;KafkaConfigParam&gt;,
+        secondary_configs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>BTreeMap&lt;String, Vec&lt;KafkaConfigParam&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;KafkaParams&lt;<span class="lifetime">'_</span>&gt;, ConfigError&gt; {
         <span class="kw">let </span>kafka_config = <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::Primary(topic_name) =&gt; KafkaConfig::Single {
-                params: KafkaParams {
-                    topic_name,
-                    config_name: <span class="prelude-val">None</span>,
-                    params: default_config.as_slice(),
-                },
+            <span class="self">Self</span>::Primary(topic_name) =&gt; KafkaParams {
+                topic_name,
+                config_name: <span class="prelude-val">None</span>,
+                params: default_config.as_slice(),
             },
             <span class="self">Self</span>::Secondary(KafkaTopicConfig {
                 topic_name,
                 kafka_config_name,
-            }) =&gt; KafkaConfig::Single {
-                params: KafkaParams {
-                    config_name: <span class="prelude-val">Some</span>(kafka_config_name),
-                    topic_name,
-                    params: secondary_configs
-                        .get(kafka_config_name)
-                        .ok_or(ConfigError::UnknownKafkaConfigName)<span class="question-mark">?</span>,
-                },
+            }) =&gt; KafkaParams {
+                config_name: <span class="prelude-val">Some</span>(kafka_config_name),
+                topic_name,
+                params: secondary_configs
+                    .get(kafka_config_name)
+                    .ok_or(ConfigError::UnknownKafkaConfigName)<span class="question-mark">?</span>,
             },
-            <span class="self">Self</span>::Sharded(Sharded { shards, mapping }) =&gt; {
-                <span class="comment">// quick fail if the config does not contain shard 0
-                </span><span class="kw">if </span>!mapping.contains_key(<span class="kw-2">&amp;</span><span class="number">0</span>) {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(ConfigError::InvalidShard);
-                }
-                <span class="kw">let </span><span class="kw-2">mut </span>kafka_params = BTreeMap::new();
-                <span class="kw">for </span>(shard, kafka_config) <span class="kw">in </span>mapping {
-                    <span class="kw">let </span>config = KafkaParams {
-                        topic_name: kafka_config.topic_name.as_str(),
-                        config_name: <span class="prelude-val">Some</span>(kafka_config.kafka_config_name.as_str()),
-                        params: secondary_configs
-                            .get(kafka_config.kafka_config_name.as_str())
-                            .ok_or(ConfigError::UnknownKafkaConfigName)<span class="question-mark">?</span>,
-                    };
-                    kafka_params.insert(<span class="kw-2">*</span>shard, config);
-                }
-                KafkaConfig::Sharded {
-                    shards: <span class="kw-2">*</span>shards,
-                    configs: kafka_params,
-                }
-            }
         };
 
         <span class="prelude-val">Ok</span>(kafka_config)
@@ -741,85 +570,108 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_kafka_config() {
-        <span class="kw">let </span>yaml = <span class="string">r#&quot;
-events: &quot;ingest-events-kafka-topic&quot;
+        <span class="kw">let </span>yaml = <span class="string">r#"
+ingest-events: "ingest-events-kafka-topic"
 profiles:
-    name: &quot;ingest-profiles&quot;
-    config: &quot;profiles&quot;
-metrics:
-  shards: 65000
-  mapping:
-      0:
-          name: &quot;ingest-metrics-1&quot;
-          config: &quot;metrics_1&quot;
-      25000:
-          name: &quot;ingest-metrics-2&quot;
-          config: &quot;metrics_2&quot;
-      45000:
-          name: &quot;ingest-metrics-3&quot;
-          config: &quot;metrics_3&quot;
-&quot;#</span>;
+    name: "ingest-profiles"
+    config: "profiles"
+ingest-metrics: "ingest-metrics-3"
+transactions: "ingest-transactions-kafka-topic"
+"#</span>;
 
         <span class="kw">let </span>def_config = <span class="macro">vec!</span>[KafkaConfigParam {
-            name: <span class="string">&quot;test&quot;</span>.to_string(),
-            value: <span class="string">&quot;test-value&quot;</span>.to_string(),
+            name: <span class="string">"test"</span>.to_string(),
+            value: <span class="string">"test-value"</span>.to_string(),
         }];
         <span class="kw">let </span><span class="kw-2">mut </span>second_config = BTreeMap::new();
         second_config.insert(
-            <span class="string">&quot;profiles&quot;</span>.to_string(),
+            <span class="string">"profiles"</span>.to_string(),
             <span class="macro">vec!</span>[KafkaConfigParam {
-                name: <span class="string">&quot;test&quot;</span>.to_string(),
-                value: <span class="string">&quot;test-value&quot;</span>.to_string(),
+                name: <span class="string">"test"</span>.to_string(),
+                value: <span class="string">"test-value"</span>.to_string(),
             }],
         );
-        second_config.insert(
-            <span class="string">&quot;metrics_1&quot;</span>.to_string(),
-            <span class="macro">vec!</span>[KafkaConfigParam {
-                name: <span class="string">&quot;test&quot;</span>.to_string(),
-                value: <span class="string">&quot;test-value&quot;</span>.to_string(),
-            }],
-        );
-        second_config.insert(
-            <span class="string">&quot;metrics_2&quot;</span>.to_string(),
-            <span class="macro">vec!</span>[KafkaConfigParam {
-                name: <span class="string">&quot;test&quot;</span>.to_string(),
-                value: <span class="string">&quot;test-value&quot;</span>.to_string(),
-            }],
-        );
-        second_config.insert(
-            <span class="string">&quot;metrics_3&quot;</span>.to_string(),
-            <span class="macro">vec!</span>[KafkaConfigParam {
-                name: <span class="string">&quot;test&quot;</span>.to_string(),
-                value: <span class="string">&quot;test-value&quot;</span>.to_string(),
-            }],
-        );
+
         <span class="kw">let </span>topics: TopicAssignments = serde_yaml::from_str(yaml).unwrap();
         <span class="kw">let </span>events = topics.events;
         <span class="kw">let </span>profiles = topics.profiles;
-        <span class="kw">let </span>metrics = topics.metrics;
+        <span class="kw">let </span>metrics_sessions = topics.metrics_sessions;
+        <span class="kw">let </span>transactions = topics.transactions;
 
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(events, TopicAssignment::Primary(<span class="kw">_</span>)));
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(profiles, TopicAssignment::Secondary { .. }));
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(metrics, TopicAssignment::Sharded { .. }));
-
-        <span class="kw">let </span>events_config = metrics
-            .kafka_config(<span class="kw-2">&amp;</span>def_config, <span class="kw-2">&amp;</span>second_config)
-            .expect(<span class="string">&quot;Kafka config for metrics topic&quot;</span>);
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(events_config, KafkaConfig::Sharded { .. }));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(metrics_sessions, TopicAssignment::Primary(<span class="kw">_</span>)));
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(transactions, TopicAssignment::Primary(<span class="kw">_</span>)));
 
         <span class="kw">let </span>events_config = events
             .kafka_config(<span class="kw-2">&amp;</span>def_config, <span class="kw-2">&amp;</span>second_config)
-            .expect(<span class="string">&quot;Kafka config for events topic&quot;</span>);
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(events_config, KafkaConfig::Single { .. }));
+            .expect(<span class="string">"Kafka config for events topic"</span>);
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            events_config,
+            KafkaParams {
+                topic_name: <span class="string">"ingest-events-kafka-topic"</span>,
+                ..
+            }
+        ));
 
-        <span class="kw">let </span>(shards, mapping) =
-            <span class="kw">if let </span>TopicAssignment::Sharded(Sharded { shards, mapping }) = metrics {
-                (shards, mapping)
-            } <span class="kw">else </span>{
-                <span class="macro">unreachable!</span>()
-            };
-        <span class="macro">assert_eq!</span>(shards, <span class="number">65000</span>);
-        <span class="macro">assert_eq!</span>(<span class="number">3</span>, mapping.len());
+        <span class="kw">let </span>events_config = profiles
+            .kafka_config(<span class="kw-2">&amp;</span>def_config, <span class="kw-2">&amp;</span>second_config)
+            .expect(<span class="string">"Kafka config for profiles topic"</span>);
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            events_config,
+            KafkaParams {
+                topic_name: <span class="string">"ingest-profiles"</span>,
+                config_name: <span class="prelude-val">Some</span>(<span class="string">"profiles"</span>),
+                ..
+            }
+        ));
+
+        <span class="kw">let </span>events_config = metrics_sessions
+            .kafka_config(<span class="kw-2">&amp;</span>def_config, <span class="kw-2">&amp;</span>second_config)
+            .expect(<span class="string">"Kafka config for metrics topic"</span>);
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            events_config,
+            KafkaParams {
+                topic_name: <span class="string">"ingest-metrics-3"</span>,
+                ..
+            }
+        ));
+
+        <span class="comment">// Legacy keys are still supported
+        </span><span class="kw">let </span>transactions_config = transactions
+            .kafka_config(<span class="kw-2">&amp;</span>def_config, <span class="kw-2">&amp;</span>second_config)
+            .expect(<span class="string">"Kafka config for transactions topic"</span>);
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            transactions_config,
+            KafkaParams {
+                topic_name: <span class="string">"ingest-transactions-kafka-topic"</span>,
+                ..
+            }
+        ));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_default_topic_is_valid() {
+        <span class="kw">let </span>topic_assignments = TopicAssignments::default();
+
+        <span class="comment">// A few topics are not defined currently, remove this once added to `sentry-kafka-schemas`.
+        </span><span class="kw">let </span>currrently_undefined_topics = [
+            <span class="string">"ingest-attachments"</span>.to_string(),
+            <span class="string">"ingest-transactions"</span>.to_string(),
+            <span class="string">"profiles"</span>.to_string(),
+            <span class="string">"ingest-monitors"</span>.to_string(),
+        ];
+
+        <span class="kw">for </span>topic <span class="kw">in </span>KafkaTopic::iter() {
+            <span class="kw">match </span>topic_assignments.get(<span class="kw-2">*</span>topic) {
+                TopicAssignment::Primary(logical_topic_name) =&gt; {
+                    <span class="kw">if </span>!currrently_undefined_topics.contains(logical_topic_name) {
+                        <span class="macro">assert!</span>(sentry_kafka_schemas::get_schema(logical_topic_name, <span class="prelude-val">None</span>).is_ok());
+                    }
+                }
+                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"invalid default"</span>),
+            }
+        }
     }
 }
 </code></pre></div></section></main></body></html>

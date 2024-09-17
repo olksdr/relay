@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-spans/src/span.rs`."><title>span.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_spans" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_spans/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-spans/src/span.rs`."><title>span.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_spans" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -549,131 +549,194 @@
 <a href="#549" id="549">549</a>
 <a href="#550" id="550">550</a>
 <a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
+<a href="#624" id="624">624</a>
+<a href="#625" id="625">625</a>
+<a href="#626" id="626">626</a>
+<a href="#627" id="627">627</a>
+<a href="#628" id="628">628</a>
+<a href="#629" id="629">629</a>
+<a href="#630" id="630">630</a>
+<a href="#631" id="631">631</a>
+<a href="#632" id="632">632</a>
+<a href="#633" id="633">633</a>
+<a href="#634" id="634">634</a>
+<a href="#635" id="635">635</a>
+<a href="#636" id="636">636</a>
+<a href="#637" id="637">637</a>
+<a href="#638" id="638">638</a>
+<a href="#639" id="639">639</a>
+<a href="#640" id="640">640</a>
+<a href="#641" id="641">641</a>
+<a href="#642" id="642">642</a>
+<a href="#643" id="643">643</a>
+<a href="#644" id="644">644</a>
+<a href="#645" id="645">645</a>
+<a href="#646" id="646">646</a>
+<a href="#647" id="647">647</a>
+<a href="#648" id="648">648</a>
+<a href="#649" id="649">649</a>
+<a href="#650" id="650">650</a>
+<a href="#651" id="651">651</a>
+<a href="#652" id="652">652</a>
+<a href="#653" id="653">653</a>
+<a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::str::FromStr;
 
 <span class="kw">use </span>chrono::{TimeZone, Utc};
-<span class="kw">use </span>serde::{Deserialize, Serialize};
-<span class="kw">use </span>serde_repr::{Deserialize_repr, Serialize_repr};
+<span class="kw">use </span>opentelemetry_proto::tonic::common::v1::any_value::Value <span class="kw">as </span>OtelValue;
+<span class="kw">use </span>opentelemetry_proto::tonic::common::v1::{AnyValue, KeyValue};
+<span class="kw">use </span>relay_protocol::{Annotated, FromValue, Object};
 
-<span class="kw">use </span><span class="kw">crate</span>::utils::deserialize_number_from_string;
-<span class="kw">use </span>relay_event_schema::protocol::{Span <span class="kw">as </span>EventSpan, SpanId, SpanStatus, Timestamp, TraceId};
-<span class="kw">use </span>relay_protocol::{Annotated, Object, Value};
-
-<span class="kw">use </span><span class="kw">crate</span>::otel_to_sentry_tags::OTEL_TO_SENTRY_TAGS;
+<span class="kw">use </span><span class="kw">crate</span>::otel_trace::{status::StatusCode <span class="kw">as </span>OtelStatusCode, Span <span class="kw">as </span>OtelSpan};
 <span class="kw">use </span><span class="kw">crate</span>::status_codes;
-
-<span class="doccomment">/// This is a serde implementation of &lt;https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/trace/v1/trace.proto&gt;.
-/// A Span represents a single operation performed by a single component of the system.
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
-</span><span class="kw">pub struct </span>OtelSpan {
-    <span class="doccomment">/// A unique identifier for a trace. All spans from the same trace share
-    /// the same `trace_id`. The ID is a 16-byte array. An ID with all zeroes OR
-    /// of length other than 16 bytes is considered invalid (empty string in OTLP/JSON
-    /// is zero-length and thus is also invalid).
-    </span><span class="kw">pub </span>trace_id: String,
-    <span class="doccomment">/// A unique identifier for a span within a trace, assigned when the span
-    /// is created. The ID is an 8-byte array. An ID with all zeroes OR of length
-    /// other than 8 bytes is considered invalid (empty string in OTLP/JSON
-    /// is zero-length and thus is also invalid).
-    </span><span class="kw">pub </span>span_id: String,
-    <span class="doccomment">/// trace_state conveys information about request position in multiple distributed tracing graphs.
-    /// It is a trace_state in w3c-trace-context format: &lt;https://www.w3.org/TR/trace-context/#tracestate-header&gt;.
-    /// See also &lt;https://github.com/w3c/distributed-tracing&gt; for more details about this field.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>trace_state: String,
-    <span class="doccomment">/// The `span_id` of this span&#39;s parent span. If this is a root span, then this
-    /// field must be empty. The ID is an 8-byte array.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>parent_span_id: String,
-    <span class="doccomment">/// Flags, a bit field. 8 least significant bits are the trace
-    /// flags as defined in W3C Trace Context specification. Readers
-    /// MUST not assume that 24 most significant bits will be zero.
-    /// To read the 8-bit W3C trace flag, use `flags &amp; SPAN_FLAGS_TRACE_FLAGS_MASK`.
-    ///
-    /// When creating span messages, if the message is logically forwarded from another source
-    /// with an equivalent flags fields (i.e., usually another OTLP span message), the field SHOULD
-    /// be copied as-is. If creating from a source that does not have an equivalent flags field
-    /// (such as a runtime representation of an OpenTelemetry span), the high 24 bits MUST
-    /// be set to zero.
-    ///
-    /// See &lt;https://www.w3.org/TR/trace-context-2/#trace-flags&gt; for the flag definitions.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>flags: u32,
-    <span class="doccomment">/// A description of the span&#39;s operation.
-    ///
-    /// For example, the name can be a qualified method name or a file name
-    /// and a line number where the operation is called. A best practice is to use
-    /// the same display name at the same call point in an application.
-    /// This makes it easier to correlate spans in different traces.
-    ///
-    /// This field is semantically required to be set to non-empty string.
-    /// Empty value is equivalent to an unknown span name.
-    </span><span class="kw">pub </span>name: String,
-    <span class="doccomment">/// Distinguishes between spans generated in a particular context. For example,
-    /// two spans with the same name may be distinguished using `CLIENT` (caller)
-    /// and `SERVER` (callee) to identify queueing latency associated with the span.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>kind: SpanKind,
-    <span class="doccomment">/// start_time_unix_nano is the start time of the span. On the client side, this is the time
-    /// kept by the local machine where the span execution starts. On the server side, this
-    /// is the time when the server&#39;s application handler starts running.
-    /// Value is UNIX Epoch time in nanoseconds since 00:00:00 UTC on 1 January 1970.
-    ///
-    /// This field is semantically required and it is expected that end_time &gt;= start_time.
-    </span><span class="attr">#[serde(deserialize_with = <span class="string">&quot;deserialize_number_from_string&quot;</span>)]
-    </span><span class="kw">pub </span>start_time_unix_nano: i64,
-    <span class="doccomment">/// end_time_unix_nano is the end time of the span. On the client side, this is the time
-    /// kept by the local machine where the span execution ends. On the server side, this
-    /// is the time when the server application handler stops running.
-    /// Value is UNIX Epoch time in nanoseconds since 00:00:00 UTC on 1 January 1970.
-    ///
-    /// This field is semantically required and it is expected that end_time &gt;= start_time.
-    </span><span class="attr">#[serde(deserialize_with = <span class="string">&quot;deserialize_number_from_string&quot;</span>)]
-    </span><span class="kw">pub </span>end_time_unix_nano: i64,
-    <span class="doccomment">/// attributes is a collection of key/value pairs. Note, global attributes
-    /// like server name can be set using the resource API.
-    ///
-    /// The OpenTelemetry API specification further restricts the allowed value types:
-    /// &lt;https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/common/README.md#attribute&gt;
-    /// Attribute keys MUST be unique (it is not allowed to have more than one
-    /// attribute with the same key).
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>attributes: Vec&lt;KeyValue&gt;,
-    <span class="doccomment">/// dropped_attributes_count is the number of attributes that were discarded. Attributes
-    /// can be discarded because their keys are too long or because there are too many
-    /// attributes. If this value is 0, then no attributes were dropped.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>dropped_attributes_count: u32,
-    <span class="doccomment">/// events is a collection of Event items.``
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>events: Vec&lt;Event&gt;,
-    <span class="doccomment">/// dropped_events_count is the number of dropped events. If the value is 0, then no
-    /// events were dropped.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>dropped_events_count: u32,
-    <span class="doccomment">/// links is a collection of Links, which are references from this span to a span
-    /// in the same or different trace.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>links: Vec&lt;Link&gt;,
-    <span class="doccomment">/// links is a collection of Links, which are references from this span to a span
-    /// in the same or different trace.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>dropped_links_count: u32,
-    <span class="doccomment">/// An optional final status for this span. Semantically when Status isn&#39;t set, it means
-    /// span&#39;s status code is unset, i.e. assume STATUS_CODE_UNSET (code = 0).
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>status: Status,
-}
+<span class="kw">use </span>relay_event_schema::protocol::{
+    EventId, MetricSummary, MetricsSummary, Span <span class="kw">as </span>EventSpan, SpanData, SpanId, SpanStatus,
+    Timestamp, TraceId,
+};
 
 <span class="doccomment">/// convert_from_otel_to_sentry_status returns a status as defined by Sentry based on the OTel status.
 </span><span class="kw">fn </span>convert_from_otel_to_sentry_status(
-    status_code: StatusCode,
+    status_code: <span class="prelude-ty">Option</span>&lt;i32&gt;,
     http_status_code: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     grpc_status_code: <span class="prelude-ty">Option</span>&lt;i64&gt;,
 ) -&gt; SpanStatus {
-    <span class="kw">if </span>status_code == StatusCode::Unset || status_code == StatusCode::Ok {
-        <span class="kw">return </span>SpanStatus::Ok;
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(status_code) = status_code {
+        <span class="kw">if </span>status_code == OtelStatusCode::Unset <span class="kw">as </span>i32 || status_code == OtelStatusCode::Ok <span class="kw">as </span>i32 {
+            <span class="kw">return </span>SpanStatus::Ok;
+        }
     }
 
     <span class="kw">if let </span><span class="prelude-val">Some</span>(code) = http_status_code {
@@ -695,408 +758,673 @@
     SpanStatus::Unknown
 }
 
-<span class="kw">impl </span>From&lt;OtelSpan&gt; <span class="kw">for </span>EventSpan {
-    <span class="kw">fn </span>from(from: OtelSpan) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>exclusive_time_ms = <span class="number">0f64</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>data: Object&lt;Value&gt; = Object::new();
-        <span class="kw">let </span>start_timestamp = Utc.timestamp_nanos(from.start_time_unix_nano);
-        <span class="kw">let </span>end_timestamp = Utc.timestamp_nanos(from.end_time_unix_nano);
-        <span class="kw">let </span>OtelSpan {
-            trace_id,
-            span_id,
-            parent_span_id,
-            name,
-            attributes,
-            status,
-            ..
-        } = from;
-        <span class="kw">let </span>segment_id = <span class="kw">if </span>parent_span_id.is_empty() {
-            Annotated::new(SpanId(span_id.clone()))
-        } <span class="kw">else </span>{
-            Annotated::empty()
-        };
+<span class="kw">fn </span>otel_value_to_i64(value: OtelValue) -&gt; <span class="prelude-ty">Option</span>&lt;i64&gt; {
+    <span class="kw">match </span>value {
+        OtelValue::IntValue(v) =&gt; <span class="prelude-val">Some</span>(v),
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+    }
+}
 
-        <span class="kw">let </span><span class="kw-2">mut </span>http_status_code = <span class="prelude-val">None</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>grpc_status_code = <span class="prelude-val">None</span>;
-        <span class="kw">for </span>attribute <span class="kw">in </span>attributes.into_iter() {
-            <span class="kw">let </span>key: String = <span class="kw">if let </span><span class="prelude-val">Some</span>(key) = OTEL_TO_SENTRY_TAGS.get(attribute.key.as_str()) {
-                key.to_string()
-            } <span class="kw">else </span>{
-                attribute.key
-            };
-            <span class="kw">if </span>key.contains(<span class="string">&quot;exclusive_time_ns&quot;</span>) {
-                <span class="kw">let </span>value = <span class="kw">match </span>attribute.value {
-                    AnyValue::Int(v) =&gt; v <span class="kw">as </span>f64,
-                    AnyValue::Double(v) =&gt; v,
-                    AnyValue::String(v) =&gt; v.parse::&lt;f64&gt;().unwrap_or_default(),
-                    <span class="kw">_ </span>=&gt; <span class="number">0f64</span>,
-                };
-                exclusive_time_ms = value / <span class="number">1e6f64</span>;
-                <span class="kw">continue</span>;
+<span class="kw">fn </span>otel_value_to_string(value: OtelValue) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+    <span class="kw">match </span>value {
+        OtelValue::StringValue(v) =&gt; <span class="prelude-val">Some</span>(v),
+        OtelValue::BoolValue(v) =&gt; <span class="prelude-val">Some</span>(v.to_string()),
+        OtelValue::IntValue(v) =&gt; <span class="prelude-val">Some</span>(v.to_string()),
+        OtelValue::DoubleValue(v) =&gt; <span class="prelude-val">Some</span>(v.to_string()),
+        OtelValue::BytesValue(v) =&gt; <span class="kw">match </span>String::from_utf8(v) {
+            <span class="prelude-val">Ok</span>(v) =&gt; <span class="prelude-val">Some</span>(v),
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+        },
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+    }
+}
+
+<span class="kw">fn </span>otel_value_to_span_id(value: OtelValue) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+    <span class="kw">let </span>decoded = <span class="kw">match </span>value {
+        OtelValue::StringValue(s) =&gt; hex::decode(s).ok()<span class="question-mark">?</span>,
+        OtelValue::BytesValue(b) =&gt; b,
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span><span class="question-mark">?</span>,
+    };
+    <span class="prelude-val">Some</span>(hex::encode(decoded))
+}
+
+<span class="kw">fn </span>otel_value_to_metric_summary(value: AnyValue) -&gt; <span class="prelude-ty">Option</span>&lt;MetricSummary&gt; {
+    <span class="kw">let </span>value = value.value<span class="question-mark">?</span>;
+    <span class="kw">let </span>OtelValue::KvlistValue(value) = value <span class="kw">else </span>{
+        <span class="kw">return </span><span class="prelude-val">None</span>;
+    };
+    <span class="kw">let </span><span class="kw-2">mut </span>summary = MetricSummary::default();
+    <span class="kw">for </span>KeyValue { key, value } <span class="kw">in </span>value.values {
+        <span class="kw">let </span>value = value<span class="question-mark">?</span>.value<span class="question-mark">?</span>;
+        <span class="kw">match </span>value {
+            OtelValue::IntValue(n) <span class="kw">if </span>key == <span class="string">"count" </span>=&gt; {
+                summary.count = u64::try_from(n).ok()<span class="question-mark">?</span>.into();
             }
-            <span class="kw">if </span>key == <span class="string">&quot;http.status_code&quot; </span>{
-                http_status_code = attribute.value.to_i64();
-            } <span class="kw">else if </span>key == <span class="string">&quot;rpc.grpc.status_code&quot; </span>{
-                grpc_status_code = attribute.value.to_i64();
+            OtelValue::DoubleValue(f) <span class="kw">if </span>key == <span class="string">"min" </span>=&gt; {
+                summary.min = f.into();
             }
-            <span class="kw">match </span>attribute.value {
-                AnyValue::Array(<span class="kw">_</span>) =&gt; {}
-                AnyValue::Bool(v) =&gt; {
-                    data.insert(key, Annotated::new(v.into()));
+            OtelValue::DoubleValue(f) <span class="kw">if </span>key == <span class="string">"max" </span>=&gt; {
+                summary.max = f.into();
+            }
+            OtelValue::DoubleValue(f) <span class="kw">if </span>key == <span class="string">"sum" </span>=&gt; {
+                summary.sum = f.into();
+            }
+            OtelValue::KvlistValue(list) <span class="kw">if </span>key == <span class="string">"tags" </span>=&gt; {
+                <span class="kw">let </span>tags = summary.tags.get_or_insert_with(Default::default);
+                <span class="kw">for </span>KeyValue { key, value } <span class="kw">in </span>list.values {
+                    <span class="kw">let </span>OtelValue::StringValue(value) = value<span class="question-mark">?</span>.value<span class="question-mark">? </span><span class="kw">else </span>{
+                        <span class="kw">return </span><span class="prelude-val">None</span>;
+                    };
+                    tags.insert(key, value.into());
                 }
-                AnyValue::Bytes(v) =&gt; {
-                    <span class="kw">if let </span><span class="prelude-val">Ok</span>(v) = String::from_utf8(v) {
-                        data.insert(key, Annotated::new(v.into()));
+            }
+            <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="prelude-val">Some</span>(summary)
+}
+
+<span class="doccomment">/// Transform an OtelSpan to a Sentry span.
+</span><span class="kw">pub fn </span>otel_to_sentry_span(otel_span: OtelSpan) -&gt; EventSpan {
+    <span class="kw">let </span><span class="kw-2">mut </span>exclusive_time_ms = <span class="number">0f64</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>data = Object::new();
+    <span class="kw">let </span>start_timestamp = Utc.timestamp_nanos(otel_span.start_time_unix_nano <span class="kw">as </span>i64);
+    <span class="kw">let </span>end_timestamp = Utc.timestamp_nanos(otel_span.end_time_unix_nano <span class="kw">as </span>i64);
+    <span class="kw">let </span>OtelSpan {
+        trace_id,
+        span_id,
+        parent_span_id,
+        name,
+        attributes,
+        status,
+        kind,
+        ..
+    } = otel_span;
+
+    <span class="kw">let </span>span_id = hex::encode(span_id);
+    <span class="kw">let </span>trace_id = hex::encode(trace_id);
+    <span class="kw">let </span>parent_span_id = <span class="kw">match </span>parent_span_id.as_slice() {
+        <span class="kw-2">&amp;</span>[] =&gt; <span class="prelude-val">None</span>,
+        <span class="kw">_ </span>=&gt; <span class="prelude-val">Some</span>(hex::encode(parent_span_id)),
+    };
+
+    <span class="kw">let </span><span class="kw-2">mut </span>op = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>description = <span class="kw">if </span>name.is_empty() { <span class="prelude-val">None </span>} <span class="kw">else </span>{ <span class="prelude-val">Some</span>(name) };
+    <span class="kw">let </span><span class="kw-2">mut </span>http_method = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>http_route = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>http_status_code = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>grpc_status_code = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>platform = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>segment_id = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>profile_id = <span class="prelude-val">None</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>metrics_summary = MetricsSummary::default();
+    <span class="kw">for </span>attribute <span class="kw">in </span>attributes.into_iter() {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = attribute.value.and_then(|v| v.value) {
+            <span class="kw">match </span>attribute.key.as_str() {
+                <span class="string">"sentry.op" </span>=&gt; {
+                    op = otel_value_to_string(value);
+                }
+                key <span class="kw">if </span>key.starts_with(<span class="string">"db"</span>) =&gt; {
+                    op = op.or(<span class="prelude-val">Some</span>(<span class="string">"db"</span>.to_string()));
+                    <span class="kw">if </span>key == <span class="string">"db.statement" </span>{
+                        <span class="kw">if let </span><span class="prelude-val">Some</span>(statement) = otel_value_to_string(value) {
+                            description = <span class="prelude-val">Some</span>(statement);
+                        }
                     }
                 }
-                AnyValue::Double(v) =&gt; {
-                    data.insert(key, Annotated::new(v.into()));
+                <span class="string">"http.method" </span>| <span class="string">"http.request.method" </span>=&gt; {
+                    <span class="kw">let </span>http_op = <span class="kw">match </span>kind {
+                        <span class="number">2 </span>=&gt; <span class="string">"http.server"</span>,
+                        <span class="number">3 </span>=&gt; <span class="string">"http.client"</span>,
+                        <span class="kw">_ </span>=&gt; <span class="string">"http"</span>,
+                    };
+                    op = op.or(<span class="prelude-val">Some</span>(http_op.to_string()));
+                    http_method = otel_value_to_string(value);
                 }
-                AnyValue::Int(v) =&gt; {
-                    data.insert(key, Annotated::new(v.into()));
+                <span class="string">"http.route" </span>| <span class="string">"url.path" </span>=&gt; {
+                    http_route = otel_value_to_string(value);
                 }
-                AnyValue::Kvlist(<span class="kw">_</span>) =&gt; {}
-                AnyValue::String(v) =&gt; {
-                    data.insert(key, Annotated::new(v.into()));
+                key <span class="kw">if </span>key.contains(<span class="string">"exclusive_time_nano"</span>) =&gt; {
+                    <span class="kw">let </span>value = <span class="kw">match </span>value {
+                        OtelValue::IntValue(v) =&gt; v <span class="kw">as </span>f64,
+                        OtelValue::DoubleValue(v) =&gt; v,
+                        OtelValue::StringValue(v) =&gt; v.parse::&lt;f64&gt;().unwrap_or_default(),
+                        <span class="kw">_ </span>=&gt; <span class="number">0f64</span>,
+                    };
+                    exclusive_time_ms = value / <span class="number">1e6f64</span>;
                 }
-            };
-        }
-        <span class="kw">if </span>exclusive_time_ms == <span class="number">0f64 </span>{
-            exclusive_time_ms =
-                (from.end_time_unix_nano - from.start_time_unix_nano) <span class="kw">as </span>f64 / <span class="number">1e6f64</span>;
-        }
+                <span class="string">"http.status_code" </span>=&gt; {
+                    http_status_code = otel_value_to_i64(value);
+                }
+                <span class="string">"rpc.grpc.status_code" </span>=&gt; {
+                    grpc_status_code = otel_value_to_i64(value);
+                }
+                <span class="string">"sentry.platform" </span>=&gt; {
+                    platform = otel_value_to_string(value);
+                }
+                <span class="string">"sentry.segment.id" </span>=&gt; {
+                    segment_id = otel_value_to_span_id(value);
+                }
+                <span class="string">"sentry.profile.id" </span>=&gt; {
+                    profile_id = otel_value_to_string(value);
+                }
+                other =&gt; {
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(metric_name) = other.strip_prefix(<span class="string">"sentry.metrics_summary."</span>) {
+                        <span class="kw">if let </span>OtelValue::ArrayValue(entries) = value {
+                            <span class="kw">let </span>summaries =
+                                metrics_summary.<span class="number">0</span>.entry(metric_name.to_owned()).or_default();
+                            <span class="kw">let </span>summaries = summaries.get_or_insert_with(Default::default);
+                            <span class="kw">for </span>field <span class="kw">in </span>entries.values {
+                                <span class="kw">if let </span><span class="prelude-val">Some</span>(summary) = otel_value_to_metric_summary(field) {
+                                    summaries.push(summary.into());
+                                }
+                            }
 
-        EventSpan {
-            data: data.into(),
-            description: name.into(),
-            exclusive_time: exclusive_time_ms.into(),
-            parent_span_id: SpanId(parent_span_id).into(),
-            segment_id,
-            span_id: Annotated::new(SpanId(span_id)),
-            start_timestamp: Timestamp(start_timestamp).into(),
-            status: Annotated::new(convert_from_otel_to_sentry_status(
-                status.code,
-                http_status_code,
-                grpc_status_code,
-            )),
-            timestamp: Timestamp(end_timestamp).into(),
-            trace_id: TraceId(trace_id).into(),
-            ..Default::default()
+                            <span class="kw">continue</span>;
+                        }
+                    }
+
+                    <span class="kw">let </span>key = attribute.key;
+                    <span class="kw">match </span>value {
+                        OtelValue::ArrayValue(<span class="kw">_</span>) =&gt; {}
+                        OtelValue::BoolValue(v) =&gt; {
+                            data.insert(key, Annotated::new(v.into()));
+                        }
+                        OtelValue::BytesValue(v) =&gt; {
+                            <span class="kw">if let </span><span class="prelude-val">Ok</span>(v) = String::from_utf8(v) {
+                                data.insert(key, Annotated::new(v.into()));
+                            }
+                        }
+                        OtelValue::DoubleValue(v) =&gt; {
+                            data.insert(key, Annotated::new(v.into()));
+                        }
+                        OtelValue::IntValue(v) =&gt; {
+                            data.insert(key, Annotated::new(v.into()));
+                        }
+                        OtelValue::KvlistValue(<span class="kw">_</span>) =&gt; {}
+                        OtelValue::StringValue(v) =&gt; {
+                            data.insert(key, Annotated::new(v.into()));
+                        }
+                    }
+                }
+            }
         }
     }
-}
-
-<span class="doccomment">/// Event is a time-stamped annotation of the span, consisting of user-supplied
-/// text description and key-value pairs.
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
-</span><span class="kw">pub struct </span>Event {
-    <span class="doccomment">/// attributes is a collection of attribute key/value pairs on the event.
-    /// Attribute keys MUST be unique (it is not allowed to have more than one
-    /// attribute with the same key).
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>attributes: Vec&lt;KeyValue&gt;,
-    <span class="doccomment">/// dropped_attributes_count is the number of dropped attributes. If the value is 0,
-    /// then no attributes were dropped.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>dropped_attributes_count: u32,
-    <span class="doccomment">/// name of the event.
-    /// This field is semantically required to be set to non-empty string.
-    </span><span class="kw">pub </span>name: String,
-    <span class="doccomment">/// time_unix_nano is the time the event occurred.
-    </span><span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_number_from_string&quot;</span>)]
-    </span><span class="kw">pub </span>time_unix_nano: u64,
-}
-
-<span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
-</span><span class="kw">pub struct </span>Link {
-    <span class="doccomment">/// attributes is a collection of attribute key/value pairs on the link.
-    /// Attribute keys MUST be unique (it is not allowed to have more than one
-    /// attribute with the same key).
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>attributes: Vec&lt;KeyValue&gt;,
-    <span class="doccomment">/// dropped_attributes_count is the number of dropped attributes. If the value is 0,
-    /// then no attributes were dropped.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>dropped_attributes_count: u32,
-    <span class="doccomment">/// A unique identifier for the linked span. The ID is an 8-byte array.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>span_id: String,
-    <span class="doccomment">/// A unique identifier of a trace that this linked span is part of. The ID is a
-    /// 16-byte array.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>trace_id: String,
-    <span class="doccomment">/// The trace_state associated with the link.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>trace_state: String,
-}
-
-<span class="attr">#[derive(Clone, Default, Debug, Deserialize_repr, Serialize_repr)]
-#[repr(u8)]
-</span><span class="kw">pub enum </span>SpanKind {
-    <span class="doccomment">/// Unspecified. Do NOT use as default.
-    /// Implementations MAY assume SpanKind to be INTERNAL when receiving UNSPECIFIED.
-    </span>Unspecified = <span class="number">0</span>,
-    <span class="doccomment">/// Indicates that the span represents an internal operation within an application,
-    /// as opposed to an operation happening at the boundaries. Default value.
-    </span><span class="attr">#[default]
-    </span>Internal = <span class="number">1</span>,
-    <span class="doccomment">/// Indicates that the span covers server-side handling of an RPC or other
-    /// remote network request.
-    </span>Server = <span class="number">2</span>,
-    <span class="doccomment">/// Indicates that the span describes a request to some remote service.
-    </span>Client = <span class="number">3</span>,
-    <span class="doccomment">/// Indicates that the span describes a producer sending a message to a broker.
-    /// Unlike CLIENT and SERVER, there is often no direct critical path latency relationship
-    /// between producer and consumer spans. A PRODUCER span ends when the message was accepted
-    /// by the broker while the logical processing of the message might span a much longer time.
-    </span>Producer = <span class="number">4</span>,
-    <span class="doccomment">/// Indicates that the span describes consumer receiving a message from a broker.
-    /// Like the PRODUCER kind, there is often no direct critical path latency relationship
-    /// between producer and consumer spans.
-    </span>Consumer = <span class="number">5</span>,
-}
-
-<span class="attr">#[derive(Clone, Debug, Deserialize, Default, Serialize)]
-#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
-</span><span class="kw">pub struct </span>Status {
-    <span class="doccomment">/// A developer-facing human readable error message.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>message: String,
-    <span class="doccomment">/// The status code.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>code: StatusCode,
-}
-
-<span class="attr">#[derive(Clone, Copy, Debug, Deserialize_repr, Default, PartialEq, Serialize_repr)]
-#[repr(u8)]
-</span><span class="kw">pub enum </span>StatusCode {
-    <span class="doccomment">/// The default status.
-    </span><span class="attr">#[default]
-    </span>Unset = <span class="number">0</span>,
-    <span class="doccomment">/// The Span has been validated by an Application developer or Operator to
-    /// have completed successfully.
-    </span><span class="prelude-val">Ok </span>= <span class="number">1</span>,
-    <span class="doccomment">/// The Span contains an error.
-    </span>Error = <span class="number">2</span>,
-}
-
-<span class="doccomment">/// AnyValue is used to represent any type of attribute value. AnyValue may contain a
-/// primitive value such as a string or integer or it may contain an arbitrary nested
-/// object containing arrays, key-value lists and primitives.
-/// The value is one of the listed fields. It is valid for all values to be unspecified
-/// in which case this AnyValue is considered to be &quot;empty&quot;.
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-</span><span class="kw">pub enum </span>AnyValue {
-    <span class="attr">#[serde(rename = <span class="string">&quot;arrayValue&quot;</span>)]
-    </span>Array(ArrayValue),
-    <span class="attr">#[serde(rename = <span class="string">&quot;boolValue&quot;</span>)]
-    </span>Bool(bool),
-    <span class="attr">#[serde(rename = <span class="string">&quot;bytesValue&quot;</span>)]
-    </span>Bytes(Vec&lt;u8&gt;),
-    <span class="attr">#[serde(rename = <span class="string">&quot;doubleValue&quot;</span>)]
-    </span>Double(f64),
-    <span class="attr">#[serde(rename = <span class="string">&quot;intValue&quot;</span>)]
-    </span>Int(i64),
-    <span class="attr">#[serde(rename = <span class="string">&quot;kvlistValue&quot;</span>)]
-    </span>Kvlist(KeyValueList),
-    <span class="attr">#[serde(rename = <span class="string">&quot;stringValue&quot;</span>)]
-    </span>String(String),
-}
-
-<span class="kw">impl </span>AnyValue {
-    <span class="kw">pub fn </span>to_i64(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;i64&gt; {
-        <span class="kw">match </span><span class="self">self </span>{
-            AnyValue::Int(v) =&gt; <span class="prelude-val">Some</span>(<span class="kw-2">*</span>v),
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
-        }
+    <span class="kw">if </span>exclusive_time_ms == <span class="number">0f64 </span>{
+        exclusive_time_ms =
+            (otel_span.end_time_unix_nano - otel_span.start_time_unix_nano) <span class="kw">as </span>f64 / <span class="number">1e6f64</span>;
     }
 
-    <span class="kw">pub fn </span>to_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
-        <span class="kw">match </span><span class="self">self </span>{
-            AnyValue::String(v) =&gt; <span class="prelude-val">Some</span>(v.clone()),
-            AnyValue::Bool(v) =&gt; <span class="prelude-val">Some</span>(v.to_string()),
-            AnyValue::Int(v) =&gt; <span class="prelude-val">Some</span>(v.to_string()),
-            AnyValue::Double(v) =&gt; <span class="prelude-val">Some</span>(v.to_string()),
-            AnyValue::Bytes(v) =&gt; <span class="kw">match </span>String::from_utf8(v.clone()) {
-                <span class="prelude-val">Ok</span>(v) =&gt; <span class="prelude-val">Some</span>(v),
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
-            },
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
-        }
+    <span class="kw">if let </span>(<span class="prelude-val">Some</span>(http_method), <span class="prelude-val">Some</span>(http_route)) = (http_method, http_route) {
+        description = <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">"{http_method} {http_route}"</span>));
     }
-}
 
-<span class="doccomment">/// ArrayValue is a list of AnyValue messages. We need ArrayValue as a message
-/// since oneof in AnyValue does not allow repeated fields.
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-</span><span class="kw">pub struct </span>ArrayValue {
-    <span class="doccomment">/// Array of values. The array may be empty (contain 0 elements).
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>values: Vec&lt;AnyValue&gt;,
-}
-
-<span class="doccomment">/// KeyValueList is a list of KeyValue messages. We need KeyValueList as a message
-///
-/// since `oneof` in AnyValue does not allow repeated fields. Everywhere else where we need
-/// a list of KeyValue messages (e.g. in Span) we use `repeated KeyValue` directly to
-/// avoid unnecessary extra wrapping (which slows down the protocol). The 2 approaches
-/// are semantically equivalent.
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-</span><span class="kw">pub struct </span>KeyValueList {
-    <span class="doccomment">/// A collection of key/value pairs of key-value pairs. The list may be empty (may
-    /// contain 0 elements).
-    /// The keys MUST be unique (it is not allowed to have more than one
-    /// value with the same key).
-    </span><span class="kw">pub </span>values: Vec&lt;KeyValue&gt;,
-}
-
-<span class="doccomment">/// KeyValue is a key-value pair that is used to store Span attributes, Link
-/// attributes, etc.
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-</span><span class="kw">pub struct </span>KeyValue {
-    <span class="kw">pub </span>key: String,
-    <span class="kw">pub </span>value: AnyValue,
+    EventSpan {
+        op: op.into(),
+        description: description.into(),
+        data: SpanData::from_value(Annotated::new(data.into())),
+        exclusive_time: exclusive_time_ms.into(),
+        parent_span_id: parent_span_id.map(SpanId).into(),
+        segment_id: segment_id.map(SpanId).into(),
+        span_id: Annotated::new(SpanId(span_id)),
+        profile_id: profile_id
+            .as_deref()
+            .and_then(|s| EventId::from_str(s).ok())
+            .into(),
+        start_timestamp: Timestamp(start_timestamp).into(),
+        status: Annotated::new(convert_from_otel_to_sentry_status(
+            status.map(|s| s.code),
+            http_status_code,
+            grpc_status_code,
+        )),
+        timestamp: Timestamp(end_timestamp).into(),
+        trace_id: TraceId(trace_id).into(),
+        platform: platform.into(),
+        _metrics_summary: metrics_summary.into(),
+        ..Default::default()
+    }
 }
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use </span>chrono::{DateTime, Utc};
-    <span class="kw">use </span>relay_protocol::{get_path, Annotated};
+    <span class="kw">use </span>relay_protocol::get_path;
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>parse_span() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;traceId&quot;: &quot;89143b0763095bd9c9955e8175d1fb23&quot;,
-            &quot;spanId&quot;: &quot;e342abb1214ca181&quot;,
-            &quot;parentSpanId&quot;: &quot;0c7a7dea069bf5a6&quot;,
-            &quot;name&quot;: &quot;middleware - fastify -&gt; @fastify/multipart&quot;,
-            &quot;kind&quot;: 1,
-            &quot;startTimeUnixNano&quot;: 1697620454980000000,
-            &quot;endTimeUnixNano&quot;: 1697620454980078800,
-            &quot;attributes&quot;: [
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "traceId": "89143b0763095bd9c9955e8175d1fb23",
+            "spanId": "e342abb1214ca181",
+            "parentSpanId": "0c7a7dea069bf5a6",
+            "name": "middleware - fastify -&gt; @fastify/multipart",
+            "kind": 1,
+            "startTimeUnixNano": "1697620454980000000",
+            "endTimeUnixNano": "1697620454980078800",
+            "attributes": [
                 {
-                    &quot;key&quot;: &quot;sentry.environment&quot;,
-                    &quot;value&quot;: {
-                        &quot;stringValue&quot;: &quot;test&quot;
+                    "key": "sentry.environment",
+                    "value": {
+                        "stringValue": "test"
                     }
                 },
                 {
-                &quot;key&quot;: &quot;fastify.type&quot;,
-                    &quot;value&quot;: {
-                        &quot;stringValue&quot;: &quot;middleware&quot;
+                "key": "fastify.type",
+                    "value": {
+                        "stringValue": "middleware"
                     }
                 },
                 {
-                    &quot;key&quot;: &quot;plugin.name&quot;,
-                    &quot;value&quot;: {
-                        &quot;stringValue&quot;: &quot;fastify -&gt; @fastify/multipart&quot;
+                    "key": "plugin.name",
+                    "value": {
+                        "stringValue": "fastify -&gt; @fastify/multipart"
                     }
                 },
                 {
-                    &quot;key&quot;: &quot;hook.name&quot;,
-                    &quot;value&quot;: {
-                        &quot;stringValue&quot;: &quot;onResponse&quot;
+                    "key": "hook.name",
+                    "value": {
+                        "stringValue": "onResponse"
                     }
                 },
                 {
-                    &quot;key&quot;: &quot;sentry.sample_rate&quot;,
-                    &quot;value&quot;: {
-                        &quot;intValue&quot;: 1
+                    "key": "sentry.sample_rate",
+                    "value": {
+                        "intValue": "1"
                     }
                 },
                 {
-                    &quot;key&quot;: &quot;sentry.parentSampled&quot;,
-                    &quot;value&quot;: {
-                        &quot;boolValue&quot;: true
+                    "key": "sentry.parentSampled",
+                    "value": {
+                        "boolValue": true
                     }
                 },
                 {
-                    &quot;key&quot;: &quot;sentry.exclusive_time_ns&quot;,
-                    &quot;value&quot;: {
-                        &quot;intValue&quot;: 1000000000
+                    "key": "sentry.exclusive_time_nano",
+                    "value": {
+                        "intValue": "1000000000"
                     }
                 }
             ],
-            &quot;droppedAttributesCount&quot;: 0,
-            &quot;events&quot;: [],
-            &quot;droppedEventsCount&quot;: 0,
-            &quot;status&quot;: {
-                &quot;code&quot;: 0
+            "droppedAttributesCount": 0,
+            "events": [],
+            "droppedEventsCount": 0,
+            "status": {
+                "code": 0,
+                "message": "test"
             },
-            &quot;links&quot;: [],
-            &quot;droppedLinksCount&quot;: 0
-        }&quot;#</span>;
+            "links": [],
+            "droppedLinksCount": 0
+        }"#</span>;
         <span class="kw">let </span>otel_span: OtelSpan = serde_json::from_str(json).unwrap();
-        <span class="kw">let </span>event_span: EventSpan = otel_span.into();
+        <span class="kw">let </span>event_span: EventSpan = otel_to_sentry_span(otel_span);
         <span class="macro">assert_eq!</span>(event_span.exclusive_time, Annotated::new(<span class="number">1000.0</span>));
         <span class="kw">let </span>annotated_span: Annotated&lt;EventSpan&gt; = Annotated::new(event_span);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">get_path!</span>(annotated_span.data[<span class="string">&quot;environment&quot;</span>]),
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>Annotated::new(<span class="string">&quot;test&quot;</span>.into()))
+            <span class="macro">get_path!</span>(annotated_span.data.environment),
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>Annotated::new(<span class="string">"test"</span>.into()))
         );
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>parse_span_with_exclusive_time_ns_attribute() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;traceId&quot;: &quot;89143b0763095bd9c9955e8175d1fb23&quot;,
-            &quot;spanId&quot;: &quot;e342abb1214ca181&quot;,
-            &quot;parentSpanId&quot;: &quot;0c7a7dea069bf5a6&quot;,
-            &quot;name&quot;: &quot;middleware - fastify -&gt; @fastify/multipart&quot;,
-            &quot;kind&quot;: 1,
-            &quot;startTimeUnixNano&quot;: 1697620454980000000,
-            &quot;endTimeUnixNano&quot;: 1697620454980078800,
-            &quot;attributes&quot;: [
+    </span><span class="kw">fn </span>parse_span_with_exclusive_time_nano_attribute() {
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "traceId": "89143b0763095bd9c9955e8175d1fb23",
+            "spanId": "e342abb1214ca181",
+            "parentSpanId": "0c7a7dea069bf5a6",
+            "name": "middleware - fastify -&gt; @fastify/multipart",
+            "kind": 1,
+            "startTimeUnixNano": "1697620454980000000",
+            "endTimeUnixNano": "1697620454980078800",
+            "attributes": [
                 {
-                    &quot;key&quot;: &quot;sentry.exclusive_time_ns&quot;,
-                    &quot;value&quot;: {
-                        &quot;intValue&quot;: 3200000000
+                    "key": "sentry.exclusive_time_nano",
+                    "value": {
+                        "intValue": "3200000000"
                     }
                 }
             ]
-        }&quot;#</span>;
+        }"#</span>;
         <span class="kw">let </span>otel_span: OtelSpan = serde_json::from_str(json).unwrap();
-        <span class="kw">let </span>event_span: EventSpan = otel_span.into();
+        <span class="kw">let </span>event_span: EventSpan = otel_to_sentry_span(otel_span);
         <span class="macro">assert_eq!</span>(event_span.exclusive_time, Annotated::new(<span class="number">3200.0</span>));
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>parse_span_no_exclusive_time_ns_attribute() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;traceId&quot;: &quot;89143b0763095bd9c9955e8175d1fb23&quot;,
-            &quot;spanId&quot;: &quot;e342abb1214ca181&quot;,
-            &quot;parentSpanId&quot;: &quot;0c7a7dea069bf5a6&quot;,
-            &quot;name&quot;: &quot;middleware - fastify -&gt; @fastify/multipart&quot;,
-            &quot;kind&quot;: 1,
-            &quot;startTimeUnixNano&quot;: 1697620454980000000,
-            &quot;endTimeUnixNano&quot;: 1697620454980078800
-        }&quot;#</span>;
+    </span><span class="kw">fn </span>parse_span_no_exclusive_time_nano_attribute() {
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "traceId": "89143b0763095bd9c9955e8175d1fb23",
+            "spanId": "e342abb1214ca181",
+            "parentSpanId": "0c7a7dea069bf5a6",
+            "name": "middleware - fastify -&gt; @fastify/multipart",
+            "kind": 1,
+            "startTimeUnixNano": "1697620454980000000",
+            "endTimeUnixNano": "1697620454980078800"
+        }"#</span>;
         <span class="kw">let </span>otel_span: OtelSpan = serde_json::from_str(json).unwrap();
-        <span class="kw">let </span>event_span: EventSpan = otel_span.into();
+        <span class="kw">let </span>event_span: EventSpan = otel_to_sentry_span(otel_span);
         <span class="macro">assert_eq!</span>(event_span.exclusive_time, Annotated::new(<span class="number">0.0788</span>));
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>parse_span_with_timestamps_as_strings() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;traceId&quot;: &quot;89143b0763095bd9c9955e8175d1fb23&quot;,
-            &quot;spanId&quot;: &quot;e342abb1214ca181&quot;,
-            &quot;parentSpanId&quot;: &quot;0c7a7dea069bf5a6&quot;,
-            &quot;name&quot;: &quot;middleware - fastify -&gt; @fastify/multipart&quot;,
-            &quot;kind&quot;: 1,
-            &quot;startTimeUnixNano&quot;: &quot;1697620454980000000&quot;,
-            &quot;endTimeUnixNano&quot;: &quot;1697620454980078800&quot;
-        }&quot;#</span>;
+    </span><span class="kw">fn </span>parse_span_with_db_attributes() {
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "traceId": "89143b0763095bd9c9955e8175d1fb23",
+            "spanId": "e342abb1214ca181",
+            "parentSpanId": "0c7a7dea069bf5a6",
+            "name": "database query",
+            "kind": 3,
+            "startTimeUnixNano": "1697620454980000000",
+            "endTimeUnixNano": "1697620454980078800",
+            "attributes": [
+                {
+                    "key" : "db.name",
+                    "value": {
+                        "stringValue": "database"
+                    }
+                },
+                {
+                    "key" : "db.type",
+                    "value": {
+                        "stringValue": "sql"
+                    }
+                },
+                {
+                    "key" : "db.statement",
+                    "value": {
+                        "stringValue": "SELECT \"table\".\"col\" FROM \"table\" WHERE \"table\".\"col\" = %s"
+                    }
+                }
+            ]
+        }"#</span>;
         <span class="kw">let </span>otel_span: OtelSpan = serde_json::from_str(json).unwrap();
-        <span class="kw">let </span>event_span: EventSpan = otel_span.into();
+        <span class="kw">let </span>event_span: EventSpan = otel_to_sentry_span(otel_span);
+        <span class="macro">assert_eq!</span>(event_span.op, Annotated::new(<span class="string">"db"</span>.into()));
         <span class="macro">assert_eq!</span>(
-            event_span.start_timestamp,
-            Annotated::new(Timestamp(
-                DateTime::&lt;Utc&gt;::from_timestamp(<span class="number">1697620454</span>, <span class="number">980000000</span>).unwrap()
-            ))
+            event_span.description,
+            Annotated::new(
+                <span class="string">"SELECT \"table\".\"col\" FROM \"table\" WHERE \"table\".\"col\" = %s"</span>.into()
+            )
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>parse_span_with_http_attributes() {
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "traceId": "89143b0763095bd9c9955e8175d1fb23",
+            "spanId": "e342abb1214ca181",
+            "parentSpanId": "0c7a7dea069bf5a6",
+            "name": "http client request",
+            "kind": 3,
+            "startTimeUnixNano": "1697620454980000000",
+            "endTimeUnixNano": "1697620454980078800",
+            "attributes": [
+                {
+                    "key" : "http.request.method",
+                    "value": {
+                        "stringValue": "GET"
+                    }
+                },
+                {
+                    "key" : "url.path",
+                    "value": {
+                        "stringValue": "/api/search?q=foobar"
+                    }
+                }
+            ]
+        }"#</span>;
+        <span class="kw">let </span>otel_span: OtelSpan = serde_json::from_str(json).unwrap();
+        <span class="kw">let </span>event_span: EventSpan = otel_to_sentry_span(otel_span);
+        <span class="macro">assert_eq!</span>(event_span.op, Annotated::new(<span class="string">"http.client"</span>.into()));
+        <span class="macro">assert_eq!</span>(
+            event_span.description,
+            Annotated::new(<span class="string">"GET /api/search?q=foobar"</span>.into())
+        );
+    }
+
+    <span class="doccomment">/// Intended to be synced with `relay-event-schema::protocol::span::convert::tests::roundtrip`.
+    </span><span class="attr">#[test]
+    </span><span class="kw">fn </span>parse_sentry_attributes() {
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "traceId": "4c79f60c11214eb38604f4ae0781bfb2",
+            "spanId": "fa90fdead5f74052",
+            "parentSpanId": "fa90fdead5f74051",
+            "startTimeUnixNano": "123000000000",
+            "endTimeUnixNano": "123500000000",
+            "status": {"code": 0, "message": "foo"},
+            "attributes": [
+                {
+                    "key" : "browser.name",
+                    "value": {
+                        "stringValue": "Chrome"
+                    }
+                },
+                {
+                    "key" : "sentry.environment",
+                    "value": {
+                        "stringValue": "prod"
+                    }
+                },
+                {
+                    "key" : "sentry.op",
+                    "value": {
+                        "stringValue": "myop"
+                    }
+                },
+                {
+                    "key" : "sentry.platform",
+                    "value": {
+                        "stringValue": "php"
+                    }
+                },
+                {
+                    "key" : "sentry.profile.id",
+                    "value": {
+                        "stringValue": "a0aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"
+                    }
+                },
+                {
+                    "key" : "sentry.release",
+                    "value": {
+                        "stringValue": "myapp@1.0.0"
+                    }
+                },
+                {
+                    "key" : "sentry.sdk.name",
+                    "value": {
+                        "stringValue": "sentry.php"
+                    }
+                },
+                {
+                    "key" : "sentry.segment.id",
+                    "value": {
+                        "stringValue": "FA90FDEAD5F74052"
+                    }
+                },
+                {
+                    "key" : "sentry.segment.name",
+                    "value": {
+                        "stringValue": "my 1st transaction"
+                    }
+                },
+                {
+                    "key": "sentry.metrics_summary.some_metric",
+                    "value": {
+                        "arrayValue": {
+                            "values": [
+                                {
+                                    "value": {
+                                        "kvlistValue": {
+                                            "values": [
+                                                {
+                                                    "key": "min",
+                                                    "value": {
+                                                        "doubleValue": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "key": "max",
+                                                    "value": {
+                                                        "doubleValue": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "key": "sum",
+                                                    "value": {
+                                                        "doubleValue": 3.0
+                                                    }
+                                                },
+                                                {
+                                                    "key": "count",
+                                                    "value": {
+                                                        "intValue": "2"
+                                                    }
+                                                },
+                                                {
+                                                    "key": "tags",
+                                                    "value": {
+                                                        "kvlistValue": {
+                                                            "values": [
+                                                                {
+                                                                    "key": "environment",
+                                                                    "value": {
+                                                                        "stringValue": "test"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }"#</span>;
+
+        <span class="kw">let </span>otel_span: OtelSpan = serde_json::from_str(json).unwrap();
+        <span class="kw">let </span>span_from_otel = otel_to_sentry_span(otel_span);
+
+        <span class="macro">insta::assert_debug_snapshot!</span>(span_from_otel, @<span class="string">r###"
+        Span {
+            timestamp: Timestamp(
+                1970-01-01T00:02:03.500Z,
+            ),
+            start_timestamp: Timestamp(
+                1970-01-01T00:02:03Z,
+            ),
+            exclusive_time: 500.0,
+            op: "myop",
+            span_id: SpanId(
+                "fa90fdead5f74052",
+            ),
+            parent_span_id: SpanId(
+                "fa90fdead5f74051",
+            ),
+            trace_id: TraceId(
+                "4c79f60c11214eb38604f4ae0781bfb2",
+            ),
+            segment_id: SpanId(
+                "fa90fdead5f74052",
+            ),
+            is_segment: ~,
+            status: Ok,
+            description: ~,
+            tags: ~,
+            origin: ~,
+            profile_id: EventId(
+                a0aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab,
+            ),
+            data: SpanData {
+                app_start_type: ~,
+                ai_total_tokens_used: ~,
+                ai_prompt_tokens_used: ~,
+                ai_completion_tokens_used: ~,
+                browser_name: "Chrome",
+                code_filepath: ~,
+                code_lineno: ~,
+                code_function: ~,
+                code_namespace: ~,
+                db_operation: ~,
+                db_system: ~,
+                db_collection_name: ~,
+                environment: "prod",
+                release: LenientString(
+                    "myapp@1.0.0",
+                ),
+                http_decoded_response_content_length: ~,
+                http_request_method: ~,
+                http_response_content_length: ~,
+                http_response_transfer_size: ~,
+                resource_render_blocking_status: ~,
+                server_address: ~,
+                cache_hit: ~,
+                cache_key: ~,
+                cache_item_size: ~,
+                http_response_status_code: ~,
+                ai_pipeline_name: ~,
+                ai_model_id: ~,
+                ai_input_messages: ~,
+                ai_responses: ~,
+                thread_name: ~,
+                thread_id: ~,
+                segment_name: "my 1st transaction",
+                ui_component_name: ~,
+                url_scheme: ~,
+                user: ~,
+                replay_id: ~,
+                sdk_name: "sentry.php",
+                sdk_version: ~,
+                frames_slow: ~,
+                frames_frozen: ~,
+                frames_total: ~,
+                frames_delay: ~,
+                messaging_destination_name: ~,
+                messaging_message_retry_count: ~,
+                messaging_message_receive_latency: ~,
+                messaging_message_body_size: ~,
+                messaging_message_id: ~,
+                user_agent_original: ~,
+                url_full: ~,
+                client_address: ~,
+                route: ~,
+                previous_route: ~,
+                other: {},
+            },
+            sentry_tags: ~,
+            received: ~,
+            measurements: ~,
+            _metrics_summary: MetricsSummary(
+                {
+                    "some_metric": [
+                        MetricSummary {
+                            min: 1.0,
+                            max: 2.0,
+                            sum: 3.0,
+                            count: 2,
+                            tags: {
+                                "environment": "test",
+                            },
+                        },
+                    ],
+                },
+            ),
+            platform: "php",
+            was_transaction: ~,
+            other: {},
+        }
+        "###</span>);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>uppercase_span_id() {
+        <span class="kw">let </span>input = OtelValue::StringValue(<span class="string">"FA90FDEAD5F74052"</span>.to_owned());
+        <span class="macro">assert_eq!</span>(
+            otel_value_to_span_id(input).as_deref(),
+            <span class="prelude-val">Some</span>(<span class="string">"fa90fdead5f74052"</span>)
         );
     }
 }

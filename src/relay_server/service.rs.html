@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/service.rs`."><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/service.rs`."><title>service.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -328,48 +328,160 @@
 <a href="#328" id="328">328</a>
 <a href="#329" id="329">329</a>
 <a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::convert::Infallible;
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::sync::Arc;
+<span class="kw">use </span>std::time::Duration;
 
+<span class="kw">use </span><span class="kw">crate</span>::metrics::{MetricOutcomes, MetricStats};
+<span class="kw">use </span><span class="kw">crate</span>::services::buffer::{EnvelopeBufferService, ObservableEnvelopeBuffer};
+<span class="kw">use </span><span class="kw">crate</span>::services::stats::RelayStats;
 <span class="kw">use </span>anyhow::{Context, <span class="prelude-ty">Result</span>};
 <span class="kw">use </span>axum::extract::FromRequestParts;
 <span class="kw">use </span>axum::http::request::Parts;
-<span class="kw">use </span>relay_aws_extension::AwsExtension;
-<span class="kw">use </span>relay_config::Config;
-<span class="kw">use </span>relay_metrics::Aggregator;
-<span class="kw">use </span>relay_redis::RedisPool;
+<span class="kw">use </span>rayon::ThreadPool;
+<span class="kw">use </span>relay_cogs::Cogs;
+<span class="kw">use </span>relay_config::{Config, RedisConnection, RedisPoolConfigs};
+<span class="kw">use </span>relay_redis::{RedisConfigOptions, RedisError, RedisPool, RedisPools};
 <span class="kw">use </span>relay_system::{channel, Addr, Service};
 <span class="kw">use </span>tokio::runtime::Runtime;
 
-<span class="kw">use </span><span class="kw">crate</span>::actors::envelopes::{EnvelopeManager, EnvelopeManagerService};
-<span class="kw">use </span><span class="kw">crate</span>::actors::global_config::{GlobalConfigManager, GlobalConfigService};
-<span class="kw">use </span><span class="kw">crate</span>::actors::health_check::{HealthCheck, HealthCheckService};
-<span class="kw">use </span><span class="kw">crate</span>::actors::outcome::{OutcomeProducer, OutcomeProducerService, TrackOutcome};
-<span class="kw">use </span><span class="kw">crate</span>::actors::outcome_aggregator::OutcomeAggregator;
-<span class="kw">use </span><span class="kw">crate</span>::actors::processor::{EnvelopeProcessor, EnvelopeProcessorService};
-<span class="kw">use </span><span class="kw">crate</span>::actors::project_cache::{ProjectCache, ProjectCacheService, Services};
-<span class="kw">use </span><span class="kw">crate</span>::actors::relays::{RelayCache, RelayCacheService};
-<span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::actors::store::StoreService;
-<span class="kw">use </span><span class="kw">crate</span>::actors::test_store::{TestStore, TestStoreService};
-<span class="kw">use </span><span class="kw">crate</span>::actors::upstream::{UpstreamRelay, UpstreamRelayService};
-<span class="kw">use </span><span class="kw">crate</span>::utils::BufferGuard;
+<span class="kw">use </span><span class="kw">crate</span>::services::cogs::{CogsService, CogsServiceRecorder};
+<span class="kw">use </span><span class="kw">crate</span>::services::global_config::{GlobalConfigManager, GlobalConfigService};
+<span class="kw">use </span><span class="kw">crate</span>::services::health_check::{HealthCheck, HealthCheckService};
+<span class="kw">use </span><span class="kw">crate</span>::services::metrics::{Aggregator, RouterService};
+<span class="kw">use </span><span class="kw">crate</span>::services::outcome::{OutcomeProducer, OutcomeProducerService, TrackOutcome};
+<span class="kw">use </span><span class="kw">crate</span>::services::outcome_aggregator::OutcomeAggregator;
+<span class="kw">use </span><span class="kw">crate</span>::services::processor::{<span class="self">self</span>, EnvelopeProcessor, EnvelopeProcessorService};
+<span class="kw">use </span><span class="kw">crate</span>::services::project_cache::{ProjectCache, ProjectCacheService, Services};
+<span class="kw">use </span><span class="kw">crate</span>::services::relays::{RelayCache, RelayCacheService};
+<span class="attr">#[cfg(feature = <span class="string">"processing"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::services::store::StoreService;
+<span class="kw">use </span><span class="kw">crate</span>::services::test_store::{TestStore, TestStoreService};
+<span class="kw">use </span><span class="kw">crate</span>::services::upstream::{UpstreamRelay, UpstreamRelayService};
+<span class="kw">use </span><span class="kw">crate</span>::utils::{MemoryChecker, MemoryStat};
 
 <span class="doccomment">/// Indicates the type of failure of the server.
 </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, thiserror::Error)]
 </span><span class="kw">pub enum </span>ServiceError {
     <span class="doccomment">/// GeoIp construction failed.
-    </span><span class="attr">#[error(<span class="string">&quot;could not load the Geoip Db&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"could not load the Geoip Db"</span>)]
     </span>GeoIp,
 
     <span class="doccomment">/// Initializing the Kafka producer failed.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-    #[error(<span class="string">&quot;could not initialize kafka producer&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"processing"</span>)]
+    #[error(<span class="string">"could not initialize kafka producer"</span>)]
     </span>Kafka,
 
     <span class="doccomment">/// Initializing the Redis cluster client failed.
-    </span><span class="attr">#[error(<span class="string">&quot;could not initialize redis cluster client&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"could not initialize redis cluster client"</span>)]
     </span>Redis,
 }
 
@@ -380,22 +492,22 @@
     <span class="kw">pub </span>outcome_producer: Addr&lt;OutcomeProducer&gt;,
     <span class="kw">pub </span>outcome_aggregator: Addr&lt;TrackOutcome&gt;,
     <span class="kw">pub </span>processor: Addr&lt;EnvelopeProcessor&gt;,
-    <span class="kw">pub </span>envelope_manager: Addr&lt;EnvelopeManager&gt;,
     <span class="kw">pub </span>test_store: Addr&lt;TestStore&gt;,
     <span class="kw">pub </span>relay_cache: Addr&lt;RelayCache&gt;,
     <span class="kw">pub </span>global_config: Addr&lt;GlobalConfigManager&gt;,
     <span class="kw">pub </span>project_cache: Addr&lt;ProjectCache&gt;,
     <span class="kw">pub </span>upstream_relay: Addr&lt;UpstreamRelay&gt;,
+    <span class="kw">pub </span>envelope_buffer: <span class="prelude-ty">Option</span>&lt;ObservableEnvelopeBuffer&gt;,
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Registry {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Registry&quot;</span>)
-            .field(<span class="string">&quot;aggregator&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.aggregator)
-            .field(<span class="string">&quot;health_check&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.health_check)
-            .field(<span class="string">&quot;outcome_producer&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.outcome_producer)
-            .field(<span class="string">&quot;outcome_aggregator&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.outcome_aggregator)
-            .field(<span class="string">&quot;processor&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;Addr&lt;Processor&gt;&quot;</span>))
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"Registry"</span>)
+            .field(<span class="string">"aggregator"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.aggregator)
+            .field(<span class="string">"health_check"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.health_check)
+            .field(<span class="string">"outcome_producer"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.outcome_producer)
+            .field(<span class="string">"outcome_aggregator"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.outcome_aggregator)
+            .field(<span class="string">"processor"</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">"Addr&lt;Processor&gt;"</span>))
             .finish()
     }
 }
@@ -405,15 +517,66 @@
     tokio::runtime::Builder::new_multi_thread()
         .thread_name(name)
         .worker_threads(threads)
+        <span class="comment">// Relay uses `spawn_blocking` only for Redis connections within the project
+        // cache, those should never exceed 100 concurrent connections
+        // (limited by connection pool).
+        //
+        // Relay also does not use other blocking opertions from Tokio which require
+        // this pool, no usage of `tokio::fs` and `tokio::io::{Stdin, Stdout, Stderr}`.
+        //
+        // We limit the maximum amount of threads here, we've seen that Tokio
+        // expands this pool very very aggressively and basically never shrinks it
+        // which leads to a massive resource waste.
+        </span>.max_blocking_threads(<span class="number">150</span>)
+        <span class="comment">// We also lower down the default (10s) keep alive timeout for blocking
+        // threads to encourage the runtime to not keep too many idle blocking threads
+        // around.
+        </span>.thread_keep_alive(Duration::from_secs(<span class="number">1</span>))
         .enable_all()
         .build()
         .unwrap()
 }
 
+<span class="kw">fn </span>create_processor_pool(config: <span class="kw-2">&amp;</span>Config) -&gt; <span class="prelude-ty">Result</span>&lt;ThreadPool&gt; {
+    <span class="comment">// Adjust thread count for small cpu counts to not have too many idle cores
+    // and distribute workload better.
+    </span><span class="kw">let </span>thread_count = <span class="kw">match </span>config.cpu_concurrency() {
+        conc @ <span class="number">0</span>..=<span class="number">2 </span>=&gt; conc.max(<span class="number">1</span>),
+        conc @ <span class="number">3</span>..=<span class="number">4 </span>=&gt; conc - <span class="number">1</span>,
+        conc =&gt; conc - <span class="number">2</span>,
+    };
+    <span class="macro">relay_log::info!</span>(<span class="string">"starting {thread_count} envelope processing workers"</span>);
+
+    <span class="kw">let </span>pool = <span class="kw">crate</span>::utils::ThreadPoolBuilder::new(<span class="string">"processor"</span>)
+        .num_threads(thread_count)
+        .runtime(tokio::runtime::Handle::current())
+        .build()<span class="question-mark">?</span>;
+
+    <span class="prelude-val">Ok</span>(pool)
+}
+
+<span class="attr">#[cfg(feature = <span class="string">"processing"</span>)]
+</span><span class="kw">fn </span>create_store_pool(config: <span class="kw-2">&amp;</span>Config) -&gt; <span class="prelude-ty">Result</span>&lt;ThreadPool&gt; {
+    <span class="comment">// Spawn a store worker for every 12 threads in the processor pool.
+    // This ratio was found emperically and may need adjustments in the future.
+    //
+    // Ideally in the future the store will be single threaded again, after we move
+    // all the heavy processing (de- and re-serialization) into the processor.
+    </span><span class="kw">let </span>thread_count = config.cpu_concurrency().div_ceil(<span class="number">12</span>);
+    <span class="macro">relay_log::info!</span>(<span class="string">"starting {thread_count} store workers"</span>);
+
+    <span class="kw">let </span>pool = <span class="kw">crate</span>::utils::ThreadPoolBuilder::new(<span class="string">"store"</span>)
+        .num_threads(thread_count)
+        .runtime(tokio::runtime::Handle::current())
+        .build()<span class="question-mark">?</span>;
+
+    <span class="prelude-val">Ok</span>(pool)
+}
+
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">struct </span>StateInner {
     config: Arc&lt;Config&gt;,
-    buffer_guard: Arc&lt;BufferGuard&gt;,
+    memory_checker: MemoryChecker,
     registry: Registry,
 }
 
@@ -425,118 +588,144 @@
 
 <span class="kw">impl </span>ServiceState {
     <span class="doccomment">/// Starts all services and returns addresses to all of them.
-    </span><span class="kw">pub fn </span>start(config: Arc&lt;Config&gt;, runtimes: <span class="kw-2">&amp;</span>Runtimes) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>upstream_relay = UpstreamRelayService::new(config.clone()).start_in(<span class="kw-2">&amp;</span>runtimes.upstream);
+    </span><span class="kw">pub fn </span>start(config: Arc&lt;Config&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>upstream_relay = UpstreamRelayService::new(config.clone()).start();
         <span class="kw">let </span>test_store = TestStoreService::new(config.clone()).start();
 
-        <span class="kw">let </span>redis_pool = <span class="kw">match </span>config.redis() {
-            <span class="prelude-val">Some</span>(redis_config) <span class="kw">if </span>config.processing_enabled() =&gt; {
-                <span class="prelude-val">Some</span>(RedisPool::new(redis_config).context(ServiceError::Redis)<span class="question-mark">?</span>)
-            }
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
-        };
+        <span class="kw">let </span>redis_pools = config
+            .redis()
+            .filter(|<span class="kw">_</span>| config.processing_enabled())
+            .map(create_redis_pools)
+            .transpose()
+            .context(ServiceError::Redis)<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>buffer = Arc::new(BufferGuard::new(config.envelope_buffer_size()));
+        <span class="comment">// We create an instance of `MemoryStat` which can be supplied composed with any arbitrary
+        // configuration object down the line.
+        </span><span class="kw">let </span>memory_stat = MemoryStat::new(config.memory_stat_refresh_frequency_ms());
 
-        <span class="comment">// Create an address for the `EnvelopeManagerService`, which can be injected into the
-        // other services. This also solves the issue of circular dependencies with `EnvelopeProcessorService`.
-        </span><span class="kw">let </span>(envelope_manager, envelope_manager_rx) = channel(EnvelopeManagerService::name());
+        <span class="comment">// Create an address for the `EnvelopeProcessor`, which can be injected into the
+        // other services.
+        </span><span class="kw">let </span>(processor, processor_rx) = channel(EnvelopeProcessorService::name());
         <span class="kw">let </span>outcome_producer = OutcomeProducerService::create(
             config.clone(),
             upstream_relay.clone(),
-            envelope_manager.clone(),
+            processor.clone(),
         )<span class="question-mark">?
-        </span>.start_in(<span class="kw-2">&amp;</span>runtimes.outcome);
-        <span class="kw">let </span>outcome_aggregator =
-            OutcomeAggregator::new(<span class="kw-2">&amp;</span>config, outcome_producer.clone()).start_in(<span class="kw-2">&amp;</span>runtimes.outcome);
+        </span>.start();
+        <span class="kw">let </span>outcome_aggregator = OutcomeAggregator::new(<span class="kw-2">&amp;</span>config, outcome_producer.clone()).start();
 
+        <span class="kw">let </span>(global_config, global_config_rx) =
+            GlobalConfigService::new(config.clone(), upstream_relay.clone());
+        <span class="kw">let </span>global_config_handle = global_config.handle();
         <span class="comment">// The global config service must start before dependant services are
         // started. Messages like subscription requests to the global config
         // service fail if the service is not running.
-        </span><span class="kw">let </span>global_config =
-            GlobalConfigService::new(config.clone(), upstream_relay.clone()).start();
+        </span><span class="kw">let </span>global_config = global_config.start();
 
         <span class="kw">let </span>(project_cache, project_cache_rx) = channel(ProjectCacheService::name());
 
-        <span class="kw">let </span>aggregator = relay_metrics::RouterService::new(
+        <span class="kw">let </span>aggregator = RouterService::new(
             config.default_aggregator_config().clone(),
             config.secondary_aggregator_configs().clone(),
             <span class="prelude-val">Some</span>(project_cache.clone().recipient()),
-        )
-        .start_in(<span class="kw-2">&amp;</span>runtimes.aggregator);
+        );
+        <span class="kw">let </span>aggregator_handle = aggregator.handle();
+        <span class="kw">let </span>aggregator = aggregator.start();
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-        </span><span class="kw">let </span>store = <span class="kw">match </span>runtimes.store {
-            <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>rt) =&gt; {
-                <span class="prelude-val">Some</span>(StoreService::create(config.clone(), outcome_aggregator.clone())<span class="question-mark">?</span>.start_in(rt))
-            }
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
-        };
-
-        <span class="kw">let </span>processor = EnvelopeProcessorService::new(
+        <span class="kw">let </span>metric_stats = MetricStats::new(
             config.clone(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-            </span>redis_pool.clone(),
-            envelope_manager.clone(),
-            outcome_aggregator.clone(),
-            project_cache.clone(),
-            upstream_relay.clone(),
-            test_store.clone(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-            </span>aggregator.clone(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-            </span>store.clone(),
-        )
-        .start();
-
-        <span class="attr">#[allow(unused_mut)]
-        </span><span class="kw">let </span><span class="kw-2">mut </span>envelope_manager_service = EnvelopeManagerService::new(
-            config.clone(),
-            processor.clone(),
-            project_cache.clone(),
-            test_store.clone(),
-            upstream_relay.clone(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-            </span>store.clone(),
+            global_config_handle.clone(),
+            aggregator.clone(),
         );
 
-        envelope_manager_service.spawn_handler(envelope_manager_rx);
+        <span class="kw">let </span>metric_outcomes = MetricOutcomes::new(metric_stats, outcome_aggregator.clone());
+
+        <span class="attr">#[cfg(feature = <span class="string">"processing"</span>)]
+        </span><span class="kw">let </span>store = config
+            .processing_enabled()
+            .then(|| {
+                StoreService::create(
+                    create_store_pool(<span class="kw-2">&amp;</span>config)<span class="question-mark">?</span>,
+                    config.clone(),
+                    global_config_handle.clone(),
+                    outcome_aggregator.clone(),
+                    metric_outcomes.clone(),
+                )
+                .map(|s| s.start())
+            })
+            .transpose()<span class="question-mark">?</span>;
+
+        <span class="kw">let </span>cogs = CogsService::new(<span class="kw-2">&amp;</span>config);
+        <span class="kw">let </span>cogs = Cogs::new(CogsServiceRecorder::new(<span class="kw-2">&amp;</span>config, cogs.start()));
+
+        EnvelopeProcessorService::new(
+            create_processor_pool(<span class="kw-2">&amp;</span>config)<span class="question-mark">?</span>,
+            config.clone(),
+            global_config_handle,
+            cogs,
+            <span class="attr">#[cfg(feature = <span class="string">"processing"</span>)]
+            </span>redis_pools.clone(),
+            processor::Addrs {
+                project_cache: project_cache.clone(),
+                outcome_aggregator: outcome_aggregator.clone(),
+                upstream_relay: upstream_relay.clone(),
+                test_store: test_store.clone(),
+                <span class="attr">#[cfg(feature = <span class="string">"processing"</span>)]
+                </span>store_forwarder: store.clone(),
+                aggregator: aggregator.clone(),
+            },
+            metric_outcomes.clone(),
+        )
+        .spawn_handler(processor_rx);
+
+        <span class="kw">let </span>envelope_buffer = EnvelopeBufferService::new(
+            config.clone(),
+            MemoryChecker::new(memory_stat.clone(), config.clone()),
+            global_config_rx.clone(),
+            project_cache.clone(),
+        )
+        .map(|b| b.start_observable());
 
         <span class="comment">// Keep all the services in one context.
-        </span><span class="kw">let </span>project_cache_services = Services::new(
-            aggregator.clone(),
-            processor.clone(),
-            envelope_manager.clone(),
-            outcome_aggregator.clone(),
-            project_cache.clone(),
-            test_store.clone(),
-            upstream_relay.clone(),
-            global_config.clone(),
-        );
-        <span class="kw">let </span>guard = runtimes.project.enter();
+        </span><span class="kw">let </span>project_cache_services = Services {
+            envelope_buffer: envelope_buffer.as_ref().map(ObservableEnvelopeBuffer::addr),
+            aggregator: aggregator.clone(),
+            envelope_processor: processor.clone(),
+            outcome_aggregator: outcome_aggregator.clone(),
+            project_cache: project_cache.clone(),
+            test_store: test_store.clone(),
+            upstream_relay: upstream_relay.clone(),
+        };
+
         ProjectCacheService::new(
             config.clone(),
-            buffer.clone(),
+            MemoryChecker::new(memory_stat.clone(), config.clone()),
             project_cache_services,
-            redis_pool,
+            global_config_rx,
+            redis_pools
+                .as_ref()
+                .map(|pools| pools.project_configs.clone()),
         )
         .spawn_handler(project_cache_rx);
-        drop(guard);
 
         <span class="kw">let </span>health_check = HealthCheckService::new(
             config.clone(),
-            aggregator.clone(),
+            MemoryChecker::new(memory_stat.clone(), config.clone()),
+            aggregator_handle,
             upstream_relay.clone(),
             project_cache.clone(),
         )
         .start();
-        <span class="kw">let </span>relay_cache = RelayCacheService::new(config.clone(), upstream_relay.clone()).start();
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(aws_api) = config.aws_runtime_api() {
-            <span class="kw">if let </span><span class="prelude-val">Ok</span>(aws_extension) = AwsExtension::new(aws_api) {
-                aws_extension.start();
-            }
-        }
+        RelayStats::new(
+            config.clone(),
+            upstream_relay.clone(),
+            <span class="attr">#[cfg(feature = <span class="string">"processing"</span>)]
+            </span>redis_pools.clone(),
+        )
+        .start();
+
+        <span class="kw">let </span>relay_cache = RelayCacheService::new(config.clone(), upstream_relay.clone()).start();
 
         <span class="kw">let </span>registry = Registry {
             aggregator,
@@ -544,17 +733,17 @@
             health_check,
             outcome_producer,
             outcome_aggregator,
-            envelope_manager,
             test_store,
             relay_cache,
             global_config,
             project_cache,
             upstream_relay,
+            envelope_buffer,
         };
 
         <span class="kw">let </span>state = StateInner {
-            buffer_guard: buffer,
-            config,
+            config: config.clone(),
+            memory_checker: MemoryChecker::new(memory_stat, config.clone()),
             registry,
         };
 
@@ -568,12 +757,16 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>.inner.config
     }
 
-    <span class="doccomment">/// Returns a reference to the guard of the envelope buffer.
-    ///
-    /// This can be used to enter new envelopes into the processing queue and reserve a slot in the
-    /// buffer. See [`BufferGuard`] for more information.
-    </span><span class="kw">pub fn </span>buffer_guard(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>BufferGuard {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.buffer_guard
+    <span class="doccomment">/// Returns a reference to the [`MemoryChecker`] which is a [`Config`] aware wrapper on the
+    /// [`MemoryStat`] which gives utility methods to determine whether memory usage is above
+    /// thresholds set in the [`Config`].
+    </span><span class="kw">pub fn </span>memory_checker(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>MemoryChecker {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.inner.memory_checker
+    }
+
+    <span class="doccomment">/// Returns the V2 envelope buffer, if present.
+    </span><span class="kw">pub fn </span>envelope_buffer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ObservableEnvelopeBuffer&gt; {
+        <span class="self">self</span>.inner.registry.envelope_buffer.as_ref()
     }
 
     <span class="doccomment">/// Returns the address of the [`ProjectCache`] service.
@@ -622,30 +815,51 @@
     }
 }
 
-<span class="doccomment">/// Contains secondary service runtimes.
-</span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>Runtimes {
-    upstream: Runtime,
-    project: Runtime,
-    aggregator: Runtime,
-    outcome: Runtime,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-    </span>store: <span class="prelude-ty">Option</span>&lt;Runtime&gt;,
+<span class="kw">fn </span>create_redis_pool(
+    (connection, options): (<span class="kw-2">&amp;</span>RedisConnection, RedisConfigOptions),
+) -&gt; <span class="prelude-ty">Result</span>&lt;RedisPool, RedisError&gt; {
+    <span class="kw">match </span>connection {
+        RedisConnection::Cluster(servers) =&gt; {
+            RedisPool::cluster(servers.iter().map(|s| s.as_str()), options)
+        }
+        RedisConnection::Single(server) =&gt; RedisPool::single(server, options),
+    }
 }
 
-<span class="kw">impl </span>Runtimes {
-    <span class="doccomment">/// Creates the secondary runtimes required by services.
-    </span><span class="attr">#[allow(unused_variables)]
-    </span><span class="kw">pub fn </span>new(config: <span class="kw-2">&amp;</span>Config) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            upstream: create_runtime(<span class="string">&quot;upstream-rt&quot;</span>, <span class="number">1</span>),
-            project: create_runtime(<span class="string">&quot;project-rt&quot;</span>, <span class="number">1</span>),
-            aggregator: create_runtime(<span class="string">&quot;aggregator-rt&quot;</span>, <span class="number">1</span>),
-            outcome: create_runtime(<span class="string">&quot;outcome-rt&quot;</span>, <span class="number">1</span>),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;processing&quot;</span>)]
-            </span>store: config
-                .processing_enabled()
-                .then(|| create_runtime(<span class="string">&quot;store-rt&quot;</span>, <span class="number">1</span>)),
+<span class="doccomment">/// Creates Redis pools from the given `configs`.
+///
+/// If `configs` is [`Unified`](RedisPoolConfigs::Unified), one pool is created and then cloned
+/// for each use case, meaning that all use cases really use the same pool. If it is
+/// [`Individual`](RedisPoolConfigs::Individual), an actual separate pool is created for each
+/// use case.
+</span><span class="kw">pub fn </span>create_redis_pools(configs: RedisPoolConfigs) -&gt; <span class="prelude-ty">Result</span>&lt;RedisPools, RedisError&gt; {
+    <span class="kw">match </span>configs {
+        RedisPoolConfigs::Unified(pool) =&gt; {
+            <span class="kw">let </span>pool = create_redis_pool(pool)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(RedisPools {
+                project_configs: pool.clone(),
+                cardinality: pool.clone(),
+                quotas: pool.clone(),
+                misc: pool,
+            })
+        }
+        RedisPoolConfigs::Individual {
+            project_configs,
+            cardinality,
+            quotas,
+            misc,
+        } =&gt; {
+            <span class="kw">let </span>project_configs = create_redis_pool(project_configs)<span class="question-mark">?</span>;
+            <span class="kw">let </span>cardinality = create_redis_pool(cardinality)<span class="question-mark">?</span>;
+            <span class="kw">let </span>quotas = create_redis_pool(quotas)<span class="question-mark">?</span>;
+            <span class="kw">let </span>misc = create_redis_pool(misc)<span class="question-mark">?</span>;
+
+            <span class="prelude-val">Ok</span>(RedisPools {
+                project_configs,
+                cardinality,
+                quotas,
+                misc,
+            })
         }
     }
 }

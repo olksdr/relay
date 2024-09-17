@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-metrics/src/bucket.rs`."><title>bucket.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_metrics" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_metrics/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-metrics/src/bucket.rs`."><title>bucket.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_metrics" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1309,6 +1309,208 @@
 <a href="#1309" id="1309">1309</a>
 <a href="#1310" id="1310">1310</a>
 <a href="#1311" id="1311">1311</a>
+<a href="#1312" id="1312">1312</a>
+<a href="#1313" id="1313">1313</a>
+<a href="#1314" id="1314">1314</a>
+<a href="#1315" id="1315">1315</a>
+<a href="#1316" id="1316">1316</a>
+<a href="#1317" id="1317">1317</a>
+<a href="#1318" id="1318">1318</a>
+<a href="#1319" id="1319">1319</a>
+<a href="#1320" id="1320">1320</a>
+<a href="#1321" id="1321">1321</a>
+<a href="#1322" id="1322">1322</a>
+<a href="#1323" id="1323">1323</a>
+<a href="#1324" id="1324">1324</a>
+<a href="#1325" id="1325">1325</a>
+<a href="#1326" id="1326">1326</a>
+<a href="#1327" id="1327">1327</a>
+<a href="#1328" id="1328">1328</a>
+<a href="#1329" id="1329">1329</a>
+<a href="#1330" id="1330">1330</a>
+<a href="#1331" id="1331">1331</a>
+<a href="#1332" id="1332">1332</a>
+<a href="#1333" id="1333">1333</a>
+<a href="#1334" id="1334">1334</a>
+<a href="#1335" id="1335">1335</a>
+<a href="#1336" id="1336">1336</a>
+<a href="#1337" id="1337">1337</a>
+<a href="#1338" id="1338">1338</a>
+<a href="#1339" id="1339">1339</a>
+<a href="#1340" id="1340">1340</a>
+<a href="#1341" id="1341">1341</a>
+<a href="#1342" id="1342">1342</a>
+<a href="#1343" id="1343">1343</a>
+<a href="#1344" id="1344">1344</a>
+<a href="#1345" id="1345">1345</a>
+<a href="#1346" id="1346">1346</a>
+<a href="#1347" id="1347">1347</a>
+<a href="#1348" id="1348">1348</a>
+<a href="#1349" id="1349">1349</a>
+<a href="#1350" id="1350">1350</a>
+<a href="#1351" id="1351">1351</a>
+<a href="#1352" id="1352">1352</a>
+<a href="#1353" id="1353">1353</a>
+<a href="#1354" id="1354">1354</a>
+<a href="#1355" id="1355">1355</a>
+<a href="#1356" id="1356">1356</a>
+<a href="#1357" id="1357">1357</a>
+<a href="#1358" id="1358">1358</a>
+<a href="#1359" id="1359">1359</a>
+<a href="#1360" id="1360">1360</a>
+<a href="#1361" id="1361">1361</a>
+<a href="#1362" id="1362">1362</a>
+<a href="#1363" id="1363">1363</a>
+<a href="#1364" id="1364">1364</a>
+<a href="#1365" id="1365">1365</a>
+<a href="#1366" id="1366">1366</a>
+<a href="#1367" id="1367">1367</a>
+<a href="#1368" id="1368">1368</a>
+<a href="#1369" id="1369">1369</a>
+<a href="#1370" id="1370">1370</a>
+<a href="#1371" id="1371">1371</a>
+<a href="#1372" id="1372">1372</a>
+<a href="#1373" id="1373">1373</a>
+<a href="#1374" id="1374">1374</a>
+<a href="#1375" id="1375">1375</a>
+<a href="#1376" id="1376">1376</a>
+<a href="#1377" id="1377">1377</a>
+<a href="#1378" id="1378">1378</a>
+<a href="#1379" id="1379">1379</a>
+<a href="#1380" id="1380">1380</a>
+<a href="#1381" id="1381">1381</a>
+<a href="#1382" id="1382">1382</a>
+<a href="#1383" id="1383">1383</a>
+<a href="#1384" id="1384">1384</a>
+<a href="#1385" id="1385">1385</a>
+<a href="#1386" id="1386">1386</a>
+<a href="#1387" id="1387">1387</a>
+<a href="#1388" id="1388">1388</a>
+<a href="#1389" id="1389">1389</a>
+<a href="#1390" id="1390">1390</a>
+<a href="#1391" id="1391">1391</a>
+<a href="#1392" id="1392">1392</a>
+<a href="#1393" id="1393">1393</a>
+<a href="#1394" id="1394">1394</a>
+<a href="#1395" id="1395">1395</a>
+<a href="#1396" id="1396">1396</a>
+<a href="#1397" id="1397">1397</a>
+<a href="#1398" id="1398">1398</a>
+<a href="#1399" id="1399">1399</a>
+<a href="#1400" id="1400">1400</a>
+<a href="#1401" id="1401">1401</a>
+<a href="#1402" id="1402">1402</a>
+<a href="#1403" id="1403">1403</a>
+<a href="#1404" id="1404">1404</a>
+<a href="#1405" id="1405">1405</a>
+<a href="#1406" id="1406">1406</a>
+<a href="#1407" id="1407">1407</a>
+<a href="#1408" id="1408">1408</a>
+<a href="#1409" id="1409">1409</a>
+<a href="#1410" id="1410">1410</a>
+<a href="#1411" id="1411">1411</a>
+<a href="#1412" id="1412">1412</a>
+<a href="#1413" id="1413">1413</a>
+<a href="#1414" id="1414">1414</a>
+<a href="#1415" id="1415">1415</a>
+<a href="#1416" id="1416">1416</a>
+<a href="#1417" id="1417">1417</a>
+<a href="#1418" id="1418">1418</a>
+<a href="#1419" id="1419">1419</a>
+<a href="#1420" id="1420">1420</a>
+<a href="#1421" id="1421">1421</a>
+<a href="#1422" id="1422">1422</a>
+<a href="#1423" id="1423">1423</a>
+<a href="#1424" id="1424">1424</a>
+<a href="#1425" id="1425">1425</a>
+<a href="#1426" id="1426">1426</a>
+<a href="#1427" id="1427">1427</a>
+<a href="#1428" id="1428">1428</a>
+<a href="#1429" id="1429">1429</a>
+<a href="#1430" id="1430">1430</a>
+<a href="#1431" id="1431">1431</a>
+<a href="#1432" id="1432">1432</a>
+<a href="#1433" id="1433">1433</a>
+<a href="#1434" id="1434">1434</a>
+<a href="#1435" id="1435">1435</a>
+<a href="#1436" id="1436">1436</a>
+<a href="#1437" id="1437">1437</a>
+<a href="#1438" id="1438">1438</a>
+<a href="#1439" id="1439">1439</a>
+<a href="#1440" id="1440">1440</a>
+<a href="#1441" id="1441">1441</a>
+<a href="#1442" id="1442">1442</a>
+<a href="#1443" id="1443">1443</a>
+<a href="#1444" id="1444">1444</a>
+<a href="#1445" id="1445">1445</a>
+<a href="#1446" id="1446">1446</a>
+<a href="#1447" id="1447">1447</a>
+<a href="#1448" id="1448">1448</a>
+<a href="#1449" id="1449">1449</a>
+<a href="#1450" id="1450">1450</a>
+<a href="#1451" id="1451">1451</a>
+<a href="#1452" id="1452">1452</a>
+<a href="#1453" id="1453">1453</a>
+<a href="#1454" id="1454">1454</a>
+<a href="#1455" id="1455">1455</a>
+<a href="#1456" id="1456">1456</a>
+<a href="#1457" id="1457">1457</a>
+<a href="#1458" id="1458">1458</a>
+<a href="#1459" id="1459">1459</a>
+<a href="#1460" id="1460">1460</a>
+<a href="#1461" id="1461">1461</a>
+<a href="#1462" id="1462">1462</a>
+<a href="#1463" id="1463">1463</a>
+<a href="#1464" id="1464">1464</a>
+<a href="#1465" id="1465">1465</a>
+<a href="#1466" id="1466">1466</a>
+<a href="#1467" id="1467">1467</a>
+<a href="#1468" id="1468">1468</a>
+<a href="#1469" id="1469">1469</a>
+<a href="#1470" id="1470">1470</a>
+<a href="#1471" id="1471">1471</a>
+<a href="#1472" id="1472">1472</a>
+<a href="#1473" id="1473">1473</a>
+<a href="#1474" id="1474">1474</a>
+<a href="#1475" id="1475">1475</a>
+<a href="#1476" id="1476">1476</a>
+<a href="#1477" id="1477">1477</a>
+<a href="#1478" id="1478">1478</a>
+<a href="#1479" id="1479">1479</a>
+<a href="#1480" id="1480">1480</a>
+<a href="#1481" id="1481">1481</a>
+<a href="#1482" id="1482">1482</a>
+<a href="#1483" id="1483">1483</a>
+<a href="#1484" id="1484">1484</a>
+<a href="#1485" id="1485">1485</a>
+<a href="#1486" id="1486">1486</a>
+<a href="#1487" id="1487">1487</a>
+<a href="#1488" id="1488">1488</a>
+<a href="#1489" id="1489">1489</a>
+<a href="#1490" id="1490">1490</a>
+<a href="#1491" id="1491">1491</a>
+<a href="#1492" id="1492">1492</a>
+<a href="#1493" id="1493">1493</a>
+<a href="#1494" id="1494">1494</a>
+<a href="#1495" id="1495">1495</a>
+<a href="#1496" id="1496">1496</a>
+<a href="#1497" id="1497">1497</a>
+<a href="#1498" id="1498">1498</a>
+<a href="#1499" id="1499">1499</a>
+<a href="#1500" id="1500">1500</a>
+<a href="#1501" id="1501">1501</a>
+<a href="#1502" id="1502">1502</a>
+<a href="#1503" id="1503">1503</a>
+<a href="#1504" id="1504">1504</a>
+<a href="#1505" id="1505">1505</a>
+<a href="#1506" id="1506">1506</a>
+<a href="#1507" id="1507">1507</a>
+<a href="#1508" id="1508">1508</a>
+<a href="#1509" id="1509">1509</a>
+<a href="#1510" id="1510">1510</a>
+<a href="#1511" id="1511">1511</a>
+<a href="#1512" id="1512">1512</a>
+<a href="#1513" id="1513">1513</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::{BTreeMap, BTreeSet};
 <span class="kw">use </span>std::hash::Hash;
 <span class="kw">use </span>std::iter::FusedIterator;
@@ -1321,12 +1523,15 @@
 <span class="kw">use </span>smallvec::SmallVec;
 
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{
-    <span class="self">self</span>, hash_set_value, CounterType, DistributionType, GaugeType, MetricResourceIdentifier,
-    MetricType, SetType,
+    <span class="self">self</span>, hash_set_value, CounterType, DistributionType, GaugeType, MetricName,
+    MetricResourceIdentifier, MetricType, SetType,
 };
-<span class="kw">use crate</span>::{MetricNamespace, ParseMetricError};
+<span class="kw">use crate</span>::{FiniteF64, MetricNamespace, ParseMetricError};
 
-<span class="kw">const </span>VALUE_SEPARATOR: char = <span class="string">&#39;:&#39;</span>;
+<span class="kw">const </span>VALUE_SEPARATOR: char = <span class="string">':'</span>;
+
+<span class="doccomment">/// Type of [`Bucket::tags`].
+</span><span class="kw">pub type </span>MetricTags = BTreeMap&lt;String, String&gt;;
 
 <span class="doccomment">/// A snapshot of values within a [`Bucket`].
 </span><span class="attr">#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
@@ -1362,7 +1567,7 @@
         <span class="self">self</span>.last = value;
         <span class="self">self</span>.min = <span class="self">self</span>.min.min(value);
         <span class="self">self</span>.max = <span class="self">self</span>.max.max(value);
-        <span class="self">self</span>.sum += value;
+        <span class="self">self</span>.sum = <span class="self">self</span>.sum.saturating_add(value);
         <span class="self">self</span>.count += <span class="number">1</span>;
     }
 
@@ -1371,18 +1576,14 @@
         <span class="self">self</span>.last = other.last;
         <span class="self">self</span>.min = <span class="self">self</span>.min.min(other.min);
         <span class="self">self</span>.max = <span class="self">self</span>.max.max(other.max);
-        <span class="self">self</span>.sum += other.sum;
+        <span class="self">self</span>.sum = <span class="self">self</span>.sum.saturating_add(other.sum);
         <span class="self">self</span>.count += other.count;
     }
 
     <span class="doccomment">/// Returns the average of all values reported in this bucket.
-    </span><span class="kw">pub fn </span>avg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; GaugeType {
-        <span class="kw">if </span><span class="self">self</span>.count &gt; <span class="number">0 </span>{
-            <span class="self">self</span>.sum / (<span class="self">self</span>.count <span class="kw">as </span>GaugeType)
-        } <span class="kw">else </span>{
-            <span class="number">0.0
-        </span>}
-    }
+    </span><span class="kw">pub fn </span>avg(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;GaugeType&gt; {
+        <span class="self">self</span>.sum / FiniteF64::new(<span class="self">self</span>.count <span class="kw">as </span>f64)<span class="question-mark">?
+    </span>}
 }
 
 <span class="doccomment">/// A distribution of values within a [`Bucket`].
@@ -1396,9 +1597,9 @@
 /// ```
 /// use relay_metrics::dist;
 ///
-/// let mut dist = dist![1.0, 1.0, 1.0, 2.0];
-/// dist.push(5.0);
-/// dist.extend(std::iter::repeat(3.0).take(7));
+/// let mut dist = dist![1, 1, 1, 2];
+/// dist.push(5.into());
+/// dist.extend(std::iter::repeat(3.into()).take(7));
 /// ```
 ///
 /// Logically, this distribution is equivalent to this visualization:
@@ -1428,12 +1629,12 @@
 /// # Example
 ///
 /// ```
-/// let dist = relay_metrics::dist![1.0, 2.0];
+/// let dist = relay_metrics::dist![1, 2];
 /// ```
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span>dist {
+</span><span class="macro">macro_rules!</span> dist {
     ($(<span class="macro-nonterminal">$x</span>:expr),<span class="kw-2">*</span>$(,)<span class="kw-2">*</span>) =&gt; {
-        <span class="macro-nonterminal">$</span><span class="macro">crate::_smallvec!</span>($(<span class="macro-nonterminal">$x</span>),<span class="kw-2">*</span>) <span class="kw">as </span><span class="macro-nonterminal">$crate::DistributionValue
+        <span class="macro-nonterminal">$</span><span class="macro">crate::_smallvec!</span>($(<span class="macro-nonterminal">$crate::DistributionType::from</span>(<span class="macro-nonterminal">$x</span>)),<span class="kw-2">*</span>) <span class="kw">as </span><span class="macro-nonterminal">$crate::DistributionValue
     </span>};
 }
 
@@ -1448,7 +1649,7 @@
 
 <span class="doccomment">/// The [aggregated value](Bucket::value) of a metric bucket.
 </span><span class="attr">#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(tag = <span class="string">&quot;type&quot;</span>, content = <span class="string">&quot;value&quot;</span>)]
+#[serde(tag = <span class="string">"type"</span>, content = <span class="string">"value"</span>)]
 </span><span class="kw">pub enum </span>BucketValue {
     <span class="doccomment">/// Counts instances of an event ([`MetricType::Counter`]).
     ///
@@ -1457,7 +1658,7 @@
     ///
     /// # Statsd Format
     ///
-    /// Counters are declared as `&quot;c&quot;`. Alternatively, `&quot;m&quot;` is allowed.
+    /// Counters are declared as `"c"`. Alternatively, `"m"` is allowed.
     ///
     /// There can be a variable number of floating point values. If more than one value is given,
     /// the values are summed into a single counter value:
@@ -1474,7 +1675,7 @@
     ///
     /// Counters aggregate by folding individual values into a single sum value per bucket. The sum
     /// is ingested and stored directly.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;c&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"c"</span>)]
     </span>Counter(CounterType),
 
     <span class="doccomment">/// Builds a statistical distribution over values reported ([`MetricType::Distribution`]).
@@ -1485,7 +1686,7 @@
     ///
     /// # Statsd Format
     ///
-    /// Distributions are declared as `&quot;d&quot;`. Alternatively, `&quot;d&quot;` and `&quot;ms&quot;` are allowed.
+    /// Distributions are declared as `"d"`. Alternatively, `"d"` and `"ms"` are allowed.
     ///
     /// There can be a variable number of floating point values. These values are collected directly
     /// in a list per bucket.
@@ -1504,7 +1705,7 @@
     /// storage, these values are compressed into data sketches that allow to query quantiles.
     /// Separately, the count and sum of the reported values is stored, which makes distributions a
     /// strict superset of counters.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;d&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"d"</span>)]
     </span>Distribution(DistributionValue),
 
     <span class="doccomment">/// Counts the number of unique reported values.
@@ -1515,7 +1716,7 @@
     ///
     /// # Statsd Format
     ///
-    /// Sets are declared as `&quot;s&quot;`. Values in the list should be deduplicated.
+    /// Sets are declared as `"s"`. Values in the list should be deduplicated.
     ///
     ///
     /// ```text
@@ -1534,19 +1735,19 @@
     /// they will be hashed on-the-fly.
     ///
     /// Internally, set metrics are stored in data sketches that expose an approximate cardinality.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;s&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"s"</span>)]
     </span>Set(SetValue),
 
     <span class="doccomment">/// Stores absolute snapshots of values.
     ///
     /// In addition to plain [counters](Self::Counter), gauges store a snapshot of the maximum,
-    /// minimum and sum of all values, as well as the last reported value. Note that the &quot;last&quot;
+    /// minimum and sum of all values, as well as the last reported value. Note that the "last"
     /// component of this aggregation is not commutative. Which value is preserved as last value is
     /// implementation-defined.
     ///
     /// # Statsd Format
     ///
-    /// Gauges are declared as `&quot;g&quot;`. There are two ways to ingest gauges:
+    /// Gauges are declared as `"g"`. There are two ways to ingest gauges:
     ///  1. As a single value. In this case, the provided value is assumed as the last, minimum,
     ///     maximum, and the sum.
     ///  2. As a sequence of five values in the order: `last`, `min`, `max`, `sum`, `count`.
@@ -1568,7 +1769,7 @@
     ///  - `max` retains the larger value
     ///  - `sum` adds the new value to the existing sum
     ///  - `count` adds the count of the newly added gauge (defaulting to `1`)
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;g&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"g"</span>)]
     </span>Gauge(GaugeValue),
 }
 
@@ -1651,7 +1852,7 @@
     /// values are of the same variant. Otherwise, this returns `Err(other)`.
     </span><span class="kw">pub fn </span>merge(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="self">Self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>&gt; {
         <span class="kw">match </span>(<span class="self">self</span>, other) {
-            (<span class="self">Self</span>::Counter(slf), <span class="self">Self</span>::Counter(other)) =&gt; <span class="kw-2">*</span>slf += other,
+            (<span class="self">Self</span>::Counter(slf), <span class="self">Self</span>::Counter(other)) =&gt; <span class="kw-2">*</span>slf = slf.saturating_add(other),
             (<span class="self">Self</span>::Distribution(slf), <span class="self">Self</span>::Distribution(other)) =&gt; slf.extend_from_slice(<span class="kw-2">&amp;</span>other),
             (<span class="self">Self</span>::Set(slf), <span class="self">Self</span>::Set(other)) =&gt; slf.extend(other),
             (<span class="self">Self</span>::Gauge(slf), <span class="self">Self</span>::Gauge(other)) =&gt; slf.merge(other),
@@ -1666,7 +1867,7 @@
 </span><span class="kw">fn </span>parse_counter(string: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;CounterType&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>sum = CounterType::default();
     <span class="kw">for </span>component <span class="kw">in </span>string.split(VALUE_SEPARATOR) {
-        sum += component.parse::&lt;CounterType&gt;().ok()<span class="question-mark">?</span>;
+        sum = sum.saturating_add(component.parse().ok()<span class="question-mark">?</span>);
     }
     <span class="prelude-val">Some</span>(sum)
 }
@@ -1715,22 +1916,21 @@
 
 <span class="doccomment">/// Parses tags in the format `tag1,tag2:value`.
 ///
-/// Tag values are optional. For tags with missing values, an empty `&quot;&quot;` value is assumed.
-</span><span class="kw">fn </span>parse_tags(string: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;BTreeMap&lt;String, String&gt;&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>map = BTreeMap::new();
+/// Tag values are optional. For tags with missing values, an empty `""` value is assumed.
+</span><span class="kw">fn </span>parse_tags(string: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;MetricTags&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>map = MetricTags::new();
 
-    <span class="kw">for </span>pair <span class="kw">in </span>string.split(<span class="string">&#39;,&#39;</span>) {
-        <span class="kw">let </span><span class="kw-2">mut </span>name_value = pair.splitn(<span class="number">2</span>, <span class="string">&#39;:&#39;</span>);
+    <span class="kw">for </span>pair <span class="kw">in </span>string.split(<span class="string">','</span>) {
+        <span class="kw">let </span><span class="kw-2">mut </span>name_value = pair.splitn(<span class="number">2</span>, <span class="string">':'</span>);
 
         <span class="kw">let </span>name = name_value.next()<span class="question-mark">?</span>;
         <span class="kw">if </span>!protocol::is_valid_tag_key(name) {
             <span class="kw">continue</span>;
         }
 
-        <span class="kw">let </span><span class="kw-2">mut </span>value = name_value.next().unwrap_or_default().to_owned();
-        protocol::validate_tag_value(<span class="kw-2">&amp;mut </span>value);
-
-        map.insert(name.to_owned(), value);
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(value) = protocol::unescape_tag_value(name_value.next().unwrap_or_default()) {
+            map.insert(name.to_owned(), value);
+        }
     }
 
     <span class="prelude-val">Some</span>(map)
@@ -1763,14 +1963,14 @@
 /// # Submission Protocol
 ///
 /// ```text
-/// &lt;name&gt;[@unit]:&lt;value&gt;[:&lt;value&gt;...]|&lt;type&gt;|#&lt;tag_key&gt;:&lt;tag_value&gt;,&lt;tag&gt;|T&lt;timestamp&gt;
+/// &lt;name&gt;[@unit]:&lt;value&gt;[:&lt;value&gt;...]|&lt;type&gt;[|#&lt;tag_key&gt;:&lt;tag_value&gt;,&lt;tag&gt;][|T&lt;timestamp&gt;]
 /// ```
 ///
 /// See the [field documentation](Bucket#fields) for more information on the components. An example
 /// submission looks like this:
 ///
 /// ```text
-</span><span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/buckets.statsd.txt&quot;</span>)]
+</span><span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/buckets.statsd.txt"</span>)]
 </span><span class="doccomment">/// ```
 ///
 /// To parse a submission payload, use [`Bucket::parse_all`].
@@ -1784,7 +1984,7 @@
 /// their JSON representation.
 ///
 /// ```json
-</span><span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/buckets.json&quot;</span>)]
+</span><span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/buckets.json"</span>)]
 </span><span class="doccomment">/// ```
 ///
 /// To parse a JSON payload, use [`serde_json`].
@@ -1798,17 +1998,17 @@
 /// **Example**:
 ///
 /// ```text
-</span><span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/set.statsd.txt&quot;</span>)]
+</span><span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/set.statsd.txt"</span>)]
 </span><span class="doccomment">/// ```
 ///
 /// The above submission is represented as:
 ///
 /// ```json
-</span><span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/set.json&quot;</span>)]
+</span><span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/set.json"</span>)]
 </span><span class="doccomment">/// ```
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 </span><span class="kw">pub struct </span>Bucket {
-    <span class="doccomment">/// The start time of the bucket&#39;s time window.
+    <span class="doccomment">/// The start time of the bucket's time window.
     ///
     /// If a timestamp is not supplied as part of the submission payload, the default timestamp
     /// supplied to [`Bucket::parse`] or [`Bucket::parse_all`] is associated with the metric. It is
@@ -1817,7 +2017,7 @@
     /// # Statsd Format
     ///
     /// In statsd, timestamps are part of the `|`-separated list following values. Timestamps start
-    /// with with the literal character `&#39;T&#39;` followed by the UNIX timestamp.
+    /// with the literal character `'T'` followed by the UNIX timestamp.
     ///
     /// The timestamp must be a positive integer in decimal notation representing the value of the
     /// UNIX timestamp.
@@ -1831,7 +2031,7 @@
 
     <span class="doccomment">/// The length of the time window in seconds.
     ///
-    /// To initialize a new bucket, choose `0` as width. Once the bucket is tracked by Relay&#39;s
+    /// To initialize a new bucket, choose `0` as width. Once the bucket is tracked by Relay's
     /// aggregator, the width is aligned with configuration for the namespace and the  timestamp is
     /// adjusted accordingly.
     ///
@@ -1852,7 +2052,7 @@
     ///
     /// Namespaces and units must consist of ASCII characters and match the regular expression
     /// `/\w+/`. The name component of MRIs consist of unicode characters and must match the
-    /// regular expression `/\w[\w\d_-.]+/`. Note that the name must begin with a letter.
+    /// regular expression `/\w[\w\-.]*/`. Note that the name must begin with a letter.
     ///
     /// Per convention, dots separate metric names into components, where the leading components are
     /// considered namespaces and the final component is the name of the metric within its
@@ -1865,7 +2065,7 @@
     /// custom/endpoint.hits:1|c
     /// custom/endpoint.duration@millisecond:21.5|d
     /// ```
-    </span><span class="kw">pub </span>name: String,
+    </span><span class="kw">pub </span>name: MetricName,
 
     <span class="doccomment">/// The type and aggregated values of this bucket.
     ///
@@ -1898,7 +2098,7 @@
     ///
     /// Tags allow to compute separate aggregates to filter or group metric values by any number of
     /// dimensions. Tags consist of a unique tag key and one associated value. For tags with missing
-    /// values, an empty `&quot;&quot;` value is assumed at query time.
+    /// values, an empty `""` value is assumed at query time.
     ///
     /// # Statsd Format
     ///
@@ -1907,16 +2107,30 @@
     /// omitted.
     ///
     /// Tag keys are restricted to ASCII characters and must match the regular expression
-    /// `/[a-zA-Z0-9_/.-]+/`. Tag values can contain unicode characters and must match the regular
-    /// expression `/[\w\d_:/@.{}\[\]$-]+/`.
+    /// `/[\w\-.\/]+/`.
+    ///
+    /// Tag values can contain unicode characters with the following escaping rules:
+    ///  - Tab is escaped as `\t`.
+    ///  - Carriage return is escaped as `\r`.
+    ///  - Line feed is escaped as `\n`.
+    ///  - Backslash is escaped as `\\`.
+    ///  - Commas and pipes are given unicode escapes in the form `\u{2c}` and `\u{7c}`,
+    ///    respectively.
     ///
     /// # Example
     ///
     /// ```text
     /// endpoint.hits:1|c|#route:user_index,environment:production,release:1.4.0
     /// ```
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;BTreeMap::is_empty&quot;</span>)]
-    </span><span class="kw">pub </span>tags: BTreeMap&lt;String, String&gt;,
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"MetricTags::is_empty"</span>)]
+    </span><span class="kw">pub </span>tags: MetricTags,
+
+    <span class="doccomment">/// Relay internal metadata for a metric bucket.
+    ///
+    /// The metadata contains meta information about the metric bucket itself,
+    /// for example how many this bucket has been aggregated in total.
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"BucketMetadata::is_default"</span>)]
+    </span><span class="kw">pub </span>metadata: BucketMetadata,
 }
 
 <span class="kw">impl </span>Bucket {
@@ -1926,9 +2140,9 @@
     /// [&lt;ns&gt;/]&lt;name&gt;[@&lt;unit&gt;]:&lt;value&gt;|&lt;type&gt;[|#&lt;tags&gt;]`
     /// ```
     </span><span class="kw">fn </span>parse_str(string: <span class="kw-2">&amp;</span>str, timestamp: UnixTimestamp) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>components = string.split(<span class="string">&#39;|&#39;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>components = string.split(<span class="string">'|'</span>);
 
-        <span class="kw">let </span>(mri_str, values_str) = components.next()<span class="question-mark">?</span>.split_once(<span class="string">&#39;:&#39;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>(mri_str, values_str) = components.next()<span class="question-mark">?</span>.split_once(<span class="string">':'</span>)<span class="question-mark">?</span>;
         <span class="kw">let </span>ty = components.next().and_then(|s| s.parse().ok())<span class="question-mark">?</span>;
 
         <span class="kw">let </span>mri = MetricResourceIdentifier::parse_with_type(mri_str, ty).ok()<span class="question-mark">?</span>;
@@ -1942,17 +2156,18 @@
         <span class="kw">let </span><span class="kw-2">mut </span>bucket = Bucket {
             timestamp,
             width: <span class="number">0</span>,
-            name: mri.to_string(),
+            name: mri.to_string().into(),
             value,
             tags: Default::default(),
+            metadata: Default::default(),
         };
 
         <span class="kw">for </span>component <span class="kw">in </span>components {
             <span class="kw">match </span>component.chars().next() {
-                <span class="prelude-val">Some</span>(<span class="string">&#39;#&#39;</span>) =&gt; {
+                <span class="prelude-val">Some</span>(<span class="string">'#'</span>) =&gt; {
                     bucket.tags = parse_tags(component.get(<span class="number">1</span>..)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
                 }
-                <span class="prelude-val">Some</span>(<span class="string">&#39;T&#39;</span>) =&gt; {
+                <span class="prelude-val">Some</span>(<span class="string">'T'</span>) =&gt; {
                     bucket.timestamp = parse_timestamp(component.get(<span class="number">1</span>..)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
                 }
                 <span class="kw">_ </span>=&gt; (),
@@ -1971,12 +2186,12 @@
     /// ```
     /// use relay_metrics::{Bucket, UnixTimestamp};
     ///
-    /// let bucket = Bucket::parse(b&quot;response_time@millisecond:57|d&quot;, UnixTimestamp::now())
-    ///     .expect(&quot;metric should parse&quot;);
+    /// let bucket = Bucket::parse(b"response_time@millisecond:57|d", UnixTimestamp::now())
+    ///     .expect("metric should parse");
     /// ```
     </span><span class="kw">pub fn </span>parse(slice: <span class="kw-2">&amp;</span>[u8], timestamp: UnixTimestamp) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ParseMetricError&gt; {
-        <span class="kw">let </span>string = std::str::from_utf8(slice).or(<span class="prelude-val">Err</span>(ParseMetricError(())))<span class="question-mark">?</span>;
-        <span class="self">Self</span>::parse_str(string, timestamp).ok_or(ParseMetricError(()))
+        <span class="kw">let </span>string = std::str::from_utf8(slice).map_err(|<span class="kw">_</span>| ParseMetricError)<span class="question-mark">?</span>;
+        <span class="self">Self</span>::parse_str(string, timestamp).ok_or(ParseMetricError)
     }
 
     <span class="doccomment">/// Parses a set of metric aggregates from the raw protocol.
@@ -1993,17 +2208,17 @@
     /// ```
     /// use relay_metrics::{Bucket, UnixTimestamp};
     ///
-    /// let data = br#&quot;
+    /// let data = br#"
     /// endpoint.response_time@millisecond:57|d
     /// endpoint.hits:1|c
-    /// &quot;#;
+    /// "#;
     ///
     /// for metric_result in Bucket::parse_all(data, UnixTimestamp::now()) {
-    ///     let bucket = metric_result.expect(&quot;metric should parse&quot;);
-    ///     println!(&quot;Metric {}: {:?}&quot;, bucket.name, bucket.value);
+    ///     let bucket = metric_result.expect("metric should parse");
+    ///     println!("Metric {}: {:?}", bucket.name, bucket.value);
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>parse_all(slice: <span class="kw-2">&amp;</span>[u8], timestamp: UnixTimestamp) -&gt; ParseBuckets&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>parse_all(slice: <span class="kw-2">&amp;</span>[u8], timestamp: UnixTimestamp) -&gt; ParseBuckets&lt;<span class="lifetime">'_</span>&gt; {
         ParseBuckets { slice, timestamp }
     }
 
@@ -2021,22 +2236,12 @@
 }
 
 <span class="kw">impl </span>CardinalityItem <span class="kw">for </span>Bucket {
-    <span class="kw">type </span>Scope = MetricNamespace;
+    <span class="kw">fn </span>namespace(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;MetricNamespace&gt; {
+        <span class="self">self</span>.name.try_namespace()
+    }
 
-    <span class="kw">fn </span>to_scope(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Scope&gt; {
-        <span class="kw">let </span>mri = <span class="kw">match </span>MetricResourceIdentifier::parse(<span class="kw-2">&amp;</span><span class="self">self</span>.name) {
-            <span class="prelude-val">Err</span>(error) =&gt; {
-                <span class="macro">relay_log::debug!</span>(
-                    error = <span class="kw-2">&amp;</span>error <span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>std::error::Error,
-                    metric = <span class="self">self</span>.name,
-                    <span class="string">&quot;rejecting metric with invalid MRI&quot;
-                </span>);
-                <span class="kw">return </span><span class="prelude-val">None</span>;
-            }
-            <span class="prelude-val">Ok</span>(mri) =&gt; mri,
-        };
-
-        <span class="prelude-val">Some</span>(mri.namespace)
+    <span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>MetricName {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.name
     }
 
     <span class="kw">fn </span>to_hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
@@ -2047,14 +2252,88 @@
     }
 }
 
+<span class="doccomment">/// Relay internal metadata for a metric bucket.
+</span><span class="attr">#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+</span><span class="kw">pub struct </span>BucketMetadata {
+    <span class="doccomment">/// How many times the bucket was merged.
+    ///
+    /// Creating a new bucket is the first merge.
+    /// Merging two buckets sums the amount of merges.
+    ///
+    /// For example: Merging two un-merged buckets will yield a total
+    /// of `2` merges.
+    ///
+    /// Due to how Relay aggregates metrics and later splits them into multiple
+    /// buckets again, the amount of merges can be zero.
+    /// When splitting a bucket the total volume of the bucket may only be attributed
+    /// to one part or distributed across the resulting buckets, in either case
+    /// values of `0` are possible.
+    </span><span class="kw">pub </span>merges: u32,
+
+    <span class="doccomment">/// Received timestamp of the first metric in this bucket.
+    ///
+    /// This field should be set to the time in which the first metric of a specific bucket was
+    /// received in the outermost internal Relay.
+    </span><span class="kw">pub </span>received_at: <span class="prelude-ty">Option</span>&lt;UnixTimestamp&gt;,
+
+    <span class="doccomment">/// Is `true` if this metric was extracted from a sampled/indexed envelope item.
+    ///
+    /// The final dynamic sampling decision is always made in processing Relays.
+    /// If a metric was extracted from an item which is sampled (i.e. retained by dynamic sampling), this flag is `true`.
+    ///
+    /// Since these metrics from samples carry additional information, e.g. they don't
+    /// require rate limiting since the sample they've been extracted from was already
+    /// rate limited, this flag must be included in the aggregation key when aggregation buckets.
+    </span><span class="attr">#[serde(skip)]
+    </span><span class="kw">pub </span>extracted_from_indexed: bool,
+}
+
+<span class="kw">impl </span>BucketMetadata {
+    <span class="doccomment">/// Creates a fresh metadata instance.
+    ///
+    /// The new metadata is initialized with `1` merge and a given `received_at` timestamp.
+    </span><span class="kw">pub fn </span>new(received_at: UnixTimestamp) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            merges: <span class="number">1</span>,
+            received_at: <span class="prelude-val">Some</span>(received_at),
+            extracted_from_indexed: <span class="bool-val">false</span>,
+        }
+    }
+
+    <span class="doccomment">/// Whether the metadata does not contain more information than the default.
+    </span><span class="kw">pub fn </span>is_default(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw-2">&amp;</span><span class="self">Self</span>::default() == <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Merges another metadata object into the current one.
+    </span><span class="kw">pub fn </span>merge(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="self">Self</span>) {
+        <span class="self">self</span>.merges = <span class="self">self</span>.merges.saturating_add(other.merges);
+        <span class="self">self</span>.received_at = <span class="kw">match </span>(<span class="self">self</span>.received_at, other.received_at) {
+            (<span class="prelude-val">Some</span>(received_at), <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Some</span>(received_at),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(received_at)) =&gt; <span class="prelude-val">Some</span>(received_at),
+            (left, right) =&gt; left.min(right),
+        };
+    }
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>BucketMetadata {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            merges: <span class="number">1</span>,
+            received_at: <span class="prelude-val">None</span>,
+            extracted_from_indexed: <span class="bool-val">false</span>,
+        }
+    }
+}
+
 <span class="doccomment">/// Iterator over parsed metrics returned from [`Bucket::parse_all`].
 </span><span class="attr">#[derive(Clone, Debug)]
-</span><span class="kw">pub struct </span>ParseBuckets&lt;<span class="lifetime">&#39;a</span>&gt; {
-    slice: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8],
+</span><span class="kw">pub struct </span>ParseBuckets&lt;<span class="lifetime">'a</span>&gt; {
+    slice: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8],
     timestamp: UnixTimestamp,
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>ParseBuckets&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Default <span class="kw">for </span>ParseBuckets&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             slice: <span class="kw-2">&amp;</span>[],
@@ -2064,7 +2343,7 @@
     }
 }
 
-<span class="kw">impl </span>Iterator <span class="kw">for </span>ParseBuckets&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>Iterator <span class="kw">for </span>ParseBuckets&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Item = <span class="prelude-ty">Result</span>&lt;Bucket, ParseMetricError&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
@@ -2073,23 +2352,23 @@
                 <span class="kw">return </span><span class="prelude-val">None</span>;
             }
 
-            <span class="kw">let </span><span class="kw-2">mut </span>split = <span class="self">self</span>.slice.splitn(<span class="number">2</span>, |<span class="kw-2">&amp;</span>b| b == <span class="string">b&#39;\n&#39;</span>);
+            <span class="kw">let </span><span class="kw-2">mut </span>split = <span class="self">self</span>.slice.splitn(<span class="number">2</span>, |<span class="kw-2">&amp;</span>b| b == <span class="string">b'\n'</span>);
             <span class="kw">let </span>current = split.next()<span class="question-mark">?</span>;
             <span class="self">self</span>.slice = split.next().unwrap_or_default();
 
             <span class="kw">let </span>string = <span class="kw">match </span>std::str::from_utf8(current) {
-                <span class="prelude-val">Ok</span>(string) =&gt; string.strip_suffix(<span class="string">&#39;\r&#39;</span>).unwrap_or(string),
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(ParseMetricError(()))),
+                <span class="prelude-val">Ok</span>(string) =&gt; string.strip_suffix(<span class="string">'\r'</span>).unwrap_or(string),
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(ParseMetricError)),
             };
 
             <span class="kw">if </span>!string.is_empty() {
-                <span class="kw">return </span><span class="prelude-val">Some</span>(Bucket::parse_str(string, <span class="self">self</span>.timestamp).ok_or(ParseMetricError(())));
+                <span class="kw">return </span><span class="prelude-val">Some</span>(Bucket::parse_str(string, <span class="self">self</span>.timestamp).ok_or(ParseMetricError));
             }
         }
     }
 }
 
-<span class="kw">impl </span>FusedIterator <span class="kw">for </span>ParseBuckets&lt;<span class="lifetime">&#39;_</span>&gt; {}
+<span class="kw">impl </span>FusedIterator <span class="kw">for </span>ParseBuckets&lt;<span class="lifetime">'_</span>&gt; {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
@@ -2104,28 +2383,26 @@
         <span class="comment">// DistributionValue uses a SmallVec internally to prevent an additional allocation and
         // indirection in cases where it needs to store only a small number of items. This is
         // enabled by a comparably large `GaugeValue`, which stores five atoms. Ensure that the
-        // `DistributionValue`&#39;s size does not exceed that of `GaugeValue`.
+        // `DistributionValue`'s size does not exceed that of `GaugeValue`.
         </span><span class="macro">assert!</span>(
             std::mem::size_of::&lt;DistributionValue&gt;() &lt;= std::mem::size_of::&lt;GaugeValue&gt;(),
-            <span class="string">&quot;distribution value should not exceed gauge {}&quot;</span>,
+            <span class="string">"distribution value should not exceed gauge {}"</span>,
             std::mem::size_of::&lt;DistributionValue&gt;()
         );
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_bucket_value_merge_counter() {
-        <span class="kw">let </span><span class="kw-2">mut </span>value = BucketValue::Counter(<span class="number">42.</span>);
-        value.merge(BucketValue::Counter(<span class="number">43.</span>)).unwrap();
-        <span class="macro">assert_eq!</span>(value, BucketValue::Counter(<span class="number">85.</span>));
+        <span class="kw">let </span><span class="kw-2">mut </span>value = BucketValue::Counter(<span class="number">42</span>.into());
+        value.merge(BucketValue::Counter(<span class="number">43</span>.into())).unwrap();
+        <span class="macro">assert_eq!</span>(value, BucketValue::Counter(<span class="number">85</span>.into()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_bucket_value_merge_distribution() {
-        <span class="kw">let </span><span class="kw-2">mut </span>value = BucketValue::Distribution(<span class="macro">dist!</span>[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>]);
-        value
-            .merge(BucketValue::Distribution(<span class="macro">dist!</span>[<span class="number">2.</span>, <span class="number">4.</span>]))
-            .unwrap();
-        <span class="macro">assert_eq!</span>(value, BucketValue::Distribution(<span class="macro">dist!</span>[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>, <span class="number">2.</span>, <span class="number">4.</span>]));
+        <span class="kw">let </span><span class="kw-2">mut </span>value = BucketValue::Distribution(<span class="macro">dist!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
+        value.merge(BucketValue::Distribution(<span class="macro">dist!</span>[<span class="number">2</span>, <span class="number">4</span>])).unwrap();
+        <span class="macro">assert_eq!</span>(value, BucketValue::Distribution(<span class="macro">dist!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>]));
     }
 
     <span class="attr">#[test]
@@ -2137,16 +2414,16 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_bucket_value_merge_gauge() {
-        <span class="kw">let </span><span class="kw-2">mut </span>value = BucketValue::Gauge(GaugeValue::single(<span class="number">42.</span>));
-        value.merge(BucketValue::gauge(<span class="number">43.</span>)).unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>value = BucketValue::Gauge(GaugeValue::single(<span class="number">42</span>.into()));
+        value.merge(BucketValue::gauge(<span class="number">43</span>.into())).unwrap();
 
         <span class="macro">assert_eq!</span>(
             value,
             BucketValue::Gauge(GaugeValue {
-                last: <span class="number">43.</span>,
-                min: <span class="number">42.</span>,
-                max: <span class="number">43.</span>,
-                sum: <span class="number">85.</span>,
+                last: <span class="number">43</span>.into(),
+                min: <span class="number">42</span>.into(),
+                max: <span class="number">43</span>.into(),
+                sum: <span class="number">85</span>.into(),
                 count: <span class="number">2</span>,
             })
         );
@@ -2154,7 +2431,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_garbage() {
-        <span class="kw">let </span>s = <span class="string">&quot;x23-408j17z4232@#34d\nc3456y7^😎&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"x23-408j17z4232@#34d\nc3456y7^😎"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>result = Bucket::parse(s.as_bytes(), timestamp);
         <span class="macro">assert!</span>(result.is_err());
@@ -2162,92 +2439,120 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_counter() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:42|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:42|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###&quot;
+        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###"
         Bucket {
             timestamp: UnixTimestamp(4711),
             width: 0,
-            name: &quot;c:transactions/foo@none&quot;,
+            name: MetricName(
+                "c:transactions/foo@none",
+            ),
             value: Counter(
                 42.0,
             ),
             tags: {},
+            metadata: BucketMetadata {
+                merges: 1,
+                received_at: None,
+                extracted_from_indexed: false,
+            },
         }
-        &quot;###</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_counter_packed() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:42:17:21|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:42:17:21|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">assert_eq!</span>(metric.value, BucketValue::Counter(<span class="number">80.0</span>));
+        <span class="macro">assert_eq!</span>(metric.value, BucketValue::Counter(<span class="number">80</span>.into()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_distribution() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:17.5|d&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:17.5|d"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###&quot;
+        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###"
         Bucket {
             timestamp: UnixTimestamp(4711),
             width: 0,
-            name: &quot;d:transactions/foo@none&quot;,
+            name: MetricName(
+                "d:transactions/foo@none",
+            ),
             value: Distribution(
                 [
                     17.5,
                 ],
             ),
             tags: {},
+            metadata: BucketMetadata {
+                merges: 1,
+                received_at: None,
+                extracted_from_indexed: false,
+            },
         }
-        &quot;###</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_distribution_packed() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:17.5:21.9:42.7|d&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:17.5:21.9:42.7|d"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
         <span class="macro">assert_eq!</span>(
             metric.value,
-            BucketValue::Distribution(<span class="macro">dist!</span>[<span class="number">17.5</span>, <span class="number">21.9</span>, <span class="number">42.7</span>])
+            BucketValue::Distribution(<span class="macro">dist!</span>[
+                FiniteF64::new(<span class="number">17.5</span>).unwrap(),
+                FiniteF64::new(<span class="number">21.9</span>).unwrap(),
+                FiniteF64::new(<span class="number">42.7</span>).unwrap()
+            ])
         );
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_histogram() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:17.5|h&quot;</span>; <span class="comment">// common alias for distribution
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:17.5|h"</span>; <span class="comment">// common alias for distribution
         </span><span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">assert_eq!</span>(metric.value, BucketValue::Distribution(<span class="macro">dist!</span>[<span class="number">17.5</span>]));
+        <span class="macro">assert_eq!</span>(
+            metric.value,
+            BucketValue::Distribution(<span class="macro">dist!</span>[FiniteF64::new(<span class="number">17.5</span>).unwrap()])
+        );
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_set() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:4267882815|s&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:4267882815|s"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###&quot;
+        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###"
         Bucket {
             timestamp: UnixTimestamp(4711),
             width: 0,
-            name: &quot;s:transactions/foo@none&quot;,
+            name: MetricName(
+                "s:transactions/foo@none",
+            ),
             value: Set(
                 {
                     4267882815,
                 },
             ),
             tags: {},
+            metadata: BucketMetadata {
+                merges: 1,
+                received_at: None,
+                extracted_from_indexed: false,
+            },
         }
-        &quot;###</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_set_hashed() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:e2546e4c-ecd0-43ad-ae27-87960e57a658|s&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:e2546e4c-ecd0-43ad-ae27-87960e57a658|s"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
         <span class="macro">assert_eq!</span>(metric.value, BucketValue::Set([<span class="number">4267882815</span>].into()));
@@ -2255,7 +2560,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_set_hashed_packed() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:e2546e4c-ecd0-43ad-ae27-87960e57a658:00449b66-d91f-4fb8-b324-4c8bdf2499f6|s&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:e2546e4c-ecd0-43ad-ae27-87960e57a658:00449b66-d91f-4fb8-b324-4c8bdf2499f6|s"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
         <span class="macro">assert_eq!</span>(
@@ -2266,7 +2571,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_set_packed() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:3182887624:4267882815|s&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:3182887624:4267882815|s"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
         <span class="macro">assert_eq!</span>(
@@ -2277,14 +2582,16 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_gauge() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:42|g&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:42|g"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###&quot;
+        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###"
         Bucket {
             timestamp: UnixTimestamp(4711),
             width: 0,
-            name: &quot;g:transactions/foo@none&quot;,
+            name: MetricName(
+                "g:transactions/foo@none",
+            ),
             value: Gauge(
                 GaugeValue {
                     last: 42.0,
@@ -2295,20 +2602,27 @@
                 },
             ),
             tags: {},
+            metadata: BucketMetadata {
+                merges: 1,
+                received_at: None,
+                extracted_from_indexed: false,
+            },
         }
-        &quot;###</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_gauge_packed() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:25:17:42:220:85|g&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:25:17:42:220:85|g"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###&quot;
+        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###"
         Bucket {
             timestamp: UnixTimestamp(4711),
             width: 0,
-            name: &quot;g:transactions/foo@none&quot;,
+            name: MetricName(
+                "g:transactions/foo@none",
+            ),
             value: Gauge(
                 GaugeValue {
                     last: 25.0,
@@ -2319,31 +2633,43 @@
                 },
             ),
             tags: {},
+            metadata: BucketMetadata {
+                merges: 1,
+                received_at: None,
+                extracted_from_indexed: false,
+            },
         }
-        &quot;###</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_implicit_namespace() {
-        <span class="kw">let </span>s = <span class="string">&quot;foo:42|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"foo:42|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###&quot;
+        <span class="macro">insta::assert_debug_snapshot!</span>(metric, @<span class="string">r###"
         Bucket {
             timestamp: UnixTimestamp(4711),
             width: 0,
-            name: &quot;c:custom/foo@none&quot;,
+            name: MetricName(
+                "c:custom/foo@none",
+            ),
             value: Counter(
                 42.0,
             ),
             tags: {},
+            metadata: BucketMetadata {
+                merges: 1,
+                received_at: None,
+                extracted_from_indexed: false,
+            },
         }
-        &quot;###</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_unit() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo@second:17.5|d&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo@second:17.5|d"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
         <span class="kw">let </span>mri = MetricResourceIdentifier::parse(<span class="kw-2">&amp;</span>metric.name).unwrap();
@@ -2352,7 +2678,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_unit_regression() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo@s:17.5|d&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo@s:17.5|d"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
         <span class="kw">let </span>mri = MetricResourceIdentifier::parse(<span class="kw-2">&amp;</span>metric.name).unwrap();
@@ -2361,20 +2687,32 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_tags() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:17.5|d|#foo,bar:baz&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:17.5|d|#foo,bar:baz"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(metric.tags, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_debug_snapshot!</span>(metric.tags, @<span class="string">r#"
             {
-                &quot;bar&quot;: &quot;baz&quot;,
-                &quot;foo&quot;: &quot;&quot;,
+                "bar": "baz",
+                "foo": "",
             }
-            &quot;#</span>);
+            "#</span>);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_parse_tags_escaped() {
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:17.5|d|#foo:😅\\u{2c}🚀"</span>;
+        <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
+        <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
+        <span class="macro">insta::assert_debug_snapshot!</span>(metric.tags, @<span class="string">r#"
+            {
+                "foo": "😅,🚀",
+            }
+            "#</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_timestamp() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:17.5|d|T1615889449&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:17.5|d|T1615889449"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
         <span class="macro">assert_eq!</span>(metric.timestamp, UnixTimestamp::from_secs(<span class="number">1615889449</span>));
@@ -2383,22 +2721,22 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_sample_rate() {
         <span class="comment">// Sample rate should be ignored
-        </span><span class="kw">let </span>s = <span class="string">&quot;transactions/foo:17.5|d|@0.1&quot;</span>;
+        </span><span class="kw">let </span>s = <span class="string">"transactions/foo:17.5|d|@0.1"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         Bucket::parse(s.as_bytes(), timestamp).unwrap();
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_invalid_name() {
-        <span class="kw">let </span>s = <span class="string">&quot;foo#bar:42|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"foo#bar:42|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp).unwrap();
-        <span class="macro">assert_eq!</span>(metric.name, <span class="string">&quot;c:custom/foo_bar@none&quot;</span>);
+        <span class="macro">assert_eq!</span>(metric.name.as_ref(), <span class="string">"c:custom/foo_bar@none"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_empty_name() {
-        <span class="kw">let </span>s = <span class="string">&quot;:42|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">":42|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp);
         <span class="macro">assert!</span>(metric.is_err());
@@ -2406,7 +2744,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_invalid_name_with_leading_digit() {
-        <span class="kw">let </span>s = <span class="string">&quot;64bit:42|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"64bit:42|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
         <span class="kw">let </span>metric = Bucket::parse(s.as_bytes(), timestamp);
         <span class="macro">assert!</span>(metric.is_err());
@@ -2414,7 +2752,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_all() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:42|c\nbar:17|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:42|c\nbar:17|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
 
         <span class="kw">let </span>metrics: Vec&lt;Bucket&gt; = Bucket::parse_all(s.as_bytes(), timestamp)
@@ -2426,7 +2764,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_all_crlf() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:42|c\r\nbar:17|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:42|c\r\nbar:17|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
 
         <span class="kw">let </span>metrics: Vec&lt;Bucket&gt; = Bucket::parse_all(s.as_bytes(), timestamp)
@@ -2438,7 +2776,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_all_empty_lines() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:42|c\n\n\nbar:17|c&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:42|c\n\n\nbar:17|c"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
 
         <span class="kw">let </span>metric_count = Bucket::parse_all(s.as_bytes(), timestamp).count();
@@ -2447,7 +2785,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_all_trailing() {
-        <span class="kw">let </span>s = <span class="string">&quot;transactions/foo:42|c\nbar:17|c\n&quot;</span>;
+        <span class="kw">let </span>s = <span class="string">"transactions/foo:42|c\nbar:17|c\n"</span>;
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">4711</span>);
 
         <span class="kw">let </span>metric_count = Bucket::parse_all(s.as_bytes(), timestamp).count();
@@ -2456,8 +2794,8 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_metrics_docs() {
-        <span class="kw">let </span>text = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/buckets.statsd.txt&quot;</span>).trim_end();
-        <span class="kw">let </span>json = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/buckets.json&quot;</span>).trim_end();
+        <span class="kw">let </span>text = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/buckets.statsd.txt"</span>).trim_end();
+        <span class="kw">let </span>json = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/buckets.json"</span>).trim_end();
 
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">0</span>);
         <span class="kw">let </span>statsd_metrics = Bucket::parse_all(text.as_bytes(), timestamp)
@@ -2471,8 +2809,8 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_docs() {
-        <span class="kw">let </span>text = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/set.statsd.txt&quot;</span>).trim_end();
-        <span class="kw">let </span>json = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/set.json&quot;</span>).trim_end();
+        <span class="kw">let </span>text = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/set.statsd.txt"</span>).trim_end();
+        <span class="kw">let </span>json = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/set.json"</span>).trim_end();
 
         <span class="kw">let </span>timestamp = UnixTimestamp::from_secs(<span class="number">1615889449</span>);
         <span class="kw">let </span>statsd_metric = Bucket::parse(text.as_bytes(), timestamp).unwrap();
@@ -2483,27 +2821,34 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_buckets() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;[
+        <span class="kw">let </span>json = <span class="string">r#"[
           {
-            &quot;name&quot;: &quot;endpoint.response_time&quot;,
-            &quot;unit&quot;: &quot;millisecond&quot;,
-            &quot;value&quot;: [36, 49, 57, 68],
-            &quot;type&quot;: &quot;d&quot;,
-            &quot;timestamp&quot;: 1615889440,
-            &quot;width&quot;: 10,
-            &quot;tags&quot;: {
-                &quot;route&quot;: &quot;user_index&quot;
+            "name": "endpoint.response_time",
+            "unit": "millisecond",
+            "value": [36, 49, 57, 68],
+            "type": "d",
+            "timestamp": 1615889440,
+            "width": 10,
+            "tags": {
+                "route": "user_index"
+            },
+            "metadata": {
+                "merges": 1,
+                "received_at": 1615889440
             }
           }
-        ]&quot;#</span>;
+        ]"#</span>;
 
         <span class="kw">let </span>buckets = serde_json::from_str::&lt;Vec&lt;Bucket&gt;&gt;(json).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(buckets, @<span class="string">r###&quot;
+
+        <span class="macro">insta::assert_debug_snapshot!</span>(buckets, @<span class="string">r###"
         [
             Bucket {
                 timestamp: UnixTimestamp(1615889440),
                 width: 10,
-                name: &quot;endpoint.response_time&quot;,
+                name: MetricName(
+                    "endpoint.response_time",
+                ),
                 value: Distribution(
                     [
                         36.0,
@@ -2513,96 +2858,117 @@
                     ],
                 ),
                 tags: {
-                    &quot;route&quot;: &quot;user_index&quot;,
+                    "route": "user_index",
+                },
+                metadata: BucketMetadata {
+                    merges: 1,
+                    received_at: Some(
+                        UnixTimestamp(1615889440),
+                    ),
+                    extracted_from_indexed: false,
                 },
             },
         ]
-        &quot;###</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_bucket_defaults() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;[
+        <span class="kw">let </span>json = <span class="string">r#"[
           {
-            &quot;name&quot;: &quot;endpoint.hits&quot;,
-            &quot;value&quot;: 4,
-            &quot;type&quot;: &quot;c&quot;,
-            &quot;timestamp&quot;: 1615889440,
-            &quot;width&quot;: 10
+            "name": "endpoint.hits",
+            "value": 4,
+            "type": "c",
+            "timestamp": 1615889440,
+            "width": 10,
+            "metadata": {
+                "merges": 1,
+                "received_at": 1615889440
+            }
           }
-        ]&quot;#</span>;
+        ]"#</span>;
 
         <span class="kw">let </span>buckets = serde_json::from_str::&lt;Vec&lt;Bucket&gt;&gt;(json).unwrap();
-        <span class="macro">insta::assert_debug_snapshot!</span>(buckets, @<span class="string">r#&quot;
+
+        <span class="macro">insta::assert_debug_snapshot!</span>(buckets, @<span class="string">r###"
         [
             Bucket {
                 timestamp: UnixTimestamp(1615889440),
                 width: 10,
-                name: &quot;endpoint.hits&quot;,
+                name: MetricName(
+                    "endpoint.hits",
+                ),
                 value: Counter(
                     4.0,
                 ),
                 tags: {},
+                metadata: BucketMetadata {
+                    merges: 1,
+                    received_at: Some(
+                        UnixTimestamp(1615889440),
+                    ),
+                    extracted_from_indexed: false,
+                },
             },
         ]
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_buckets_roundtrip() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;[
+        <span class="kw">let </span>json = <span class="string">r#"[
   {
-    &quot;timestamp&quot;: 1615889440,
-    &quot;width&quot;: 10,
-    &quot;name&quot;: &quot;endpoint.response_time&quot;,
-    &quot;type&quot;: &quot;d&quot;,
-    &quot;value&quot;: [
+    "timestamp": 1615889440,
+    "width": 10,
+    "name": "endpoint.response_time",
+    "type": "d",
+    "value": [
       36.0,
       49.0,
       57.0,
       68.0
     ],
-    &quot;tags&quot;: {
-      &quot;route&quot;: &quot;user_index&quot;
+    "tags": {
+      "route": "user_index"
     }
   },
   {
-    &quot;timestamp&quot;: 1615889440,
-    &quot;width&quot;: 10,
-    &quot;name&quot;: &quot;endpoint.hits&quot;,
-    &quot;type&quot;: &quot;c&quot;,
-    &quot;value&quot;: 4.0,
-    &quot;tags&quot;: {
-      &quot;route&quot;: &quot;user_index&quot;
+    "timestamp": 1615889440,
+    "width": 10,
+    "name": "endpoint.hits",
+    "type": "c",
+    "value": 4.0,
+    "tags": {
+      "route": "user_index"
     }
   },
   {
-    &quot;timestamp&quot;: 1615889440,
-    &quot;width&quot;: 10,
-    &quot;name&quot;: &quot;endpoint.parallel_requests&quot;,
-    &quot;type&quot;: &quot;g&quot;,
-    &quot;value&quot;: {
-      &quot;last&quot;: 25.0,
-      &quot;min&quot;: 17.0,
-      &quot;max&quot;: 42.0,
-      &quot;sum&quot;: 2210.0,
-      &quot;count&quot;: 85
+    "timestamp": 1615889440,
+    "width": 10,
+    "name": "endpoint.parallel_requests",
+    "type": "g",
+    "value": {
+      "last": 25.0,
+      "min": 17.0,
+      "max": 42.0,
+      "sum": 2210.0,
+      "count": 85
     }
   },
   {
-    &quot;timestamp&quot;: 1615889440,
-    &quot;width&quot;: 10,
-    &quot;name&quot;: &quot;endpoint.users&quot;,
-    &quot;type&quot;: &quot;s&quot;,
-    &quot;value&quot;: [
+    "timestamp": 1615889440,
+    "width": 10,
+    "name": "endpoint.users",
+    "type": "s",
+    "value": [
       3182887624,
       4267882815
     ],
-    &quot;tags&quot;: {
-      &quot;route&quot;: &quot;user_index&quot;
+    "tags": {
+      "route": "user_index"
     }
   }
-]&quot;#</span>;
+]"#</span>;
 
         <span class="kw">let </span>buckets = serde_json::from_str::&lt;Vec&lt;Bucket&gt;&gt;(json).unwrap();
         <span class="kw">let </span>serialized = serde_json::to_string_pretty(<span class="kw-2">&amp;</span>buckets).unwrap();
@@ -2611,13 +2977,51 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_bucket_docs_roundtrip() {
-        <span class="kw">let </span>json = <span class="macro">include_str!</span>(<span class="string">&quot;../tests/fixtures/buckets.json&quot;</span>)
+        <span class="kw">let </span>json = <span class="macro">include_str!</span>(<span class="string">"../tests/fixtures/buckets.json"</span>)
             .trim_end()
-            .replace(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;\n&quot;</span>);
+            .replace(<span class="string">"\r\n"</span>, <span class="string">"\n"</span>);
         <span class="kw">let </span>buckets = serde_json::from_str::&lt;Vec&lt;Bucket&gt;&gt;(<span class="kw-2">&amp;</span>json).unwrap();
 
         <span class="kw">let </span>serialized = serde_json::to_string_pretty(<span class="kw-2">&amp;</span>buckets).unwrap();
         <span class="macro">assert_eq!</span>(json, serialized);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_bucket_metadata_merge() {
+        <span class="kw">let </span><span class="kw-2">mut </span>metadata = BucketMetadata::default();
+
+        <span class="kw">let </span>other_metadata = BucketMetadata::default();
+        metadata.merge(other_metadata);
+        <span class="macro">assert_eq!</span>(
+            metadata,
+            BucketMetadata {
+                merges: <span class="number">2</span>,
+                received_at: <span class="prelude-val">None</span>,
+                extracted_from_indexed: <span class="bool-val">false</span>,
+            }
+        );
+
+        <span class="kw">let </span>other_metadata = BucketMetadata::new(UnixTimestamp::from_secs(<span class="number">10</span>));
+        metadata.merge(other_metadata);
+        <span class="macro">assert_eq!</span>(
+            metadata,
+            BucketMetadata {
+                merges: <span class="number">3</span>,
+                received_at: <span class="prelude-val">Some</span>(UnixTimestamp::from_secs(<span class="number">10</span>)),
+                extracted_from_indexed: <span class="bool-val">false</span>,
+            }
+        );
+
+        <span class="kw">let </span>other_metadata = BucketMetadata::new(UnixTimestamp::from_secs(<span class="number">20</span>));
+        metadata.merge(other_metadata);
+        <span class="macro">assert_eq!</span>(
+            metadata,
+            BucketMetadata {
+                merges: <span class="number">4</span>,
+                received_at: <span class="prelude-val">Some</span>(UnixTimestamp::from_secs(<span class="number">10</span>)),
+                extracted_from_indexed: <span class="bool-val">false</span>,
+            }
+        );
     }
 }
 </code></pre></div></section></main></body></html>

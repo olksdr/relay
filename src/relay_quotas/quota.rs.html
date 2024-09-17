@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-quotas/src/quota.rs`."><title>quota.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_quotas" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_quotas/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-quotas/src/quota.rs`."><title>quota.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_quotas" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -803,9 +803,147 @@
 <a href="#803" id="803">803</a>
 <a href="#804" id="804">804</a>
 <a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
+<a href="#827" id="827">827</a>
+<a href="#828" id="828">828</a>
+<a href="#829" id="829">829</a>
+<a href="#830" id="830">830</a>
+<a href="#831" id="831">831</a>
+<a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::str::FromStr;
 
+<span class="kw">use </span>relay_base_schema::metrics::MetricNamespace;
 <span class="kw">use </span>relay_base_schema::project::{ProjectId, ProjectKey};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>smallvec::SmallVec;
@@ -827,7 +965,7 @@
     <span class="doccomment">/// The DSN public key.
     </span><span class="kw">pub </span>project_key: ProjectKey,
 
-    <span class="doccomment">/// The public key&#39;s internal id.
+    <span class="doccomment">/// The public key's internal id.
     </span><span class="kw">pub </span>key_id: <span class="prelude-ty">Option</span>&lt;u64&gt;,
 }
 
@@ -836,11 +974,64 @@
     ///
     /// The item scoping will contain a reference to this scope and the information passed to this
     /// function. This is a cheap operation to allow rate limiting for an individual item.
-    </span><span class="kw">pub fn </span>item(<span class="kw-2">&amp;</span><span class="self">self</span>, category: DataCategory) -&gt; ItemScoping&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>item(<span class="kw-2">&amp;</span><span class="self">self</span>, category: DataCategory) -&gt; ItemScoping&lt;<span class="lifetime">'_</span>&gt; {
         ItemScoping {
             category,
             scoping: <span class="self">self</span>,
+            namespace: MetricNamespaceScoping::None,
         }
+    }
+
+    <span class="doccomment">/// Returns an `ItemScoping` for metric buckets in this scope.
+    ///
+    /// The item scoping will contain a reference to this scope, the category
+    /// [`MetricBucket](DataCategory::MetricBucket), and the information passed to this function.
+    /// This is a cheap operation to allow rate limiting for an individual item.
+    </span><span class="kw">pub fn </span>metric_bucket(<span class="kw-2">&amp;</span><span class="self">self</span>, namespace: MetricNamespace) -&gt; ItemScoping&lt;<span class="lifetime">'_</span>&gt; {
+        ItemScoping {
+            category: DataCategory::MetricBucket,
+            scoping: <span class="self">self</span>,
+            namespace: MetricNamespaceScoping::Some(namespace),
+        }
+    }
+}
+
+<span class="doccomment">/// Item scoping of metric namespaces.
+///
+/// This enum is used in [`ItemScoping`] to declare the contents of an item's metric namespace.
+</span><span class="attr">#[derive(Clone, Copy, Debug, Default, PartialEq, Hash, PartialOrd)]
+</span><span class="kw">pub enum </span>MetricNamespaceScoping {
+    <span class="doccomment">/// This item does not contain metrics of any namespace. This should only be used for non-metric
+    /// items.
+    </span><span class="attr">#[default]
+    </span><span class="prelude-val">None</span>,
+
+    <span class="doccomment">/// This item contains metrics of a specific namespace.
+    </span><span class="prelude-val">Some</span>(MetricNamespace),
+
+    <span class="doccomment">/// This item contains metrics of any namespace.
+    ///
+    /// The namespace of metrics contained in this item is not known. This can be used to check rate
+    /// limits or quotas of any namespace.
+    </span>Any,
+}
+
+<span class="kw">impl </span>MetricNamespaceScoping {
+    <span class="doccomment">/// Returns `true` if the given namespace matches the namespace of the item.
+    ///
+    /// If the self is `Any`, this method returns `true` for any namespace.
+    </span><span class="kw">pub fn </span>matches(<span class="kw-2">&amp;</span><span class="self">self</span>, namespace: MetricNamespace) -&gt; bool {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::None =&gt; <span class="bool-val">false</span>,
+            <span class="self">Self</span>::Some(ns) =&gt; <span class="kw-2">*</span>ns == namespace,
+            <span class="self">Self</span>::Any =&gt; <span class="bool-val">true</span>,
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;MetricNamespace&gt; <span class="kw">for </span>MetricNamespaceScoping {
+    <span class="kw">fn </span>from(namespace: MetricNamespace) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Some(namespace)
     }
 }
 
@@ -850,21 +1041,24 @@
 /// copyable type intended for the use with `RateLimits` and `RateLimiter`. It implements
 /// `Deref&lt;Target = Scoping&gt;` and `AsRef&lt;Scoping&gt;` for ease of use.
 </span><span class="attr">#[derive(Clone, Copy, Debug)]
-</span><span class="kw">pub struct </span>ItemScoping&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>ItemScoping&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// The data category of the item.
     </span><span class="kw">pub </span>category: DataCategory,
 
     <span class="doccomment">/// Scoping of the data.
-    </span><span class="kw">pub </span>scoping: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Scoping,
+    </span><span class="kw">pub </span>scoping: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Scoping,
+
+    <span class="doccomment">/// Namespace for metric items, requiring [`DataCategory::MetricBucket`].
+    </span><span class="kw">pub </span>namespace: MetricNamespaceScoping,
 }
 
-<span class="kw">impl </span>AsRef&lt;Scoping&gt; <span class="kw">for </span>ItemScoping&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>AsRef&lt;Scoping&gt; <span class="kw">for </span>ItemScoping&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Scoping {
         <span class="self">self</span>.scoping
     }
 }
 
-<span class="kw">impl </span>std::ops::Deref <span class="kw">for </span>ItemScoping&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>std::ops::Deref <span class="kw">for </span>ItemScoping&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">type </span>Target = Scoping;
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
@@ -872,10 +1066,11 @@
     }
 }
 
-<span class="kw">impl </span>ItemScoping&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>ItemScoping&lt;<span class="lifetime">'_</span>&gt; {
     <span class="doccomment">/// Returns the identifier of the given scope.
     </span><span class="kw">pub fn </span>scope_id(<span class="kw-2">&amp;</span><span class="self">self</span>, scope: QuotaScope) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt; {
         <span class="kw">match </span>scope {
+            QuotaScope::Global =&gt; <span class="prelude-val">None</span>,
             QuotaScope::Organization =&gt; <span class="prelude-val">Some</span>(<span class="self">self</span>.organization_id),
             QuotaScope::Project =&gt; <span class="prelude-val">Some</span>(<span class="self">self</span>.project_id.value()),
             QuotaScope::Key =&gt; <span class="self">self</span>.key_id,
@@ -883,13 +1078,34 @@
         }
     }
 
-    <span class="doccomment">/// Checks whether the category matches any of the quota&#39;s categories.
+    <span class="doccomment">/// Checks whether the category matches any of the quota's categories.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>matches_categories(<span class="kw-2">&amp;</span><span class="self">self</span>, categories: <span class="kw-2">&amp;</span>DataCategories) -&gt; bool {
         <span class="comment">// An empty list of categories means that this quota matches all categories. Note that we
         // skip `Unknown` categories silently. If the list of categories only contains `Unknown`s,
         // we do **not** match, since apparently the quota is meant for some data this Relay does
         // not support yet.
         </span>categories.is_empty() || categories.iter().any(|cat| <span class="kw-2">*</span>cat == <span class="self">self</span>.category)
+    }
+
+    <span class="doccomment">/// Returns `true` if the rate limit namespace matches the namespace of the item.
+    ///
+    /// Matching behavior depends on the passed namespaces and the namespace of the scoping:
+    ///  - If the list of namespaces is empty, this check always returns `true`.
+    ///  - If the list of namespaces contains at least one namespace, a namespace on the scoping is
+    ///    required. [`MetricNamespaceScoping::None`] will not match.
+    ///  - If the namespace of this scoping is [`MetricNamespaceScoping::Any`], this check will
+    ///    always return true.
+    ///  - Otherwise, an exact match of the scoping's namespace must be found in the list.
+    ///
+    /// `namespace` can be either a slice, an iterator, or a reference to an
+    /// `Option&lt;MetricNamespace&gt;`. In case of `None`, this method behaves like an empty list and
+    /// permits any namespace.
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>matches_namespaces&lt;<span class="lifetime">'a</span>, I&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, namespaces: I) -&gt; bool
+    <span class="kw">where
+        </span>I: IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>MetricNamespace&gt;,
+    {
+        <span class="kw">let </span><span class="kw-2">mut </span>iter = namespaces.into_iter().peekable();
+        iter.peek().is_none() || iter.any(|ns| <span class="self">self</span>.namespace.matches(<span class="kw-2">*</span>ns))
     }
 }
 
@@ -899,6 +1115,7 @@
     Count,
     Bytes,
     Batched,
+    Milliseconds,
 }
 
 <span class="kw">impl </span>CategoryUnit {
@@ -908,18 +1125,23 @@
             | DataCategory::Error
             | DataCategory::Transaction
             | DataCategory::Replay
+            | DataCategory::ReplayVideo
             | DataCategory::Security
             | DataCategory::Profile
             | DataCategory::ProfileIndexed
             | DataCategory::TransactionProcessed
             | DataCategory::TransactionIndexed
             | DataCategory::Span
+            | DataCategory::SpanIndexed
             | DataCategory::MonitorSeat
             | DataCategory::Monitor
             | DataCategory::MetricBucket
-            | DataCategory::UserReportV2 =&gt; <span class="prelude-val">Some</span>(<span class="self">Self</span>::Count),
+            | DataCategory::UserReportV2
+            | DataCategory::ProfileChunk
+            | DataCategory::MetricSecond =&gt; <span class="prelude-val">Some</span>(<span class="self">Self</span>::Count),
             DataCategory::Attachment =&gt; <span class="prelude-val">Some</span>(<span class="self">Self</span>::Bytes),
             DataCategory::Session =&gt; <span class="prelude-val">Some</span>(<span class="self">Self</span>::Batched),
+            DataCategory::ProfileDuration =&gt; <span class="prelude-val">Some</span>(<span class="self">Self</span>::Milliseconds),
 
             DataCategory::Unknown =&gt; <span class="prelude-val">None</span>,
         }
@@ -936,8 +1158,10 @@
 /// Except for the `Unknown` variant, this type directly translates to the variants of
 /// `RateLimitScope` which are used by rate limits.
 </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(rename_all = <span class="string">"lowercase"</span>)]
 </span><span class="kw">pub enum </span>QuotaScope {
+    <span class="doccomment">/// Global scope, matches everything.
+    </span>Global,
     <span class="doccomment">/// The organization that this project belongs to.
     ///
     /// This is the top-level scope.
@@ -962,27 +1186,29 @@
     <span class="doccomment">/// Returns the quota scope corresponding to the given name.
     </span><span class="kw">pub fn </span>from_name(string: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span>string {
-            <span class="string">&quot;organization&quot; </span>=&gt; <span class="self">Self</span>::Organization,
-            <span class="string">&quot;project&quot; </span>=&gt; <span class="self">Self</span>::Project,
-            <span class="string">&quot;key&quot; </span>=&gt; <span class="self">Self</span>::Key,
+            <span class="string">"global" </span>=&gt; <span class="self">Self</span>::Global,
+            <span class="string">"organization" </span>=&gt; <span class="self">Self</span>::Organization,
+            <span class="string">"project" </span>=&gt; <span class="self">Self</span>::Project,
+            <span class="string">"key" </span>=&gt; <span class="self">Self</span>::Key,
             <span class="kw">_ </span>=&gt; <span class="self">Self</span>::Unknown,
         }
     }
 
     <span class="doccomment">/// Returns the canonical name of this scope.
-    </span><span class="kw">pub fn </span>name(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+    </span><span class="kw">pub fn </span>name(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::Key =&gt; <span class="string">&quot;key&quot;</span>,
-            <span class="self">Self</span>::Project =&gt; <span class="string">&quot;project&quot;</span>,
-            <span class="self">Self</span>::Organization =&gt; <span class="string">&quot;organization&quot;</span>,
-            <span class="self">Self</span>::Unknown =&gt; <span class="string">&quot;unknown&quot;</span>,
+            <span class="self">Self</span>::Global =&gt; <span class="string">"global"</span>,
+            <span class="self">Self</span>::Key =&gt; <span class="string">"key"</span>,
+            <span class="self">Self</span>::Project =&gt; <span class="string">"project"</span>,
+            <span class="self">Self</span>::Organization =&gt; <span class="string">"organization"</span>,
+            <span class="self">Self</span>::Unknown =&gt; <span class="string">"unknown"</span>,
         }
     }
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>QuotaScope {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.name())
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"{}"</span>, <span class="self">self</span>.name())
     }
 }
 
@@ -1018,7 +1244,7 @@
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>ReasonCode {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="self">self</span>.<span class="number">0</span>.fmt(f)
     }
 }
@@ -1028,8 +1254,8 @@
 /// Sentry applies multiple quotas to incoming data before accepting it, some of which can be
 /// configured by the customer. Each piece of data (such as event, attachment) will be counted
 /// against all quotas that it matches with based on the `category`.
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
+</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(rename_all = <span class="string">"camelCase"</span>)]
 </span><span class="kw">pub struct </span>Quota {
     <span class="doccomment">/// The unique identifier for counting this quota. Required, except for quotas with a `limit` of
     /// `0`, since they are statically enforced.
@@ -1038,17 +1264,17 @@
 
     <span class="doccomment">/// A set of data categories that this quota applies to. If missing or empty, this quota
     /// applies to all data.
-    </span><span class="attr">#[serde(default = <span class="string">&quot;DataCategories::new&quot;</span>)]
+    </span><span class="attr">#[serde(default = <span class="string">"DataCategories::new"</span>)]
     </span><span class="kw">pub </span>categories: DataCategories,
 
     <span class="doccomment">/// A scope for this quota. This quota is enforced separately within each instance of this scope
     /// (e.g. for each project key separately). Defaults to `QuotaScope::Organization`.
-    </span><span class="attr">#[serde(default = <span class="string">&quot;default_scope&quot;</span>)]
+    </span><span class="attr">#[serde(default = <span class="string">"default_scope"</span>)]
     </span><span class="kw">pub </span>scope: QuotaScope,
 
     <span class="doccomment">/// Identifier of the scope to apply to. If set, then this quota will only apply to the
     /// specified scope instance (e.g. a project key). Requires `scope` to be set explicitly.
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>scope_id: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="doccomment">/// Maximum number of matching events allowed. Can be `0` to reject all events, `None` for an
@@ -1061,12 +1287,17 @@
 
     <span class="doccomment">/// The time window in seconds to enforce this quota in. Required in all cases except `limit=0`,
     /// since those quotas are not measured.
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>window: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+
+    <span class="doccomment">/// The namespace the quota applies to.
+    ///
+    /// If `None`, it will match any namespace.
+    </span><span class="kw">pub </span>namespace: <span class="prelude-ty">Option</span>&lt;MetricNamespace&gt;,
 
     <span class="doccomment">/// A machine readable reason returned when this quota is exceeded. Required in all cases except
     /// `limit=None`, since unlimited quotas can never be exceeded.
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>reason_code: <span class="prelude-ty">Option</span>&lt;ReasonCode&gt;,
 }
 
@@ -1076,7 +1307,12 @@
     /// There are a few conditions at which quotas are invalid:
     ///  - The quota only applies to `Unknown` data categories.
     ///  - The quota is counted (not limit `0`) but specifies categories with different units.
+    ///  - The quota references an unsupported namespace.
     </span><span class="kw">pub fn </span>is_valid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">if </span><span class="self">self</span>.namespace == <span class="prelude-val">Some</span>(MetricNamespace::Unsupported) {
+            <span class="kw">return </span><span class="bool-val">false</span>;
+        }
+
         <span class="kw">let </span><span class="kw-2">mut </span>units = <span class="self">self</span>.categories.iter().filter_map(CategoryUnit::from);
 
         <span class="kw">match </span>units.next() {
@@ -1091,13 +1327,17 @@
         }
     }
 
-    <span class="doccomment">/// Checks whether this quota&#39;s scope matches the given item scoping.
+    <span class="doccomment">/// Checks whether this quota's scope matches the given item scoping.
     ///
     /// This quota matches, if:
     ///  - there is no `scope_id` constraint
     ///  - the `scope_id` constraint is not numeric
     ///  - the scope identifier matches the one from ascoping and the scope is known
-    </span><span class="kw">fn </span>matches_scope(<span class="kw-2">&amp;</span><span class="self">self</span>, scoping: ItemScoping&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; bool {
+    </span><span class="kw">fn </span>matches_scope(<span class="kw-2">&amp;</span><span class="self">self</span>, scoping: ItemScoping&lt;<span class="lifetime">'_</span>&gt;) -&gt; bool {
+        <span class="kw">if </span><span class="self">self</span>.scope == QuotaScope::Global {
+            <span class="kw">return </span><span class="bool-val">true</span>;
+        }
+
         <span class="comment">// Check for a scope identifier constraint. If there is no constraint, this means that the
         // quota matches any scope. In case the scope is unknown, it will be coerced to the most
         // specific scope later.
@@ -1115,9 +1355,11 @@
         </span>scoping.scope_id(<span class="self">self</span>.scope) == <span class="prelude-val">Some</span>(parsed)
     }
 
-    <span class="doccomment">/// Checks whether the quota&#39;s constraints match the current item.
-    </span><span class="kw">pub fn </span>matches(<span class="kw-2">&amp;</span><span class="self">self</span>, scoping: ItemScoping&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; bool {
-        <span class="self">self</span>.matches_scope(scoping) &amp;&amp; scoping.matches_categories(<span class="kw-2">&amp;</span><span class="self">self</span>.categories)
+    <span class="doccomment">/// Checks whether the quota's constraints match the current item.
+    </span><span class="kw">pub fn </span>matches(<span class="kw-2">&amp;</span><span class="self">self</span>, scoping: ItemScoping&lt;<span class="lifetime">'_</span>&gt;) -&gt; bool {
+        <span class="self">self</span>.matches_scope(scoping)
+            &amp;&amp; scoping.matches_categories(<span class="kw-2">&amp;</span><span class="self">self</span>.categories)
+            &amp;&amp; scoping.matches_namespaces(<span class="kw-2">&amp;</span><span class="self">self</span>.namespace)
     }
 }
 
@@ -1129,35 +1371,36 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_quota_reject_all() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;limit&quot;: 0,
-            &quot;reasonCode&quot;: &quot;not_yet&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "limit": 0,
+            "reasonCode": "not_yet"
+        }"#</span>;
 
-        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">&quot;parse quota&quot;</span>);
+        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">"parse quota"</span>);
 
-        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r###"
         Quota(
           id: None,
           categories: [],
           scope: organization,
           limit: Some(0),
-          reasonCode: Some(ReasonCode(&quot;not_yet&quot;)),
+          namespace: None,
+          reasonCode: Some(ReasonCode("not_yet")),
         )
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_quota_reject_transactions() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;limit&quot;: 0,
-            &quot;categories&quot;: [&quot;transaction&quot;],
-            &quot;reasonCode&quot;: &quot;not_yet&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "limit": 0,
+            "categories": ["transaction"],
+            "reasonCode": "not_yet"
+        }"#</span>;
 
-        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">&quot;parse quota&quot;</span>);
+        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">"parse quota"</span>);
 
-        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r###"
         Quota(
           id: None,
           categories: [
@@ -1165,159 +1408,166 @@
           ],
           scope: organization,
           limit: Some(0),
-          reasonCode: Some(ReasonCode(&quot;not_yet&quot;)),
+          namespace: None,
+          reasonCode: Some(ReasonCode("not_yet")),
         )
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_quota_limited() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;id&quot;: &quot;o&quot;,
-            &quot;limit&quot;: 4711,
-            &quot;window&quot;: 42,
-            &quot;reasonCode&quot;: &quot;not_so_fast&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "id": "o",
+            "limit": 4711,
+            "window": 42,
+            "reasonCode": "not_so_fast"
+        }"#</span>;
 
-        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">&quot;parse quota&quot;</span>);
+        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">"parse quota"</span>);
 
-        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r###"
         Quota(
-          id: Some(&quot;o&quot;),
+          id: Some("o"),
           categories: [],
           scope: organization,
           limit: Some(4711),
           window: Some(42),
-          reasonCode: Some(ReasonCode(&quot;not_so_fast&quot;)),
+          namespace: None,
+          reasonCode: Some(ReasonCode("not_so_fast")),
         )
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_quota_project() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;id&quot;: &quot;p&quot;,
-            &quot;scope&quot;: &quot;project&quot;,
-            &quot;scopeId&quot;: &quot;1&quot;,
-            &quot;limit&quot;: 4711,
-            &quot;window&quot;: 42,
-            &quot;reasonCode&quot;: &quot;not_so_fast&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "id": "p",
+            "scope": "project",
+            "scopeId": "1",
+            "limit": 4711,
+            "window": 42,
+            "reasonCode": "not_so_fast"
+        }"#</span>;
 
-        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">&quot;parse quota&quot;</span>);
+        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">"parse quota"</span>);
 
-        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r###"
         Quota(
-          id: Some(&quot;p&quot;),
+          id: Some("p"),
           categories: [],
           scope: project,
-          scopeId: Some(&quot;1&quot;),
+          scopeId: Some("1"),
           limit: Some(4711),
           window: Some(42),
-          reasonCode: Some(ReasonCode(&quot;not_so_fast&quot;)),
+          namespace: None,
+          reasonCode: Some(ReasonCode("not_so_fast")),
         )
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_quota_project_large() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;id&quot;: &quot;p&quot;,
-            &quot;scope&quot;: &quot;project&quot;,
-            &quot;scopeId&quot;: &quot;1&quot;,
-            &quot;limit&quot;: 4294967296,
-            &quot;window&quot;: 42,
-            &quot;reasonCode&quot;: &quot;not_so_fast&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "id": "p",
+            "scope": "project",
+            "scopeId": "1",
+            "limit": 4294967296,
+            "window": 42,
+            "reasonCode": "not_so_fast"
+        }"#</span>;
 
-        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">&quot;parse quota&quot;</span>);
+        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">"parse quota"</span>);
 
-        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r###"
         Quota(
-          id: Some(&quot;p&quot;),
+          id: Some("p"),
           categories: [],
           scope: project,
-          scopeId: Some(&quot;1&quot;),
+          scopeId: Some("1"),
           limit: Some(4294967296),
           window: Some(42),
-          reasonCode: Some(ReasonCode(&quot;not_so_fast&quot;)),
+          namespace: None,
+          reasonCode: Some(ReasonCode("not_so_fast")),
         )
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_quota_key() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;id&quot;: &quot;k&quot;,
-            &quot;scope&quot;: &quot;key&quot;,
-            &quot;scopeId&quot;: &quot;1&quot;,
-            &quot;limit&quot;: 4711,
-            &quot;window&quot;: 42,
-            &quot;reasonCode&quot;: &quot;not_so_fast&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "id": "k",
+            "scope": "key",
+            "scopeId": "1",
+            "limit": 4711,
+            "window": 42,
+            "reasonCode": "not_so_fast"
+        }"#</span>;
 
-        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">&quot;parse quota&quot;</span>);
+        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">"parse quota"</span>);
 
-        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r###"
         Quota(
-          id: Some(&quot;k&quot;),
+          id: Some("k"),
           categories: [],
           scope: key,
-          scopeId: Some(&quot;1&quot;),
+          scopeId: Some("1"),
           limit: Some(4711),
           window: Some(42),
-          reasonCode: Some(ReasonCode(&quot;not_so_fast&quot;)),
+          namespace: None,
+          reasonCode: Some(ReasonCode("not_so_fast")),
         )
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_quota_unknown_variants() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;id&quot;: &quot;f&quot;,
-            &quot;categories&quot;: [&quot;future&quot;],
-            &quot;scope&quot;: &quot;future&quot;,
-            &quot;scopeId&quot;: &quot;1&quot;,
-            &quot;limit&quot;: 4711,
-            &quot;window&quot;: 42,
-            &quot;reasonCode&quot;: &quot;not_so_fast&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "id": "f",
+            "categories": ["future"],
+            "scope": "future",
+            "scopeId": "1",
+            "limit": 4711,
+            "window": 42,
+            "reasonCode": "not_so_fast"
+        }"#</span>;
 
-        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">&quot;parse quota&quot;</span>);
+        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">"parse quota"</span>);
 
-        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r###"
         Quota(
-          id: Some(&quot;f&quot;),
+          id: Some("f"),
           categories: [
             unknown,
           ],
           scope: unknown,
-          scopeId: Some(&quot;1&quot;),
+          scopeId: Some("1"),
           limit: Some(4711),
           window: Some(42),
-          reasonCode: Some(ReasonCode(&quot;not_so_fast&quot;)),
+          namespace: None,
+          reasonCode: Some(ReasonCode("not_so_fast")),
         )
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_quota_unlimited() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-            &quot;id&quot;: &quot;o&quot;,
-            &quot;window&quot;: 42
-        }&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+            "id": "o",
+            "window": 42
+        }"#</span>;
 
-        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">&quot;parse quota&quot;</span>);
+        <span class="kw">let </span>quota = serde_json::from_str::&lt;Quota&gt;(json).expect(<span class="string">"parse quota"</span>);
 
-        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r#&quot;
+        <span class="macro">insta::assert_ron_snapshot!</span>(quota, @<span class="string">r###"
         Quota(
-          id: Some(&quot;o&quot;),
+          id: Some("o"),
           categories: [],
           scope: organization,
           limit: None,
           window: Some(42),
+          namespace: None,
         )
-        &quot;#</span>);
+        "###</span>);
     }
 
     <span class="attr">#[test]
@@ -1330,6 +1580,7 @@
             limit: <span class="prelude-val">Some</span>(<span class="number">0</span>),
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(quota.is_valid());
@@ -1345,6 +1596,7 @@
             limit: <span class="prelude-val">Some</span>(<span class="number">0</span>),
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(!quota.is_valid());
@@ -1360,6 +1612,7 @@
             limit: <span class="prelude-val">Some</span>(<span class="number">0</span>),
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(quota.is_valid());
@@ -1375,6 +1628,7 @@
             limit: <span class="prelude-val">Some</span>(<span class="number">1000</span>),
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="comment">// This category is limited and counted, but has multiple units.
@@ -1391,6 +1645,7 @@
             limit: <span class="prelude-val">None</span>,
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="comment">// This category is unlimited and counted, but has multiple units.
@@ -1407,6 +1662,7 @@
             limit: <span class="prelude-val">None</span>,
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(quota.matches(ItemScoping {
@@ -1414,9 +1670,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
     }
 
@@ -1430,6 +1687,7 @@
             limit: <span class="prelude-val">None</span>,
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(!quota.matches(ItemScoping {
@@ -1437,9 +1695,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
     }
 
@@ -1453,6 +1712,7 @@
             limit: <span class="prelude-val">None</span>,
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(quota.matches(ItemScoping {
@@ -1460,9 +1720,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
 
         <span class="macro">assert!</span>(!quota.matches(ItemScoping {
@@ -1470,9 +1731,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
     }
 
@@ -1482,10 +1744,11 @@
             id: <span class="prelude-val">None</span>,
             categories: DataCategories::new(),
             scope: QuotaScope::Organization,
-            scope_id: <span class="prelude-val">Some</span>(<span class="string">&quot;not_a_number&quot;</span>.to_owned()),
+            scope_id: <span class="prelude-val">Some</span>(<span class="string">"not_a_number"</span>.to_owned()),
             limit: <span class="prelude-val">None</span>,
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(!quota.matches(ItemScoping {
@@ -1493,9 +1756,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
     }
 
@@ -1505,10 +1769,11 @@
             id: <span class="prelude-val">None</span>,
             categories: DataCategories::new(),
             scope: QuotaScope::Organization,
-            scope_id: <span class="prelude-val">Some</span>(<span class="string">&quot;42&quot;</span>.to_owned()),
+            scope_id: <span class="prelude-val">Some</span>(<span class="string">"42"</span>.to_owned()),
             limit: <span class="prelude-val">None</span>,
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(quota.matches(ItemScoping {
@@ -1516,9 +1781,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
 
         <span class="macro">assert!</span>(!quota.matches(ItemScoping {
@@ -1526,9 +1792,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">0</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
     }
 
@@ -1538,10 +1805,11 @@
             id: <span class="prelude-val">None</span>,
             categories: DataCategories::new(),
             scope: QuotaScope::Project,
-            scope_id: <span class="prelude-val">Some</span>(<span class="string">&quot;21&quot;</span>.to_owned()),
+            scope_id: <span class="prelude-val">Some</span>(<span class="string">"21"</span>.to_owned()),
             limit: <span class="prelude-val">None</span>,
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(quota.matches(ItemScoping {
@@ -1549,9 +1817,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
 
         <span class="macro">assert!</span>(!quota.matches(ItemScoping {
@@ -1559,9 +1828,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">0</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
     }
 
@@ -1571,10 +1841,11 @@
             id: <span class="prelude-val">None</span>,
             categories: DataCategories::new(),
             scope: QuotaScope::Key,
-            scope_id: <span class="prelude-val">Some</span>(<span class="string">&quot;17&quot;</span>.to_owned()),
+            scope_id: <span class="prelude-val">Some</span>(<span class="string">"17"</span>.to_owned()),
             limit: <span class="prelude-val">None</span>,
             window: <span class="prelude-val">None</span>,
             reason_code: <span class="prelude-val">None</span>,
+            namespace: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert!</span>(quota.matches(ItemScoping {
@@ -1582,9 +1853,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">17</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
 
         <span class="macro">assert!</span>(!quota.matches(ItemScoping {
@@ -1592,9 +1864,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">Some</span>(<span class="number">0</span>),
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
 
         <span class="macro">assert!</span>(!quota.matches(ItemScoping {
@@ -1602,9 +1875,10 @@
             scoping: <span class="kw-2">&amp;</span>Scoping {
                 organization_id: <span class="number">42</span>,
                 project_id: ProjectId::new(<span class="number">21</span>),
-                project_key: ProjectKey::parse(<span class="string">&quot;a94ae32be2584e0bbd7a4cbb95971fee&quot;</span>).unwrap(),
+                project_key: ProjectKey::parse(<span class="string">"a94ae32be2584e0bbd7a4cbb95971fee"</span>).unwrap(),
                 key_id: <span class="prelude-val">None</span>,
-            }
+            },
+            namespace: MetricNamespaceScoping::None,
         }));
     }
 }

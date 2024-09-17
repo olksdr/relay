@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-common/src/glob3.rs`."><title>glob3.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_common" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_common/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-common/src/glob3.rs`."><title>glob3.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_common" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -182,34 +182,20 @@
 <a href="#182" id="182">182</a>
 <a href="#183" id="183">183</a>
 <a href="#184" id="184">184</a>
-<a href="#185" id="185">185</a>
-<a href="#186" id="186">186</a>
-<a href="#187" id="187">187</a>
-<a href="#188" id="188">188</a>
-<a href="#189" id="189">189</a>
-<a href="#190" id="190">190</a>
-<a href="#191" id="191">191</a>
-<a href="#192" id="192">192</a>
-<a href="#193" id="193">193</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Alternative implementation of serializable glob patterns.
 
 </span><span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::sync::OnceLock;
 
-<span class="kw">use </span>globset::GlobBuilder;
-<span class="kw">use </span>once_cell::sync::OnceCell;
-<span class="kw">use </span>regex::bytes::{Regex, RegexBuilder};
 <span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-<span class="doccomment">/// Returns `true` if any of the patterns match the given message.
-</span><span class="kw">fn </span>is_match(globs: <span class="kw-2">&amp;</span>[Regex], message: <span class="kw-2">&amp;</span>[u8]) -&gt; bool {
-    globs.iter().any(|regex| regex.is_match(message.as_ref()))
-}
+<span class="kw">use </span>relay_pattern::Pattern;
 
 <span class="doccomment">/// A list of patterns for glob matching.
 </span><span class="attr">#[derive(Clone, Default)]
 </span><span class="kw">pub struct </span>GlobPatterns {
     patterns: Vec&lt;String&gt;,
-    globs: OnceCell&lt;Vec&lt;Regex&gt;&gt;,
+    compiled: OnceLock&lt;Vec&lt;Pattern&gt;&gt;,
 }
 
 <span class="kw">impl </span>GlobPatterns {
@@ -217,58 +203,40 @@
     </span><span class="kw">pub fn </span>new(patterns: Vec&lt;String&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             patterns,
-            globs: OnceCell::new(),
+            compiled: OnceLock::new(),
         }
     }
 
     <span class="doccomment">/// Returns `true` if the list of patterns is empty.
     </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="comment">// Check the list of patterns and not globs. Even if there are no globs to parse, we still
-        // want to serialize the &quot;invalid&quot; patterns to a downstream Relay.
+        // want to serialize the "invalid" patterns to a downstream Relay.
         </span><span class="self">self</span>.patterns.is_empty()
     }
 
     <span class="doccomment">/// Returns `true` if any of the patterns match the given message.
     </span><span class="kw">pub fn </span>is_match&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, message: S) -&gt; bool
     <span class="kw">where
-        </span>S: AsRef&lt;[u8]&gt;,
+        </span>S: AsRef&lt;str&gt;,
     {
         <span class="kw">let </span>message = message.as_ref();
         <span class="kw">if </span>message.is_empty() {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
 
-        <span class="kw">let </span>globs = <span class="self">self</span>.globs.get_or_init(|| <span class="self">self</span>.parse_globs());
-        is_match(globs, message)
-    }
+        <span class="kw">let </span>compiled = <span class="self">self</span>.compiled.get_or_init(|| {
+            <span class="self">self</span>.patterns
+                .iter()
+                .filter_map(|p| Pattern::builder(p).case_insensitive(<span class="bool-val">true</span>).build().ok())
+                .collect()
+        });
 
-    <span class="doccomment">/// Parses valid patterns from the list.
-    </span><span class="kw">fn </span>parse_globs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Regex&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>globs = Vec::with_capacity(<span class="self">self</span>.patterns.len());
-
-        <span class="kw">for </span>pattern <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.patterns {
-            <span class="kw">let </span>glob_result = GlobBuilder::new(pattern)
-                .case_insensitive(<span class="bool-val">true</span>)
-                .backslash_escape(<span class="bool-val">true</span>)
-                .build();
-
-            <span class="kw">if let </span><span class="prelude-val">Ok</span>(glob) = glob_result {
-                <span class="kw">let </span>regex_result = RegexBuilder::new(glob.regex())
-                    .dot_matches_new_line(<span class="bool-val">true</span>)
-                    .build();
-
-                <span class="kw">if let </span><span class="prelude-val">Ok</span>(regex) = regex_result {
-                    globs.push(regex);
-                }
-            }
-        }
-
-        globs
+        compiled.iter().any(|pattern| pattern.is_match(message))
     }
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>GlobPatterns {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="self">self</span>.patterns.fmt(f)
     }
 }
@@ -282,10 +250,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>GlobPatterns {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>GlobPatterns {
     <span class="kw">fn </span>deserialize&lt;D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt;
     <span class="kw">where
-        </span>D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="kw">let </span>patterns = Deserialize::deserialize(deserializer)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(GlobPatterns::new(patterns))
@@ -302,7 +270,7 @@
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="macro">macro_rules! </span>globs {
+    <span class="macro">macro_rules!</span> globs {
         ($(<span class="macro-nonterminal">$pattern</span>:literal),<span class="kw-2">*</span>) =&gt; {
             GlobPatterns::new(<span class="macro">vec!</span>[
                 $(<span class="macro-nonterminal">$pattern</span>.to_string()),*
@@ -311,33 +279,40 @@
     }
 
     <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_match_empty() {
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">""</span>);
+        <span class="macro">assert!</span>(!globs.is_match(<span class="string">"foo"</span>));
+        <span class="macro">assert!</span>(!globs.is_match(<span class="string">""</span>));
+    }
+
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_literal() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;foo&quot;</span>);
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"foo"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"foo"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_negative() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;foo&quot;</span>);
-        <span class="macro">assert!</span>(!globs.is_match(<span class="string">&quot;nope&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"foo"</span>);
+        <span class="macro">assert!</span>(!globs.is_match(<span class="string">"nope"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_prefix() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;foo*&quot;</span>);
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;foobarblub&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"foo*"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"foobarblub"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_suffix() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;*blub&quot;</span>);
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;foobarblub&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"*blub"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"foobarblub"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_inner() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;*bar*&quot;</span>);
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;foobarblub&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"*bar*"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"foobarblub"</span>));
     }
 
     <span class="attr">#[test]
@@ -345,43 +320,50 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_newline() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;*foo*&quot;</span>);
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;foo\n&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"*foo*"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"foo\n"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_newline_inner() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;foo*bar&quot;</span>);
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;foo\nbar&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"foo*bar"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"foo\nbar"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_newline_pattern() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;foo*\n*bar&quot;</span>);
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;foo \n bar&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"foo*\n*bar"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"foo \n bar"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_range() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;1.18.[0-4].*&quot;</span>);
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;1.18.4.2153-2aa83397b&quot;</span>));
-        <span class="macro">assert!</span>(!globs.is_match(<span class="string">&quot;1.18.5.2153-2aa83397b&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"1.18.[0-4].*"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"1.18.4.2153-2aa83397b"</span>));
+        <span class="macro">assert!</span>(!globs.is_match(<span class="string">"1.18.5.2153-2aa83397b"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_range_neg() {
-        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;1.18.[!0-4].*&quot;</span>);
-        <span class="macro">assert!</span>(!globs.is_match(<span class="string">&quot;1.18.4.2153-2aa83397b&quot;</span>));
-        <span class="macro">assert!</span>(globs.is_match(<span class="string">&quot;1.18.5.2153-2aa83397b&quot;</span>));
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"1.18.[!0-4].*"</span>);
+        <span class="macro">assert!</span>(!globs.is_match(<span class="string">"1.18.4.2153-2aa83397b"</span>));
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"1.18.5.2153-2aa83397b"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_match_neg_unsupported() {
         <span class="comment">// this is not necessarily desirable behavior, but it is our current one: negation (!)
-        // outside of [] doesn&#39;t work
-        </span><span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">&quot;!1.18.4.*&quot;</span>);
-        <span class="macro">assert!</span>(!globs.is_match(<span class="string">&quot;1.18.4.2153-2aa83397b&quot;</span>));
-        <span class="macro">assert!</span>(!globs.is_match(<span class="string">&quot;1.18.5.2153-2aa83397b&quot;</span>));
+        // outside of [] doesn't work
+        </span><span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">"!1.18.4.*"</span>);
+        <span class="macro">assert!</span>(!globs.is_match(<span class="string">"1.18.4.2153-2aa83397b"</span>));
+        <span class="macro">assert!</span>(!globs.is_match(<span class="string">"1.18.5.2153-2aa83397b"</span>));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_match_escape_brace() {
+        <span class="kw">let </span>globs = <span class="macro">globs!</span>(<span class="string">r"/api/0/organizations/\{organization_slug\}/event*"</span>);
+        <span class="macro">assert!</span>(globs.is_match(<span class="string">"/api/0/organizations/{organization_slug}/event/foobar"</span>));
+        <span class="macro">assert!</span>(!globs.is_match(<span class="string">r"/api/0/organizations/\{organization_slug\}/event/foobar"</span>));
     }
 }
 </code></pre></div></section></main></body></html>

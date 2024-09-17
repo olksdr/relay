@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-schema/src/protocol/span.rs`."><title>span.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_event_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../relay_event_schema/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-schema/src/protocol/span.rs`."><title>span.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="relay_event_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -337,86 +337,587 @@
 <a href="#337" id="337">337</a>
 <a href="#338" id="338">338</a>
 <a href="#339" id="339">339</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;jsonschema&quot;</span>)]
-</span><span class="kw">use </span>relay_jsonschema_derive::JsonSchema;
-<span class="kw">use </span>relay_protocol::{Annotated, Empty, FromValue, Getter, IntoValue, Object, Val, Value};
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
+<a href="#482" id="482">482</a>
+<a href="#483" id="483">483</a>
+<a href="#484" id="484">484</a>
+<a href="#485" id="485">485</a>
+<a href="#486" id="486">486</a>
+<a href="#487" id="487">487</a>
+<a href="#488" id="488">488</a>
+<a href="#489" id="489">489</a>
+<a href="#490" id="490">490</a>
+<a href="#491" id="491">491</a>
+<a href="#492" id="492">492</a>
+<a href="#493" id="493">493</a>
+<a href="#494" id="494">494</a>
+<a href="#495" id="495">495</a>
+<a href="#496" id="496">496</a>
+<a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
+<a href="#504" id="504">504</a>
+<a href="#505" id="505">505</a>
+<a href="#506" id="506">506</a>
+<a href="#507" id="507">507</a>
+<a href="#508" id="508">508</a>
+<a href="#509" id="509">509</a>
+<a href="#510" id="510">510</a>
+<a href="#511" id="511">511</a>
+<a href="#512" id="512">512</a>
+<a href="#513" id="513">513</a>
+<a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
+<a href="#518" id="518">518</a>
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
+<a href="#530" id="530">530</a>
+<a href="#531" id="531">531</a>
+<a href="#532" id="532">532</a>
+<a href="#533" id="533">533</a>
+<a href="#534" id="534">534</a>
+<a href="#535" id="535">535</a>
+<a href="#536" id="536">536</a>
+<a href="#537" id="537">537</a>
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+<a href="#544" id="544">544</a>
+<a href="#545" id="545">545</a>
+<a href="#546" id="546">546</a>
+<a href="#547" id="547">547</a>
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
+<a href="#624" id="624">624</a>
+<a href="#625" id="625">625</a>
+<a href="#626" id="626">626</a>
+<a href="#627" id="627">627</a>
+<a href="#628" id="628">628</a>
+<a href="#629" id="629">629</a>
+<a href="#630" id="630">630</a>
+<a href="#631" id="631">631</a>
+<a href="#632" id="632">632</a>
+<a href="#633" id="633">633</a>
+<a href="#634" id="634">634</a>
+<a href="#635" id="635">635</a>
+<a href="#636" id="636">636</a>
+<a href="#637" id="637">637</a>
+<a href="#638" id="638">638</a>
+<a href="#639" id="639">639</a>
+<a href="#640" id="640">640</a>
+<a href="#641" id="641">641</a>
+<a href="#642" id="642">642</a>
+<a href="#643" id="643">643</a>
+<a href="#644" id="644">644</a>
+<a href="#645" id="645">645</a>
+<a href="#646" id="646">646</a>
+<a href="#647" id="647">647</a>
+<a href="#648" id="648">648</a>
+<a href="#649" id="649">649</a>
+<a href="#650" id="650">650</a>
+<a href="#651" id="651">651</a>
+<a href="#652" id="652">652</a>
+<a href="#653" id="653">653</a>
+<a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a>
+<a href="#746" id="746">746</a>
+<a href="#747" id="747">747</a>
+<a href="#748" id="748">748</a>
+<a href="#749" id="749">749</a>
+<a href="#750" id="750">750</a>
+<a href="#751" id="751">751</a>
+<a href="#752" id="752">752</a>
+<a href="#753" id="753">753</a>
+<a href="#754" id="754">754</a>
+<a href="#755" id="755">755</a>
+<a href="#756" id="756">756</a>
+<a href="#757" id="757">757</a>
+<a href="#758" id="758">758</a>
+<a href="#759" id="759">759</a>
+<a href="#760" id="760">760</a>
+<a href="#761" id="761">761</a>
+<a href="#762" id="762">762</a>
+<a href="#763" id="763">763</a>
+<a href="#764" id="764">764</a>
+<a href="#765" id="765">765</a>
+<a href="#766" id="766">766</a>
+<a href="#767" id="767">767</a>
+<a href="#768" id="768">768</a>
+<a href="#769" id="769">769</a>
+<a href="#770" id="770">770</a>
+<a href="#771" id="771">771</a>
+<a href="#772" id="772">772</a>
+<a href="#773" id="773">773</a>
+<a href="#774" id="774">774</a>
+<a href="#775" id="775">775</a>
+<a href="#776" id="776">776</a>
+<a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
+<a href="#784" id="784">784</a>
+<a href="#785" id="785">785</a>
+<a href="#786" id="786">786</a>
+<a href="#787" id="787">787</a>
+<a href="#788" id="788">788</a>
+<a href="#789" id="789">789</a>
+<a href="#790" id="790">790</a>
+<a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+<a href="#796" id="796">796</a>
+<a href="#797" id="797">797</a>
+<a href="#798" id="798">798</a>
+<a href="#799" id="799">799</a>
+<a href="#800" id="800">800</a>
+<a href="#801" id="801">801</a>
+<a href="#802" id="802">802</a>
+<a href="#803" id="803">803</a>
+<a href="#804" id="804">804</a>
+<a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
+<a href="#827" id="827">827</a>
+<a href="#828" id="828">828</a>
+<a href="#829" id="829">829</a>
+<a href="#830" id="830">830</a>
+</pre></div><pre class="rust"><code><span class="kw">mod </span>convert;
+
+<span class="kw">use </span>relay_protocol::{Annotated, Empty, Error, FromValue, Getter, IntoValue, Object, Val, Value};
 
 <span class="kw">use </span><span class="kw">crate</span>::processor::ProcessValue;
 <span class="kw">use </span><span class="kw">crate</span>::protocol::{
-    Event, EventId, JsonLenientString, Measurements, OperationType, OriginType, ProfileContext,
-    SpanId, SpanStatus, Timestamp, TraceContext, TraceId,
+    EventId, JsonLenientString, LenientString, Measurements, MetricsSummary, OperationType,
+    OriginType, SpanId, SpanStatus, ThreadId, Timestamp, TraceId,
 };
 
 <span class="attr">#[derive(Clone, Debug, Default, PartialEq, Empty, FromValue, IntoValue, ProcessValue)]
-#[cfg_attr(feature = <span class="string">&quot;jsonschema&quot;</span>, derive(JsonSchema))]
-#[metastructure(process_func = <span class="string">&quot;process_span&quot;</span>, value_type = <span class="string">&quot;Span&quot;</span>)]
+#[metastructure(process_func = <span class="string">"process_span"</span>, value_type = <span class="string">"Span"</span>)]
 </span><span class="kw">pub struct </span>Span {
     <span class="doccomment">/// Timestamp when the span was ended.
-    </span><span class="attr">#[metastructure(required = <span class="string">&quot;true&quot;</span>)]
+    </span><span class="attr">#[metastructure(required = <span class="string">"true"</span>, trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>timestamp: Annotated&lt;Timestamp&gt;,
 
     <span class="doccomment">/// Timestamp when the span started.
-    </span><span class="attr">#[metastructure(required = <span class="string">&quot;true&quot;</span>)]
+    </span><span class="attr">#[metastructure(required = <span class="string">"true"</span>, trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>start_timestamp: Annotated&lt;Timestamp&gt;,
 
     <span class="doccomment">/// The amount of time in milliseconds spent in this span,
     /// excluding its immediate child spans.
+    </span><span class="attr">#[metastructure(trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>exclusive_time: Annotated&lt;f64&gt;,
 
-    <span class="doccomment">/// Human readable description of a span (e.g. method URL).
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;maybe&quot;</span>)]
-    </span><span class="kw">pub </span>description: Annotated&lt;String&gt;,
-
     <span class="doccomment">/// Span type (see `OperationType` docs).
-    </span><span class="attr">#[metastructure(max_chars = <span class="string">&quot;enumlike&quot;</span>)]
+    </span><span class="attr">#[metastructure(max_chars = <span class="number">128</span>, trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>op: Annotated&lt;OperationType&gt;,
 
     <span class="doccomment">/// The Span id.
-    </span><span class="attr">#[metastructure(required = <span class="string">&quot;true&quot;</span>)]
+    </span><span class="attr">#[metastructure(required = <span class="string">"true"</span>, trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>span_id: Annotated&lt;SpanId&gt;,
 
     <span class="doccomment">/// The ID of the span enclosing this span.
+    </span><span class="attr">#[metastructure(trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>parent_span_id: Annotated&lt;SpanId&gt;,
 
     <span class="doccomment">/// The ID of the trace the span belongs to.
-    </span><span class="attr">#[metastructure(required = <span class="string">&quot;true&quot;</span>)]
+    </span><span class="attr">#[metastructure(required = <span class="string">"true"</span>, trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>trace_id: Annotated&lt;TraceId&gt;,
 
     <span class="doccomment">/// A unique identifier for a segment within a trace (8 byte hexadecimal string).
     ///
     /// For spans embedded in transactions, the `segment_id` is the `span_id` of the containing
     /// transaction.
+    </span><span class="attr">#[metastructure(trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>segment_id: Annotated&lt;SpanId&gt;,
 
     <span class="doccomment">/// Whether or not the current span is the root of the segment.
+    </span><span class="attr">#[metastructure(trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>is_segment: Annotated&lt;bool&gt;,
 
     <span class="doccomment">/// The status of a span.
+    </span><span class="attr">#[metastructure(trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>status: Annotated&lt;SpanStatus&gt;,
 
+    <span class="doccomment">/// Human readable description of a span (e.g. method URL).
+    </span><span class="attr">#[metastructure(pii = <span class="string">"maybe"</span>, trim = <span class="string">"false"</span>)]
+    </span><span class="kw">pub </span>description: Annotated&lt;String&gt;,
+
     <span class="doccomment">/// Arbitrary tags on a span, like on the top-level event.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;maybe&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"maybe"</span>, trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>tags: Annotated&lt;Object&lt;JsonLenientString&gt;&gt;,
 
     <span class="doccomment">/// The origin of the span indicates what created the span (see [OriginType] docs).
-    </span><span class="attr">#[metastructure(max_chars = <span class="string">&quot;enumlike&quot;</span>, allow_chars = <span class="string">&quot;a-zA-Z0-9_.&quot;</span>)]
+    </span><span class="attr">#[metastructure(max_chars = <span class="number">128</span>, allow_chars = <span class="string">"a-zA-Z0-9_."</span>, trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>origin: Annotated&lt;OriginType&gt;,
 
     <span class="doccomment">/// ID of a profile that can be associated with the span.
+    </span><span class="attr">#[metastructure(trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>profile_id: Annotated&lt;EventId&gt;,
 
-    <span class="doccomment">/// Arbitrary additional data on a span, like `extra` on the top-level event.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;true&quot;</span>)]
-    </span><span class="kw">pub </span>data: Annotated&lt;Object&lt;Value&gt;&gt;,
+    <span class="doccomment">/// Arbitrary additional data on a span.
+    ///
+    /// Besides arbitrary user data, this object also contains SDK-provided fields used by the
+    /// product (see &lt;https://develop.sentry.dev/sdk/performance/span-data-conventions/&gt;).
+    </span><span class="attr">#[metastructure(pii = <span class="string">"true"</span>, trim = <span class="string">"false"</span>)]
+    </span><span class="kw">pub </span>data: Annotated&lt;SpanData&gt;,
 
     <span class="doccomment">/// Tags generated by Relay. These tags are a superset of the tags set on span metrics.
+    </span><span class="attr">#[metastructure(trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>sentry_tags: Annotated&lt;Object&lt;String&gt;&gt;,
 
     <span class="doccomment">/// Timestamp when the span has been received by Sentry.
+    </span><span class="attr">#[metastructure(trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>received: Annotated&lt;Timestamp&gt;,
 
     <span class="doccomment">/// Measurements which holds observed values such as web vitals.
-    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">&quot;empty&quot;</span>)]
+    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">"empty"</span>, trim = <span class="string">"false"</span>)]
     #[metastructure(omit_from_schema)] </span><span class="comment">// we only document error events for now
     </span><span class="kw">pub </span>measurements: Annotated&lt;Measurements&gt;,
 
@@ -424,80 +925,456 @@
     ///
     /// This shall move to a stable location once we have stabilized the
     /// interface.  This is intentionally not typed today.
-    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">&quot;empty&quot;</span>)]
-    </span><span class="kw">pub </span>_metrics_summary: Annotated&lt;Value&gt;,
+    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">"empty"</span>, trim = <span class="string">"false"</span>)]
+    </span><span class="kw">pub </span>_metrics_summary: Annotated&lt;MetricsSummary&gt;,
+
+    <span class="doccomment">/// Platform identifier.
+    ///
+    /// See [`Event::platform`](`crate::protocol::Event::platform`).
+    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">"empty"</span>, trim = <span class="string">"false"</span>)]
+    </span><span class="kw">pub </span>platform: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// Whether the span is a segment span that was converted from a transaction.
+    </span><span class="attr">#[metastructure(skip_serialization = <span class="string">"empty"</span>, trim = <span class="string">"false"</span>)]
+    </span><span class="kw">pub </span>was_transaction: Annotated&lt;bool&gt;,
 
     <span class="comment">// TODO remove retain when the api stabilizes
     </span><span class="doccomment">/// Additional arbitrary fields for forwards compatibility.
-    </span><span class="attr">#[metastructure(additional_properties, retain = <span class="string">&quot;true&quot;</span>, pii = <span class="string">&quot;maybe&quot;</span>)]
+    </span><span class="attr">#[metastructure(additional_properties, retain = <span class="string">"true"</span>, pii = <span class="string">"maybe"</span>, trim = <span class="string">"false"</span>)]
     </span><span class="kw">pub </span>other: Object&lt;Value&gt;,
 }
 
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>Event&gt; <span class="kw">for </span>Span {
-    <span class="kw">fn </span>from(event: <span class="kw-2">&amp;</span>Event) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>span = <span class="self">Self </span>{
-            description: event.transaction.clone(),
-            is_segment: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>).into(),
-            received: event.received.clone(),
-            start_timestamp: event.start_timestamp.clone(),
-            timestamp: event.timestamp.clone(),
-            _metrics_summary: event._metrics_summary.clone(),
-            ..Default::default()
-        };
-
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(trace_context) = event.context::&lt;TraceContext&gt;().cloned() {
-            span.exclusive_time = trace_context.exclusive_time;
-            span.op = trace_context.op;
-            span.span_id = trace_context.span_id;
-            span.parent_span_id = trace_context.parent_span_id;
-            span.trace_id = trace_context.trace_id;
-            span.segment_id = span.span_id.clone(); <span class="comment">// a transaction is a segment
-            </span>span.status = trace_context.status;
-        }
-
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(profile_context) = event.context::&lt;ProfileContext&gt;() {
-            span.profile_id = profile_context.profile_id.clone();
-        }
-
-        span
+<span class="kw">impl </span>Span {
+    <span class="doccomment">/// Returns the value of an attribute on the span.
+    ///
+    /// This primarily looks up the attribute in the `data` object, but falls back to the `tags`
+    /// object if the attribute is not found.
+    </span><span class="kw">fn </span>attribute(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Val&lt;<span class="lifetime">'_</span>&gt;&gt; {
+        <span class="prelude-val">Some</span>(<span class="kw">match </span><span class="self">self</span>.data.value()<span class="question-mark">?</span>.get_value(key) {
+            <span class="prelude-val">Some</span>(value) =&gt; value,
+            <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.tags.value()<span class="question-mark">?</span>.get(key)<span class="question-mark">?</span>.as_str()<span class="question-mark">?</span>.into(),
+        })
     }
 }
 
 <span class="kw">impl </span>Getter <span class="kw">for </span>Span {
-    <span class="kw">fn </span>get_value(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Val&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="prelude-val">Some</span>(<span class="kw">match </span>path.strip_prefix(<span class="string">&quot;span.&quot;</span>)<span class="question-mark">? </span>{
-            <span class="string">&quot;exclusive_time&quot; </span>=&gt; <span class="self">self</span>.exclusive_time.value()<span class="question-mark">?</span>.into(),
-            <span class="string">&quot;description&quot; </span>=&gt; <span class="self">self</span>.description.as_str()<span class="question-mark">?</span>.into(),
-            <span class="string">&quot;op&quot; </span>=&gt; <span class="self">self</span>.op.as_str()<span class="question-mark">?</span>.into(),
-            <span class="string">&quot;span_id&quot; </span>=&gt; <span class="self">self</span>.span_id.as_str()<span class="question-mark">?</span>.into(),
-            <span class="string">&quot;parent_span_id&quot; </span>=&gt; <span class="self">self</span>.parent_span_id.as_str()<span class="question-mark">?</span>.into(),
-            <span class="string">&quot;trace_id&quot; </span>=&gt; <span class="self">self</span>.trace_id.as_str()<span class="question-mark">?</span>.into(),
-            <span class="string">&quot;status&quot; </span>=&gt; <span class="self">self</span>.status.as_str()<span class="question-mark">?</span>.into(),
-            <span class="string">&quot;origin&quot; </span>=&gt; <span class="self">self</span>.origin.as_str()<span class="question-mark">?</span>.into(),
-            path =&gt; {
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(key) = path.strip_prefix(<span class="string">&quot;tags.&quot;</span>) {
-                    <span class="self">self</span>.tags.value()<span class="question-mark">?</span>.get(key)<span class="question-mark">?</span>.as_str()<span class="question-mark">?</span>.into()
-                } <span class="kw">else if let </span><span class="prelude-val">Some</span>(key) = path.strip_prefix(<span class="string">&quot;data.&quot;</span>) {
-                    <span class="kw">let </span>escaped = key.replace(<span class="string">&quot;\\.&quot;</span>, <span class="string">&quot;\0&quot;</span>);
-                    <span class="kw">let </span><span class="kw-2">mut </span>path = escaped.split(<span class="string">&#39;.&#39;</span>).map(|s| s.replace(<span class="string">&#39;\0&#39;</span>, <span class="string">&quot;.&quot;</span>));
-                    <span class="kw">let </span>root = path.next()<span class="question-mark">?</span>;
-
-                    <span class="kw">let </span><span class="kw-2">mut </span>val = <span class="self">self</span>.data.value()<span class="question-mark">?</span>.get(<span class="kw-2">&amp;</span>root)<span class="question-mark">?</span>.value()<span class="question-mark">?</span>;
-                    <span class="kw">for </span>part <span class="kw">in </span>path {
-                        <span class="comment">// While there is path segments left, `val` has to be an Object.
-                        </span><span class="kw">let </span>relay_protocol::Value::Object(map) = val <span class="kw">else </span>{
-                            <span class="kw">return </span><span class="prelude-val">None</span>;
-                        };
-                        val = map.get(<span class="kw-2">&amp;</span>part)<span class="question-mark">?</span>.value()<span class="question-mark">?</span>;
-                    }
-                    val.into()
-                } <span class="kw">else if let </span><span class="prelude-val">Some</span>(key) = path.strip_prefix(<span class="string">&quot;sentry_tags.&quot;</span>) {
-                    <span class="self">self</span>.sentry_tags.value()<span class="question-mark">?</span>.get(key)<span class="question-mark">?</span>.as_str()<span class="question-mark">?</span>.into()
-                } <span class="kw">else </span>{
-                    <span class="kw">return </span><span class="prelude-val">None</span>;
+    <span class="kw">fn </span>get_value(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Val&lt;<span class="lifetime">'_</span>&gt;&gt; {
+        <span class="kw">let </span>span_prefix = path.strip_prefix(<span class="string">"span."</span>);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(span_prefix) = span_prefix {
+            <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="kw">match </span>span_prefix {
+                <span class="string">"exclusive_time" </span>=&gt; <span class="self">self</span>.exclusive_time.value()<span class="question-mark">?</span>.into(),
+                <span class="string">"description" </span>=&gt; <span class="self">self</span>.description.as_str()<span class="question-mark">?</span>.into(),
+                <span class="string">"op" </span>=&gt; <span class="self">self</span>.op.as_str()<span class="question-mark">?</span>.into(),
+                <span class="string">"span_id" </span>=&gt; <span class="self">self</span>.span_id.as_str()<span class="question-mark">?</span>.into(),
+                <span class="string">"parent_span_id" </span>=&gt; <span class="self">self</span>.parent_span_id.as_str()<span class="question-mark">?</span>.into(),
+                <span class="string">"trace_id" </span>=&gt; <span class="self">self</span>.trace_id.as_str()<span class="question-mark">?</span>.into(),
+                <span class="string">"status" </span>=&gt; <span class="self">self</span>.status.as_str()<span class="question-mark">?</span>.into(),
+                <span class="string">"origin" </span>=&gt; <span class="self">self</span>.origin.as_str()<span class="question-mark">?</span>.into(),
+                <span class="string">"duration" </span>=&gt; {
+                    <span class="kw">let </span>start_timestamp = <span class="kw-2">*</span><span class="self">self</span>.start_timestamp.value()<span class="question-mark">?</span>;
+                    <span class="kw">let </span>timestamp = <span class="kw-2">*</span><span class="self">self</span>.timestamp.value()<span class="question-mark">?</span>;
+                    relay_common::time::chrono_to_positive_millis(timestamp - start_timestamp)
+                        .into()
                 }
+                <span class="string">"was_transaction" </span>=&gt; <span class="self">self</span>.was_transaction.value().unwrap_or(<span class="kw-2">&amp;</span><span class="bool-val">false</span>).into(),
+                path =&gt; {
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(key) = path.strip_prefix(<span class="string">"tags."</span>) {
+                        <span class="self">self</span>.tags.value()<span class="question-mark">?</span>.get(key)<span class="question-mark">?</span>.as_str()<span class="question-mark">?</span>.into()
+                    } <span class="kw">else if let </span><span class="prelude-val">Some</span>(key) = path.strip_prefix(<span class="string">"data."</span>) {
+                        <span class="self">self</span>.attribute(key)<span class="question-mark">?
+                    </span>} <span class="kw">else if let </span><span class="prelude-val">Some</span>(key) = path.strip_prefix(<span class="string">"sentry_tags."</span>) {
+                        <span class="self">self</span>.sentry_tags.value()<span class="question-mark">?</span>.get(key)<span class="question-mark">?</span>.as_str()<span class="question-mark">?</span>.into()
+                    } <span class="kw">else if let </span><span class="prelude-val">Some</span>(rest) = path.strip_prefix(<span class="string">"measurements."</span>) {
+                        <span class="kw">let </span>name = rest.strip_suffix(<span class="string">".value"</span>)<span class="question-mark">?</span>;
+                        <span class="self">self</span>.measurements
+                            .value()<span class="question-mark">?
+                            </span>.get(name)<span class="question-mark">?
+                            </span>.value()<span class="question-mark">?
+                            </span>.value
+                            .value()<span class="question-mark">?
+                            </span>.into()
+                    } <span class="kw">else </span>{
+                        <span class="kw">return </span><span class="prelude-val">None</span>;
+                    }
+                }
+            });
+        }
+
+        <span class="comment">// For backward compatibility with event-based rules, we try to support `event.` fields also
+        // for a span.
+        </span><span class="kw">let </span>event_prefix = path.strip_prefix(<span class="string">"event."</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Some</span>(<span class="kw">match </span>event_prefix {
+            <span class="string">"release" </span>=&gt; <span class="self">self</span>.data.value()<span class="question-mark">?</span>.release.as_str()<span class="question-mark">?</span>.into(),
+            <span class="string">"environment" </span>=&gt; <span class="self">self</span>.data.value()<span class="question-mark">?</span>.environment.as_str()<span class="question-mark">?</span>.into(),
+            <span class="string">"transaction" </span>=&gt; <span class="self">self</span>.data.value()<span class="question-mark">?</span>.segment_name.as_str()<span class="question-mark">?</span>.into(),
+            <span class="string">"contexts.browser.name" </span>=&gt; <span class="self">self</span>.data.value()<span class="question-mark">?</span>.browser_name.as_str()<span class="question-mark">?</span>.into(),
+            <span class="comment">// TODO: we might want to add additional fields once they are added to the span.
+            </span><span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+        })
+    }
+}
+
+<span class="doccomment">/// Arbitrary additional data on a span.
+///
+/// Besides arbitrary user data, this type also contains SDK-provided fields used by the
+/// product (see &lt;https://develop.sentry.dev/sdk/performance/span-data-conventions/&gt;).
+</span><span class="attr">#[derive(Clone, Debug, Default, PartialEq, Empty, FromValue, IntoValue, ProcessValue)]
+</span><span class="kw">pub struct </span>SpanData {
+    <span class="doccomment">/// Mobile app start variant.
+    ///
+    /// Can be either "cold" or "warm".
+    </span><span class="attr">#[metastructure(field = <span class="string">"app_start_type"</span>)] </span><span class="comment">// TODO: no dot?
+    </span><span class="kw">pub </span>app_start_type: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The total tokens that were used by an LLM call
+    </span><span class="attr">#[metastructure(field = <span class="string">"ai.total_tokens.used"</span>)]
+    </span><span class="kw">pub </span>ai_total_tokens_used: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The input tokens used by an LLM call (usually cheaper than output tokens)
+    </span><span class="attr">#[metastructure(field = <span class="string">"ai.prompt_tokens.used"</span>)]
+    </span><span class="kw">pub </span>ai_prompt_tokens_used: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The output tokens used by an LLM call (the ones the LLM actually generated)
+    </span><span class="attr">#[metastructure(field = <span class="string">"ai.completion_tokens.used"</span>)]
+    </span><span class="kw">pub </span>ai_completion_tokens_used: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The client's browser name.
+    </span><span class="attr">#[metastructure(field = <span class="string">"browser.name"</span>)]
+    </span><span class="kw">pub </span>browser_name: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// The source code file name that identifies the code unit as uniquely as possible.
+    </span><span class="attr">#[metastructure(field = <span class="string">"code.filepath"</span>, pii = <span class="string">"maybe"</span>)]
+    </span><span class="kw">pub </span>code_filepath: Annotated&lt;Value&gt;,
+    <span class="doccomment">/// The line number in `code.filepath` best representing the operation.
+    </span><span class="attr">#[metastructure(field = <span class="string">"code.lineno"</span>, pii = <span class="string">"maybe"</span>)]
+    </span><span class="kw">pub </span>code_lineno: Annotated&lt;Value&gt;,
+    <span class="doccomment">/// The method or function name, or equivalent.
+    ///
+    /// Usually rightmost part of the code unit's name.
+    </span><span class="attr">#[metastructure(field = <span class="string">"code.function"</span>, pii = <span class="string">"maybe"</span>)]
+    </span><span class="kw">pub </span>code_function: Annotated&lt;Value&gt;,
+    <span class="doccomment">/// The "namespace" within which `code.function` is defined.
+    ///
+    /// Usually the qualified class or module name, such that
+    /// `code.namespace + some separator + code.function`
+    /// form a unique identifier for the code unit.
+    </span><span class="attr">#[metastructure(field = <span class="string">"code.namespace"</span>, pii = <span class="string">"maybe"</span>)]
+    </span><span class="kw">pub </span>code_namespace: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The name of the operation being executed.
+    ///
+    /// E.g. the MongoDB command name such as findAndModify, or the SQL keyword.
+    /// Based on [OpenTelemetry's call level db attributes](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/database.md#call-level-attributes).
+    </span><span class="attr">#[metastructure(field = <span class="string">"db.operation"</span>)]
+    </span><span class="kw">pub </span>db_operation: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// An identifier for the database management system (DBMS) product being used.
+    ///
+    /// See [OpenTelemetry docs for a list of well-known identifiers](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/database.md#notes-and-well-known-identifiers-for-dbsystem).
+    </span><span class="attr">#[metastructure(field = <span class="string">"db.system"</span>)]
+    </span><span class="kw">pub </span>db_system: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The name of a collection (table, container) within the database.
+    ///
+    /// See [OpenTelemetry's database span semantic conventions](https://opentelemetry.io/docs/specs/semconv/database/database-spans/#common-attributes).
+    </span><span class="attr">#[metastructure(
+        field = <span class="string">"db.collection.name"</span>,
+        legacy_alias = <span class="string">"db.cassandra.table"</span>,
+        legacy_alias = <span class="string">"db.cosmosdb.container"</span>,
+        legacy_alias = <span class="string">"db.mongodb.collection"</span>,
+        legacy_alias = <span class="string">"db.sql.table"
+    </span>)]
+    </span><span class="kw">pub </span>db_collection_name: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The sentry environment.
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.environment"</span>, legacy_alias = <span class="string">"environment"</span>)]
+    </span><span class="kw">pub </span>environment: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// The release version of the project.
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.release"</span>, legacy_alias = <span class="string">"release"</span>)]
+    </span><span class="kw">pub </span>release: Annotated&lt;LenientString&gt;,
+
+    <span class="doccomment">/// The decoded body size of the response (in bytes).
+    </span><span class="attr">#[metastructure(field = <span class="string">"http.decoded_response_content_length"</span>)]
+    </span><span class="kw">pub </span>http_decoded_response_content_length: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The HTTP method used.
+    </span><span class="attr">#[metastructure(
+        field = <span class="string">"http.request_method"</span>,
+        legacy_alias = <span class="string">"http.method"</span>,
+        legacy_alias = <span class="string">"method"
+    </span>)]
+    </span><span class="kw">pub </span>http_request_method: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The encoded body size of the response (in bytes).
+    </span><span class="attr">#[metastructure(field = <span class="string">"http.response_content_length"</span>)]
+    </span><span class="kw">pub </span>http_response_content_length: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The transfer size of the response (in bytes).
+    </span><span class="attr">#[metastructure(field = <span class="string">"http.response_transfer_size"</span>)]
+    </span><span class="kw">pub </span>http_response_transfer_size: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The render blocking status of the resource.
+    </span><span class="attr">#[metastructure(field = <span class="string">"resource.render_blocking_status"</span>)]
+    </span><span class="kw">pub </span>resource_render_blocking_status: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Name of the web server host.
+    </span><span class="attr">#[metastructure(field = <span class="string">"server.address"</span>)]
+    </span><span class="kw">pub </span>server_address: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Whether cache was hit or miss on a read operation.
+    </span><span class="attr">#[metastructure(field = <span class="string">"cache.hit"</span>)]
+    </span><span class="kw">pub </span>cache_hit: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The name of the cache key.
+    </span><span class="attr">#[metastructure(field = <span class="string">"cache.key"</span>)]
+    </span><span class="kw">pub </span>cache_key: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The size of the cache item.
+    </span><span class="attr">#[metastructure(field = <span class="string">"cache.item_size"</span>)]
+    </span><span class="kw">pub </span>cache_item_size: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The status HTTP response.
+    </span><span class="attr">#[metastructure(field = <span class="string">"http.response.status_code"</span>, legacy_alias = <span class="string">"status_code"</span>)]
+    </span><span class="kw">pub </span>http_response_status_code: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The 'name' field of the ancestor span with op ai.pipeline.*
+    </span><span class="attr">#[metastructure(field = <span class="string">"ai.pipeline.name"</span>)]
+    </span><span class="kw">pub </span>ai_pipeline_name: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The Model ID of an AI pipeline, e.g., gpt-4
+    </span><span class="attr">#[metastructure(field = <span class="string">"ai.model_id"</span>)]
+    </span><span class="kw">pub </span>ai_model_id: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The input messages to an AI model call
+    </span><span class="attr">#[metastructure(field = <span class="string">"ai.input_messages"</span>)]
+    </span><span class="kw">pub </span>ai_input_messages: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The responses to an AI model call
+    </span><span class="attr">#[metastructure(field = <span class="string">"ai.responses"</span>)]
+    </span><span class="kw">pub </span>ai_responses: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Label identifying a thread from where the span originated.
+    </span><span class="attr">#[metastructure(field = <span class="string">"thread.name"</span>)]
+    </span><span class="kw">pub </span>thread_name: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// ID of thread from where the span originated.
+    </span><span class="attr">#[metastructure(field = <span class="string">"thread.id"</span>)]
+    </span><span class="kw">pub </span>thread_id: Annotated&lt;ThreadId&gt;,
+
+    <span class="doccomment">/// Name of the segment that this span belongs to (see `segment_id`).
+    ///
+    /// This corresponds to the transaction name in the transaction-based model.
+    ///
+    /// For INP spans, this is the route name where the interaction occurred.
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.segment.name"</span>, legacy_alias = <span class="string">"transaction"</span>)]
+    </span><span class="kw">pub </span>segment_name: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// Name of the UI component (e.g. React).
+    </span><span class="attr">#[metastructure(field = <span class="string">"ui.component_name"</span>)]
+    </span><span class="kw">pub </span>ui_component_name: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The URL scheme, e.g. `"https"`.
+    </span><span class="attr">#[metastructure(field = <span class="string">"url.scheme"</span>)]
+    </span><span class="kw">pub </span>url_scheme: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// User Display
+    </span><span class="attr">#[metastructure(field = <span class="string">"user"</span>)]
+    </span><span class="kw">pub </span>user: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Replay ID
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.replay.id"</span>, legacy_alias = <span class="string">"replay_id"</span>)]
+    </span><span class="kw">pub </span>replay_id: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// The sentry SDK (see [`crate::protocol::ClientSdkInfo`]).
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.sdk.name"</span>)]
+    </span><span class="kw">pub </span>sdk_name: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// The sentry SDK version (see [`crate::protocol::ClientSdkInfo`]).
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.sdk.version"</span>)]
+    </span><span class="kw">pub </span>sdk_version: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// Slow Frames
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.frames.slow"</span>, legacy_alias = <span class="string">"frames.slow"</span>)]
+    </span><span class="kw">pub </span>frames_slow: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Frozen Frames
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.frames.frozen"</span>, legacy_alias = <span class="string">"frames.frozen"</span>)]
+    </span><span class="kw">pub </span>frames_frozen: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Total Frames
+    </span><span class="attr">#[metastructure(field = <span class="string">"sentry.frames.total"</span>, legacy_alias = <span class="string">"frames.total"</span>)]
+    </span><span class="kw">pub </span>frames_total: Annotated&lt;Value&gt;,
+
+    <span class="comment">// Frames Delay (in seconds)
+    </span><span class="attr">#[metastructure(field = <span class="string">"frames.delay"</span>)]
+    </span><span class="kw">pub </span>frames_delay: Annotated&lt;Value&gt;,
+
+    <span class="comment">// Messaging Destination Name
+    </span><span class="attr">#[metastructure(field = <span class="string">"messaging.destination.name"</span>)]
+    </span><span class="kw">pub </span>messaging_destination_name: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// Message Retry Count
+    </span><span class="attr">#[metastructure(field = <span class="string">"messaging.message.retry.count"</span>)]
+    </span><span class="kw">pub </span>messaging_message_retry_count: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Message Receive Latency
+    </span><span class="attr">#[metastructure(field = <span class="string">"messaging.message.receive.latency"</span>)]
+    </span><span class="kw">pub </span>messaging_message_receive_latency: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Message Body Size
+    </span><span class="attr">#[metastructure(field = <span class="string">"messaging.message.body.size"</span>)]
+    </span><span class="kw">pub </span>messaging_message_body_size: Annotated&lt;Value&gt;,
+
+    <span class="doccomment">/// Message ID
+    </span><span class="attr">#[metastructure(field = <span class="string">"messaging.message.id"</span>)]
+    </span><span class="kw">pub </span>messaging_message_id: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// Value of the HTTP User-Agent header sent by the client.
+    </span><span class="attr">#[metastructure(field = <span class="string">"user_agent.original"</span>)]
+    </span><span class="kw">pub </span>user_agent_original: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// Absolute URL of a network resource.
+    </span><span class="attr">#[metastructure(field = <span class="string">"url.full"</span>)]
+    </span><span class="kw">pub </span>url_full: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// The client's IP address.
+    </span><span class="attr">#[metastructure(field = <span class="string">"client.address"</span>)]
+    </span><span class="kw">pub </span>client_address: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// The current route in the application.
+    ///
+    /// Set by React Native SDK.
+    </span><span class="attr">#[metastructure(pii = <span class="string">"maybe"</span>, skip_serialization = <span class="string">"empty"</span>)]
+    </span><span class="kw">pub </span>route: Annotated&lt;Route&gt;,
+    <span class="doccomment">/// The previous route in the application
+    ///
+    /// Set by React Native SDK.
+    </span><span class="attr">#[metastructure(field = <span class="string">"previousRoute"</span>, pii = <span class="string">"maybe"</span>, skip_serialization = <span class="string">"empty"</span>)]
+    </span><span class="kw">pub </span>previous_route: Annotated&lt;Route&gt;,
+
+    <span class="doccomment">/// Other fields in `span.data`.
+    </span><span class="attr">#[metastructure(
+        additional_properties,
+        pii = <span class="string">"true"</span>,
+        retain = <span class="string">"true"</span>,
+        skip_serialization = <span class="string">"empty"
+    </span>)]
+    </span><span class="kw">pub </span>other: Object&lt;Value&gt;,
+}
+
+<span class="kw">impl </span>Getter <span class="kw">for </span>SpanData {
+    <span class="kw">fn </span>get_value(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Val&lt;<span class="lifetime">'_</span>&gt;&gt; {
+        <span class="prelude-val">Some</span>(<span class="kw">match </span>path {
+            <span class="string">"app_start_type" </span>=&gt; <span class="self">self</span>.app_start_type.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"browser\\.name" </span>=&gt; <span class="self">self</span>.browser_name.as_str()<span class="question-mark">?</span>.into(),
+            <span class="string">"code\\.filepath" </span>=&gt; <span class="self">self</span>.code_filepath.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"code\\.function" </span>=&gt; <span class="self">self</span>.code_function.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"code\\.lineno" </span>=&gt; <span class="self">self</span>.code_lineno.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"code\\.namespace" </span>=&gt; <span class="self">self</span>.code_namespace.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"db.operation" </span>=&gt; <span class="self">self</span>.db_operation.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"db\\.system" </span>=&gt; <span class="self">self</span>.db_system.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"environment" </span>=&gt; <span class="self">self</span>.environment.as_str()<span class="question-mark">?</span>.into(),
+            <span class="string">"http\\.decoded_response_content_length" </span>=&gt; {
+                <span class="self">self</span>.http_decoded_response_content_length.value()<span class="question-mark">?</span>.into()
+            }
+            <span class="string">"http\\.request_method" </span>| <span class="string">"http\\.method" </span>| <span class="string">"method" </span>=&gt; {
+                <span class="self">self</span>.http_request_method.value()<span class="question-mark">?</span>.into()
+            }
+            <span class="string">"http\\.response_content_length" </span>=&gt; <span class="self">self</span>.http_response_content_length.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"http\\.response_transfer_size" </span>=&gt; <span class="self">self</span>.http_response_transfer_size.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"http\\.response.status_code" </span>| <span class="string">"status_code" </span>=&gt; {
+                <span class="self">self</span>.http_response_status_code.value()<span class="question-mark">?</span>.into()
+            }
+            <span class="string">"resource\\.render_blocking_status" </span>=&gt; {
+                <span class="self">self</span>.resource_render_blocking_status.value()<span class="question-mark">?</span>.into()
+            }
+            <span class="string">"server\\.address" </span>=&gt; <span class="self">self</span>.server_address.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"thread\\.name" </span>=&gt; <span class="self">self</span>.thread_name.as_str()<span class="question-mark">?</span>.into(),
+            <span class="string">"ui\\.component_name" </span>=&gt; <span class="self">self</span>.ui_component_name.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"url\\.scheme" </span>=&gt; <span class="self">self</span>.url_scheme.value()<span class="question-mark">?</span>.into(),
+            <span class="string">"transaction" </span>=&gt; <span class="self">self</span>.segment_name.as_str()<span class="question-mark">?</span>.into(),
+            <span class="string">"release" </span>=&gt; <span class="self">self</span>.release.as_str()<span class="question-mark">?</span>.into(),
+            <span class="kw">_ </span>=&gt; {
+                <span class="kw">let </span>escaped = path.replace(<span class="string">"\\."</span>, <span class="string">"\0"</span>);
+                <span class="kw">let </span><span class="kw-2">mut </span>path = escaped.split(<span class="string">'.'</span>).map(|s| s.replace(<span class="string">'\0'</span>, <span class="string">"."</span>));
+                <span class="kw">let </span>root = path.next()<span class="question-mark">?</span>;
+
+                <span class="kw">let </span><span class="kw-2">mut </span>val = <span class="self">self</span>.other.get(<span class="kw-2">&amp;</span>root)<span class="question-mark">?</span>.value()<span class="question-mark">?</span>;
+                <span class="kw">for </span>part <span class="kw">in </span>path {
+                    <span class="comment">// While there is path segments left, `val` has to be an Object.
+                    </span><span class="kw">let </span>relay_protocol::Value::Object(map) = val <span class="kw">else </span>{
+                        <span class="kw">return </span><span class="prelude-val">None</span>;
+                    };
+                    val = map.get(<span class="kw-2">&amp;</span>part)<span class="question-mark">?</span>.value()<span class="question-mark">?</span>;
+                }
+                val.into()
             }
         })
+    }
+}
+
+<span class="doccomment">/// The route in the application, set by React Native SDK.
+</span><span class="attr">#[derive(Clone, Debug, Default, PartialEq, Empty, IntoValue, ProcessValue)]
+</span><span class="kw">pub struct </span>Route {
+    <span class="doccomment">/// The name of the route.
+    </span><span class="attr">#[metastructure(pii = <span class="string">"maybe"</span>, skip_serialization = <span class="string">"empty"</span>)]
+    </span><span class="kw">pub </span>name: Annotated&lt;String&gt;,
+
+    <span class="doccomment">/// Parameters assigned to this route.
+    </span><span class="attr">#[metastructure(
+        pii = <span class="string">"true"</span>,
+        skip_serialization = <span class="string">"empty"</span>,
+        max_depth = <span class="number">5</span>,
+        max_bytes = <span class="number">2048
+    </span>)]
+    </span><span class="kw">pub </span>params: Annotated&lt;Object&lt;Value&gt;&gt;,
+
+    <span class="doccomment">/// Additional arbitrary fields for forwards compatibility.
+    </span><span class="attr">#[metastructure(
+        additional_properties,
+        retain = <span class="string">"true"</span>,
+        pii = <span class="string">"maybe"</span>,
+        skip_serialization = <span class="string">"empty"
+    </span>)]
+    </span><span class="kw">pub </span>other: Object&lt;Value&gt;,
+}
+
+<span class="kw">impl </span>FromValue <span class="kw">for </span>Route {
+    <span class="kw">fn </span>from_value(value: Annotated&lt;Value&gt;) -&gt; Annotated&lt;<span class="self">Self</span>&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
+    {
+        <span class="kw">match </span>value {
+            Annotated(<span class="prelude-val">Some</span>(Value::String(name)), meta) =&gt; Annotated(
+                <span class="prelude-val">Some</span>(Route {
+                    name: Annotated::new(name),
+                    ..Default::default()
+                }),
+                meta,
+            ),
+            Annotated(<span class="prelude-val">Some</span>(Value::Object(<span class="kw-2">mut </span>values)), meta) =&gt; {
+                <span class="kw">let </span><span class="kw-2">mut </span>route: Route = Default::default();
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(Annotated(<span class="prelude-val">Some</span>(Value::String(name)), <span class="kw">_</span>)) = values.remove(<span class="string">"name"</span>) {
+                    route.name = Annotated::new(name);
+                }
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(Annotated(<span class="prelude-val">Some</span>(Value::Object(params)), <span class="kw">_</span>)) = values.remove(<span class="string">"params"</span>) {
+                    route.params = Annotated::new(params);
+                }
+
+                <span class="kw">if </span>!values.is_empty() {
+                    route.other = values;
+                }
+
+                Annotated(<span class="prelude-val">Some</span>(route), meta)
+            }
+            Annotated(<span class="prelude-val">None</span>, meta) =&gt; Annotated(<span class="prelude-val">None</span>, meta),
+            Annotated(<span class="prelude-val">Some</span>(value), <span class="kw-2">mut </span>meta) =&gt; {
+                meta.add_error(Error::expected(<span class="string">"route expected to be an object"</span>));
+                meta.set_original_value(<span class="prelude-val">Some</span>(value));
+                Annotated(<span class="prelude-val">None</span>, meta)
+            }
+        }
     }
 }
 
@@ -505,34 +1382,34 @@
 </span><span class="kw">mod </span>tests {
     <span class="kw">use </span><span class="kw">crate</span>::protocol::Measurement;
     <span class="kw">use </span>chrono::{TimeZone, Utc};
-    <span class="kw">use </span>insta::assert_debug_snapshot;
     <span class="kw">use </span>relay_base_schema::metrics::{InformationUnit, MetricUnit};
+    <span class="kw">use </span>relay_protocol::RuleCondition;
     <span class="kw">use </span>similar_asserts::assert_eq;
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_span_serialization() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-  &quot;timestamp&quot;: 0.0,
-  &quot;start_timestamp&quot;: -63158400.0,
-  &quot;exclusive_time&quot;: 1.23,
-  &quot;description&quot;: &quot;desc&quot;,
-  &quot;op&quot;: &quot;operation&quot;,
-  &quot;span_id&quot;: &quot;fa90fdead5f74052&quot;,
-  &quot;trace_id&quot;: &quot;4c79f60c11214eb38604f4ae0781bfb2&quot;,
-  &quot;status&quot;: &quot;ok&quot;,
-  &quot;origin&quot;: &quot;auto.http&quot;,
-  &quot;measurements&quot;: {
-    &quot;memory&quot;: {
-      &quot;value&quot;: 9001.0,
-      &quot;unit&quot;: &quot;byte&quot;
+        <span class="kw">let </span>json = <span class="string">r#"{
+  "timestamp": 0.0,
+  "start_timestamp": -63158400.0,
+  "exclusive_time": 1.23,
+  "op": "operation",
+  "span_id": "fa90fdead5f74052",
+  "trace_id": "4c79f60c11214eb38604f4ae0781bfb2",
+  "status": "ok",
+  "description": "desc",
+  "origin": "auto.http",
+  "measurements": {
+    "memory": {
+      "value": 9001.0,
+      "unit": "byte"
     }
   }
-}&quot;#</span>;
+}"#</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>measurements = Object::new();
         measurements.insert(
-            <span class="string">&quot;memory&quot;</span>.into(),
+            <span class="string">"memory"</span>.into(),
             Annotated::new(Measurement {
                 value: Annotated::new(<span class="number">9001.0</span>),
                 unit: Annotated::new(MetricUnit::Information(InformationUnit::Byte)),
@@ -544,12 +1421,12 @@
                 Utc.with_ymd_and_hms(<span class="number">1968</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>).unwrap().into(),
             ),
             exclusive_time: Annotated::new(<span class="number">1.23</span>),
-            description: Annotated::new(<span class="string">&quot;desc&quot;</span>.to_owned()),
-            op: Annotated::new(<span class="string">&quot;operation&quot;</span>.to_owned()),
-            trace_id: Annotated::new(TraceId(<span class="string">&quot;4c79f60c11214eb38604f4ae0781bfb2&quot;</span>.into())),
-            span_id: Annotated::new(SpanId(<span class="string">&quot;fa90fdead5f74052&quot;</span>.into())),
+            description: Annotated::new(<span class="string">"desc"</span>.to_owned()),
+            op: Annotated::new(<span class="string">"operation"</span>.to_owned()),
+            trace_id: Annotated::new(TraceId(<span class="string">"4c79f60c11214eb38604f4ae0781bfb2"</span>.into())),
+            span_id: Annotated::new(SpanId(<span class="string">"fa90fdead5f74052"</span>.into())),
             status: Annotated::new(SpanStatus::Ok),
-            origin: Annotated::new(<span class="string">&quot;auto.http&quot;</span>.to_owned()),
+            origin: Annotated::new(<span class="string">"auto.http"</span>.to_owned()),
             measurements: Annotated::new(Measurements(measurements)),
             ..Default::default()
         });
@@ -562,118 +1439,223 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_getter_span_data() {
         <span class="kw">let </span>span = Annotated::&lt;Span&gt;::from_json(
-            <span class="string">r#&quot;{
-                &quot;data&quot;: {
-                    &quot;foo&quot;: {&quot;bar&quot;: 1},
-                    &quot;foo.bar&quot;: 2
+            <span class="string">r#"{
+                "data": {
+                    "foo": {"bar": 1},
+                    "foo.bar": 2
+                },
+                "measurements": {
+                    "some": {"value": 100.0}
                 }
-            }&quot;#</span>,
+            }"#</span>,
         )
         .unwrap()
         .into_value()
         .unwrap();
 
-        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">&quot;span.data.foo.bar&quot;</span>), <span class="prelude-val">Some</span>(Val::I64(<span class="number">1</span>)));
-        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">r&quot;span.data.foo\.bar&quot;</span>), <span class="prelude-val">Some</span>(Val::I64(<span class="number">2</span>)));
+        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">"span.data.foo.bar"</span>), <span class="prelude-val">Some</span>(Val::I64(<span class="number">1</span>)));
+        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">r"span.data.foo\.bar"</span>), <span class="prelude-val">Some</span>(Val::I64(<span class="number">2</span>)));
 
-        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">&quot;span.data&quot;</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">&quot;span.data.&quot;</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">&quot;span.data.x&quot;</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">"span.data"</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">"span.data."</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">"span.data.x"</span>), <span class="prelude-val">None</span>);
+
+        <span class="macro">assert_eq!</span>(
+            span.get_value(<span class="string">"span.measurements.some.value"</span>),
+            <span class="prelude-val">Some</span>(Val::F64(<span class="number">100.0</span>))
+        );
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>span_from_event() {
-        <span class="kw">let </span>event = Annotated::&lt;Event&gt;::from_json(
-            <span class="string">r#&quot;{
-                &quot;contexts&quot;: {
-                    &quot;profile&quot;: {&quot;profile_id&quot;: &quot;a0aaaaaaaaaaaaaaaaaaaaaaaaaaaaab&quot;},
-                    &quot;trace&quot;: {
-                        &quot;trace_id&quot;: &quot;4C79F60C11214EB38604F4AE0781BFB2&quot;,
-                        &quot;span_id&quot;: &quot;FA90FDEAD5F74052&quot;,
-                        &quot;type&quot;: &quot;trace&quot;
-                    }
-                },
-                &quot;_metrics_summary&quot;: {
-                    &quot;some_metric&quot;: [
-                        {
-                            &quot;min&quot;: 1.0,
-                            &quot;max&quot;: 2.0,
-                            &quot;sum&quot;: 3.0,
-                            &quot;count&quot;: 2,
-                            &quot;tags&quot;: {
-                                &quot;environment&quot;: &quot;test&quot;
-                            }
-                        }
-                    ]
+    </span><span class="kw">fn </span>test_getter_was_transaction() {
+        <span class="kw">let </span><span class="kw-2">mut </span>span = Span::default();
+        <span class="macro">assert_eq!</span>(
+            span.get_value(<span class="string">"span.was_transaction"</span>),
+            <span class="prelude-val">Some</span>(Val::Bool(<span class="bool-val">false</span>))
+        );
+        <span class="macro">assert!</span>(RuleCondition::eq(<span class="string">"span.was_transaction"</span>, <span class="bool-val">false</span>).matches(<span class="kw-2">&amp;</span>span));
+        <span class="macro">assert!</span>(!RuleCondition::eq(<span class="string">"span.was_transaction"</span>, <span class="bool-val">true</span>).matches(<span class="kw-2">&amp;</span>span));
+
+        span.was_transaction.set_value(<span class="prelude-val">Some</span>(<span class="bool-val">false</span>));
+        <span class="macro">assert_eq!</span>(
+            span.get_value(<span class="string">"span.was_transaction"</span>),
+            <span class="prelude-val">Some</span>(Val::Bool(<span class="bool-val">false</span>))
+        );
+        <span class="macro">assert!</span>(RuleCondition::eq(<span class="string">"span.was_transaction"</span>, <span class="bool-val">false</span>).matches(<span class="kw-2">&amp;</span>span));
+        <span class="macro">assert!</span>(!RuleCondition::eq(<span class="string">"span.was_transaction"</span>, <span class="bool-val">true</span>).matches(<span class="kw-2">&amp;</span>span));
+
+        span.was_transaction.set_value(<span class="prelude-val">Some</span>(<span class="bool-val">true</span>));
+        <span class="macro">assert_eq!</span>(
+            span.get_value(<span class="string">"span.was_transaction"</span>),
+            <span class="prelude-val">Some</span>(Val::Bool(<span class="bool-val">true</span>))
+        );
+        <span class="macro">assert!</span>(RuleCondition::eq(<span class="string">"span.was_transaction"</span>, <span class="bool-val">true</span>).matches(<span class="kw-2">&amp;</span>span));
+        <span class="macro">assert!</span>(!RuleCondition::eq(<span class="string">"span.was_transaction"</span>, <span class="bool-val">false</span>).matches(<span class="kw-2">&amp;</span>span));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_span_fields_as_event() {
+        <span class="kw">let </span>span = Annotated::&lt;Span&gt;::from_json(
+            <span class="string">r#"{
+                "data": {
+                    "release": "1.0",
+                    "environment": "prod",
+                    "sentry.segment.name": "/api/endpoint"
                 }
-            }&quot;#</span>,
+            }"#</span>,
         )
         .unwrap()
         .into_value()
         .unwrap();
 
-        <span class="macro">assert_debug_snapshot!</span>(Span::from(<span class="kw-2">&amp;</span>event), @<span class="string">r###&quot;
-        Span {
-            timestamp: ~,
-            start_timestamp: ~,
-            exclusive_time: ~,
-            description: ~,
-            op: ~,
-            span_id: SpanId(
-                &quot;fa90fdead5f74052&quot;,
+        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">"event.release"</span>), <span class="prelude-val">Some</span>(Val::String(<span class="string">"1.0"</span>)));
+        <span class="macro">assert_eq!</span>(
+            span.get_value(<span class="string">"event.environment"</span>),
+            <span class="prelude-val">Some</span>(Val::String(<span class="string">"prod"</span>))
+        );
+        <span class="macro">assert_eq!</span>(
+            span.get_value(<span class="string">"event.transaction"</span>),
+            <span class="prelude-val">Some</span>(Val::String(<span class="string">"/api/endpoint"</span>))
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_span_duration() {
+        <span class="kw">let </span>span = Annotated::&lt;Span&gt;::from_json(
+            <span class="string">r#"{
+                "start_timestamp": 1694732407.8367,
+                "timestamp": 1694732408.3145
+            }"#</span>,
+        )
+        .unwrap()
+        .into_value()
+        .unwrap();
+
+        <span class="macro">assert_eq!</span>(span.get_value(<span class="string">"span.duration"</span>), <span class="prelude-val">Some</span>(Val::F64(<span class="number">477.800131</span>)));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_span_data() {
+        <span class="kw">let </span>data = <span class="string">r#"{
+        "foo": 2,
+        "bar": "3",
+        "db.system": "mysql",
+        "code.filepath": "task.py",
+        "code.lineno": 123,
+        "code.function": "fn()",
+        "code.namespace": "ns",
+        "frames.slow": 1,
+        "frames.frozen": 2,
+        "frames.total": 9,
+        "frames.delay": 100,
+        "messaging.destination.name": "default",
+        "messaging.message.retry.count": 3,
+        "messaging.message.receive.latency": 40,
+        "messaging.message.body.size": 100,
+        "messaging.message.id": "abc123",
+        "user_agent.original": "Chrome",
+        "url.full": "my_url.com",
+        "client.address": "192.168.0.1"
+    }"#</span>;
+        <span class="kw">let </span>data = Annotated::&lt;SpanData&gt;::from_json(data)
+            .unwrap()
+            .into_value()
+            .unwrap();
+        <span class="macro">insta::assert_debug_snapshot!</span>(data, @<span class="string">r###"
+        SpanData {
+            app_start_type: ~,
+            ai_total_tokens_used: ~,
+            ai_prompt_tokens_used: ~,
+            ai_completion_tokens_used: ~,
+            browser_name: ~,
+            code_filepath: String(
+                "task.py",
             ),
-            parent_span_id: ~,
-            trace_id: TraceId(
-                &quot;4c79f60c11214eb38604f4ae0781bfb2&quot;,
+            code_lineno: I64(
+                123,
             ),
-            segment_id: SpanId(
-                &quot;fa90fdead5f74052&quot;,
+            code_function: String(
+                "fn()",
             ),
-            is_segment: true,
-            status: ~,
-            tags: ~,
-            origin: ~,
-            profile_id: EventId(
-                a0aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab,
+            code_namespace: String(
+                "ns",
             ),
-            data: ~,
-            sentry_tags: ~,
-            received: ~,
-            measurements: ~,
-            _metrics_summary: Object(
-                {
-                    &quot;some_metric&quot;: Array(
-                        [
-                            Object(
-                                {
-                                    &quot;count&quot;: I64(
-                                        2,
-                                    ),
-                                    &quot;max&quot;: F64(
-                                        2.0,
-                                    ),
-                                    &quot;min&quot;: F64(
-                                        1.0,
-                                    ),
-                                    &quot;sum&quot;: F64(
-                                        3.0,
-                                    ),
-                                    &quot;tags&quot;: Object(
-                                        {
-                                            &quot;environment&quot;: String(
-                                                &quot;test&quot;,
-                                            ),
-                                        },
-                                    ),
-                                },
-                            ),
-                        ],
-                    ),
-                },
+            db_operation: ~,
+            db_system: String(
+                "mysql",
             ),
-            other: {},
+            db_collection_name: ~,
+            environment: ~,
+            release: ~,
+            http_decoded_response_content_length: ~,
+            http_request_method: ~,
+            http_response_content_length: ~,
+            http_response_transfer_size: ~,
+            resource_render_blocking_status: ~,
+            server_address: ~,
+            cache_hit: ~,
+            cache_key: ~,
+            cache_item_size: ~,
+            http_response_status_code: ~,
+            ai_pipeline_name: ~,
+            ai_model_id: ~,
+            ai_input_messages: ~,
+            ai_responses: ~,
+            thread_name: ~,
+            thread_id: ~,
+            segment_name: ~,
+            ui_component_name: ~,
+            url_scheme: ~,
+            user: ~,
+            replay_id: ~,
+            sdk_name: ~,
+            sdk_version: ~,
+            frames_slow: I64(
+                1,
+            ),
+            frames_frozen: I64(
+                2,
+            ),
+            frames_total: I64(
+                9,
+            ),
+            frames_delay: I64(
+                100,
+            ),
+            messaging_destination_name: "default",
+            messaging_message_retry_count: I64(
+                3,
+            ),
+            messaging_message_receive_latency: I64(
+                40,
+            ),
+            messaging_message_body_size: I64(
+                100,
+            ),
+            messaging_message_id: "abc123",
+            user_agent_original: "Chrome",
+            url_full: "my_url.com",
+            client_address: "192.168.0.1",
+            route: ~,
+            previous_route: ~,
+            other: {
+                "bar": String(
+                    "3",
+                ),
+                "foo": I64(
+                    2,
+                ),
+            },
         }
-        &quot;###</span>);
+        "###</span>);
+
+        <span class="macro">assert_eq!</span>(data.get_value(<span class="string">"foo"</span>), <span class="prelude-val">Some</span>(Val::U64(<span class="number">2</span>)));
+        <span class="macro">assert_eq!</span>(data.get_value(<span class="string">"bar"</span>), <span class="prelude-val">Some</span>(Val::String(<span class="string">"3"</span>)));
+        <span class="macro">assert_eq!</span>(data.get_value(<span class="string">"db\\.system"</span>), <span class="prelude-val">Some</span>(Val::String(<span class="string">"mysql"</span>)));
+        <span class="macro">assert_eq!</span>(data.get_value(<span class="string">"code\\.lineno"</span>), <span class="prelude-val">Some</span>(Val::U64(<span class="number">123</span>)));
+        <span class="macro">assert_eq!</span>(data.get_value(<span class="string">"code\\.function"</span>), <span class="prelude-val">Some</span>(Val::String(<span class="string">"fn()"</span>)));
+        <span class="macro">assert_eq!</span>(data.get_value(<span class="string">"code\\.namespace"</span>), <span class="prelude-val">Some</span>(Val::String(<span class="string">"ns"</span>)));
+        <span class="macro">assert_eq!</span>(data.get_value(<span class="string">"unknown"</span>), <span class="prelude-val">None</span>);
     }
 }
 </code></pre></div></section></main></body></html>

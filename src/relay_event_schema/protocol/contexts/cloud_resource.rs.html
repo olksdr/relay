@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-schema/src/protocol/contexts/cloud_resource.rs`."><title>cloud_resource.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="relay_event_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../relay_event_schema/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-event-schema/src/protocol/contexts/cloud_resource.rs`."><title>cloud_resource.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="relay_event_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -128,12 +128,7 @@
 <a href="#128" id="128">128</a>
 <a href="#129" id="129">129</a>
 <a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
-<a href="#132" id="132">132</a>
-<a href="#133" id="133">133</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;jsonschema&quot;</span>)]
-</span><span class="kw">use </span>relay_jsonschema_derive::JsonSchema;
-<span class="kw">use </span>relay_protocol::{Annotated, Empty, FromValue, IntoValue, Object, Value};
+</pre></div><pre class="rust"><code><span class="kw">use </span>relay_protocol::{Annotated, Empty, FromValue, IntoValue, Object, Value};
 
 <span class="kw">use </span><span class="kw">crate</span>::processor::ProcessValue;
 
@@ -144,58 +139,57 @@
 /// Example:
 ///
 /// ```json
-/// &quot;cloud_resource&quot;: {
-///     &quot;cloud.account.id&quot;: &quot;499517922981&quot;,
-///     &quot;cloud.provider&quot;: &quot;aws&quot;,
-///     &quot;cloud.platform&quot;: &quot;aws_ec2&quot;,
-///     &quot;cloud.region&quot;: &quot;us-east-1&quot;,
-///     &quot;cloud.vavailability_zone&quot;: &quot;us-east-1e&quot;,
-///     &quot;host.id&quot;: &quot;i-07d3301208fe0a55a&quot;,
-///     &quot;host.type&quot;: &quot;t2.large&quot;
+/// "cloud_resource": {
+///     "cloud.account.id": "499517922981",
+///     "cloud.provider": "aws",
+///     "cloud.platform": "aws_ec2",
+///     "cloud.region": "us-east-1",
+///     "cloud.vavailability_zone": "us-east-1e",
+///     "host.id": "i-07d3301208fe0a55a",
+///     "host.type": "t2.large"
 /// }
 /// ```
 </span><span class="attr">#[derive(Clone, Debug, Default, PartialEq, Empty, FromValue, IntoValue, ProcessValue)]
-#[cfg_attr(feature = <span class="string">&quot;jsonschema&quot;</span>, derive(JsonSchema))]
 </span><span class="kw">pub struct </span>CloudResourceContext {
     <span class="doccomment">/// The cloud account ID the resource is assigned to.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;maybe&quot;</span>)]
-    #[metastructure(field = <span class="string">&quot;cloud.account.id&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"maybe"</span>)]
+    #[metastructure(field = <span class="string">"cloud.account.id"</span>)]
     </span><span class="kw">pub </span>cloud_account_id: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Name of the cloud provider.
-    </span><span class="attr">#[metastructure(field = <span class="string">&quot;cloud.provider&quot;</span>)]
+    </span><span class="attr">#[metastructure(field = <span class="string">"cloud.provider"</span>)]
     </span><span class="kw">pub </span>cloud_provider: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// The cloud platform in use.
     /// The prefix of the service SHOULD match the one specified in cloud_provider.
-    </span><span class="attr">#[metastructure(field = <span class="string">&quot;cloud.platform&quot;</span>)]
+    </span><span class="attr">#[metastructure(field = <span class="string">"cloud.platform"</span>)]
     </span><span class="kw">pub </span>cloud_platform: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// The geographical region the resource is running.
-    </span><span class="attr">#[metastructure(field = <span class="string">&quot;cloud.region&quot;</span>)]
+    </span><span class="attr">#[metastructure(field = <span class="string">"cloud.region"</span>)]
     </span><span class="kw">pub </span>cloud_region: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// The zone where the resource is running.
-    </span><span class="attr">#[metastructure(field = <span class="string">&quot;cloud.availability_zone&quot;</span>)]
+    </span><span class="attr">#[metastructure(field = <span class="string">"cloud.availability_zone"</span>)]
     </span><span class="kw">pub </span>cloud_availability_zone: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Unique host ID.
-    </span><span class="attr">#[metastructure(pii = <span class="string">&quot;maybe&quot;</span>)]
-    #[metastructure(field = <span class="string">&quot;host.id&quot;</span>)]
+    </span><span class="attr">#[metastructure(pii = <span class="string">"maybe"</span>)]
+    #[metastructure(field = <span class="string">"host.id"</span>)]
     </span><span class="kw">pub </span>host_id: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Machine type of the host.
-    </span><span class="attr">#[metastructure(field = <span class="string">&quot;host.type&quot;</span>)]
+    </span><span class="attr">#[metastructure(field = <span class="string">"host.type"</span>)]
     </span><span class="kw">pub </span>host_type: Annotated&lt;String&gt;,
 
     <span class="doccomment">/// Additional arbitrary fields for forwards compatibility.
-    </span><span class="attr">#[metastructure(additional_properties, retain = <span class="string">&quot;true&quot;</span>, pii = <span class="string">&quot;maybe&quot;</span>)]
+    </span><span class="attr">#[metastructure(additional_properties, retain = <span class="string">"true"</span>, pii = <span class="string">"maybe"</span>)]
     </span><span class="kw">pub </span>other: Object&lt;Value&gt;,
 }
 
 <span class="kw">impl </span><span class="kw">super</span>::DefaultContext <span class="kw">for </span>CloudResourceContext {
-    <span class="kw">fn </span>default_key() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
-        <span class="string">&quot;cloud_resource&quot;
+    <span class="kw">fn </span>default_key() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
+        <span class="string">"cloud_resource"
     </span>}
 
     <span class="kw">fn </span>from_context(context: <span class="kw">super</span>::Context) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
@@ -231,30 +225,30 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_cloud_resource_context_roundtrip() {
-        <span class="kw">let </span>json = <span class="string">r#&quot;{
-  &quot;cloud.account.id&quot;: &quot;499517922981&quot;,
-  &quot;cloud.provider&quot;: &quot;aws&quot;,
-  &quot;cloud.platform&quot;: &quot;aws_ec2&quot;,
-  &quot;cloud.region&quot;: &quot;us-east-1&quot;,
-  &quot;cloud.availability_zone&quot;: &quot;us-east-1e&quot;,
-  &quot;host.id&quot;: &quot;i-07d3301208fe0a55a&quot;,
-  &quot;host.type&quot;: &quot;t2.large&quot;,
-  &quot;other&quot;: &quot;value&quot;,
-  &quot;type&quot;: &quot;cloudresource&quot;
-}&quot;#</span>;
+        <span class="kw">let </span>json = <span class="string">r#"{
+  "cloud.account.id": "499517922981",
+  "cloud.provider": "aws",
+  "cloud.platform": "aws_ec2",
+  "cloud.region": "us-east-1",
+  "cloud.availability_zone": "us-east-1e",
+  "host.id": "i-07d3301208fe0a55a",
+  "host.type": "t2.large",
+  "other": "value",
+  "type": "cloudresource"
+}"#</span>;
         <span class="kw">let </span>context = Annotated::new(Context::CloudResource(Box::new(CloudResourceContext {
-            cloud_account_id: Annotated::new(<span class="string">&quot;499517922981&quot;</span>.into()),
-            cloud_provider: Annotated::new(<span class="string">&quot;aws&quot;</span>.into()),
-            cloud_platform: Annotated::new(<span class="string">&quot;aws_ec2&quot;</span>.into()),
-            cloud_region: Annotated::new(<span class="string">&quot;us-east-1&quot;</span>.into()),
-            cloud_availability_zone: Annotated::new(<span class="string">&quot;us-east-1e&quot;</span>.into()),
-            host_id: Annotated::new(<span class="string">&quot;i-07d3301208fe0a55a&quot;</span>.into()),
-            host_type: Annotated::new(<span class="string">&quot;t2.large&quot;</span>.into()),
+            cloud_account_id: Annotated::new(<span class="string">"499517922981"</span>.into()),
+            cloud_provider: Annotated::new(<span class="string">"aws"</span>.into()),
+            cloud_platform: Annotated::new(<span class="string">"aws_ec2"</span>.into()),
+            cloud_region: Annotated::new(<span class="string">"us-east-1"</span>.into()),
+            cloud_availability_zone: Annotated::new(<span class="string">"us-east-1e"</span>.into()),
+            host_id: Annotated::new(<span class="string">"i-07d3301208fe0a55a"</span>.into()),
+            host_type: Annotated::new(<span class="string">"t2.large"</span>.into()),
             other: {
                 <span class="kw">let </span><span class="kw-2">mut </span>map = Object::new();
                 map.insert(
-                    <span class="string">&quot;other&quot;</span>.to_string(),
-                    Annotated::new(Value::String(<span class="string">&quot;value&quot;</span>.to_string())),
+                    <span class="string">"other"</span>.to_string(),
+                    Annotated::new(Value::String(<span class="string">"value"</span>.to_string())),
                 );
                 map
             },

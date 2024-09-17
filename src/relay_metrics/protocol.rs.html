@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-metrics/src/protocol.rs`."><title>protocol.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_metrics" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_metrics/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-metrics/src/protocol.rs`."><title>protocol.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_metrics" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -328,542 +328,105 @@
 <a href="#328" id="328">328</a>
 <a href="#329" id="329">329</a>
 <a href="#330" id="330">330</a>
-<a href="#331" id="331">331</a>
-<a href="#332" id="332">332</a>
-<a href="#333" id="333">333</a>
-<a href="#334" id="334">334</a>
-<a href="#335" id="335">335</a>
-<a href="#336" id="336">336</a>
-<a href="#337" id="337">337</a>
-<a href="#338" id="338">338</a>
-<a href="#339" id="339">339</a>
-<a href="#340" id="340">340</a>
-<a href="#341" id="341">341</a>
-<a href="#342" id="342">342</a>
-<a href="#343" id="343">343</a>
-<a href="#344" id="344">344</a>
-<a href="#345" id="345">345</a>
-<a href="#346" id="346">346</a>
-<a href="#347" id="347">347</a>
-<a href="#348" id="348">348</a>
-<a href="#349" id="349">349</a>
-<a href="#350" id="350">350</a>
-<a href="#351" id="351">351</a>
-<a href="#352" id="352">352</a>
-<a href="#353" id="353">353</a>
-<a href="#354" id="354">354</a>
-<a href="#355" id="355">355</a>
-<a href="#356" id="356">356</a>
-<a href="#357" id="357">357</a>
-<a href="#358" id="358">358</a>
-<a href="#359" id="359">359</a>
-<a href="#360" id="360">360</a>
-<a href="#361" id="361">361</a>
-<a href="#362" id="362">362</a>
-<a href="#363" id="363">363</a>
-<a href="#364" id="364">364</a>
-<a href="#365" id="365">365</a>
-<a href="#366" id="366">366</a>
-<a href="#367" id="367">367</a>
-<a href="#368" id="368">368</a>
-<a href="#369" id="369">369</a>
-<a href="#370" id="370">370</a>
-<a href="#371" id="371">371</a>
-<a href="#372" id="372">372</a>
-<a href="#373" id="373">373</a>
-<a href="#374" id="374">374</a>
-<a href="#375" id="375">375</a>
-<a href="#376" id="376">376</a>
-<a href="#377" id="377">377</a>
-<a href="#378" id="378">378</a>
-<a href="#379" id="379">379</a>
-<a href="#380" id="380">380</a>
-<a href="#381" id="381">381</a>
-<a href="#382" id="382">382</a>
-<a href="#383" id="383">383</a>
-<a href="#384" id="384">384</a>
-<a href="#385" id="385">385</a>
-<a href="#386" id="386">386</a>
-<a href="#387" id="387">387</a>
-<a href="#388" id="388">388</a>
-<a href="#389" id="389">389</a>
-<a href="#390" id="390">390</a>
-<a href="#391" id="391">391</a>
-<a href="#392" id="392">392</a>
-<a href="#393" id="393">393</a>
-<a href="#394" id="394">394</a>
-<a href="#395" id="395">395</a>
-<a href="#396" id="396">396</a>
-<a href="#397" id="397">397</a>
-<a href="#398" id="398">398</a>
-<a href="#399" id="399">399</a>
-<a href="#400" id="400">400</a>
-<a href="#401" id="401">401</a>
-<a href="#402" id="402">402</a>
-<a href="#403" id="403">403</a>
-<a href="#404" id="404">404</a>
-<a href="#405" id="405">405</a>
-<a href="#406" id="406">406</a>
-<a href="#407" id="407">407</a>
-<a href="#408" id="408">408</a>
-<a href="#409" id="409">409</a>
-<a href="#410" id="410">410</a>
-<a href="#411" id="411">411</a>
-<a href="#412" id="412">412</a>
-<a href="#413" id="413">413</a>
-<a href="#414" id="414">414</a>
-<a href="#415" id="415">415</a>
-<a href="#416" id="416">416</a>
-<a href="#417" id="417">417</a>
-<a href="#418" id="418">418</a>
-<a href="#419" id="419">419</a>
-<a href="#420" id="420">420</a>
-<a href="#421" id="421">421</a>
-<a href="#422" id="422">422</a>
-<a href="#423" id="423">423</a>
-<a href="#424" id="424">424</a>
-<a href="#425" id="425">425</a>
-<a href="#426" id="426">426</a>
-<a href="#427" id="427">427</a>
-<a href="#428" id="428">428</a>
-<a href="#429" id="429">429</a>
-<a href="#430" id="430">430</a>
-<a href="#431" id="431">431</a>
-<a href="#432" id="432">432</a>
-<a href="#433" id="433">433</a>
-<a href="#434" id="434">434</a>
-<a href="#435" id="435">435</a>
-<a href="#436" id="436">436</a>
-<a href="#437" id="437">437</a>
-<a href="#438" id="438">438</a>
-<a href="#439" id="439">439</a>
-<a href="#440" id="440">440</a>
-<a href="#441" id="441">441</a>
-<a href="#442" id="442">442</a>
-<a href="#443" id="443">443</a>
-<a href="#444" id="444">444</a>
-<a href="#445" id="445">445</a>
-<a href="#446" id="446">446</a>
-<a href="#447" id="447">447</a>
-<a href="#448" id="448">448</a>
-<a href="#449" id="449">449</a>
-<a href="#450" id="450">450</a>
-<a href="#451" id="451">451</a>
-<a href="#452" id="452">452</a>
-<a href="#453" id="453">453</a>
-<a href="#454" id="454">454</a>
-<a href="#455" id="455">455</a>
-<a href="#456" id="456">456</a>
-<a href="#457" id="457">457</a>
-<a href="#458" id="458">458</a>
-<a href="#459" id="459">459</a>
-<a href="#460" id="460">460</a>
-<a href="#461" id="461">461</a>
-<a href="#462" id="462">462</a>
-<a href="#463" id="463">463</a>
-<a href="#464" id="464">464</a>
-<a href="#465" id="465">465</a>
-<a href="#466" id="466">466</a>
-<a href="#467" id="467">467</a>
-<a href="#468" id="468">468</a>
-<a href="#469" id="469">469</a>
-<a href="#470" id="470">470</a>
-<a href="#471" id="471">471</a>
-<a href="#472" id="472">472</a>
-<a href="#473" id="473">473</a>
-<a href="#474" id="474">474</a>
-<a href="#475" id="475">475</a>
-<a href="#476" id="476">476</a>
-<a href="#477" id="477">477</a>
-<a href="#478" id="478">478</a>
-<a href="#479" id="479">479</a>
-<a href="#480" id="480">480</a>
-<a href="#481" id="481">481</a>
-<a href="#482" id="482">482</a>
-<a href="#483" id="483">483</a>
-<a href="#484" id="484">484</a>
-<a href="#485" id="485">485</a>
-<a href="#486" id="486">486</a>
-<a href="#487" id="487">487</a>
-<a href="#488" id="488">488</a>
-<a href="#489" id="489">489</a>
-<a href="#490" id="490">490</a>
-<a href="#491" id="491">491</a>
-<a href="#492" id="492">492</a>
-<a href="#493" id="493">493</a>
-<a href="#494" id="494">494</a>
-<a href="#495" id="495">495</a>
-<a href="#496" id="496">496</a>
-<a href="#497" id="497">497</a>
-<a href="#498" id="498">498</a>
-<a href="#499" id="499">499</a>
-<a href="#500" id="500">500</a>
-<a href="#501" id="501">501</a>
-<a href="#502" id="502">502</a>
-<a href="#503" id="503">503</a>
-<a href="#504" id="504">504</a>
-<a href="#505" id="505">505</a>
-<a href="#506" id="506">506</a>
-<a href="#507" id="507">507</a>
-<a href="#508" id="508">508</a>
-<a href="#509" id="509">509</a>
-<a href="#510" id="510">510</a>
-<a href="#511" id="511">511</a>
-<a href="#512" id="512">512</a>
-<a href="#513" id="513">513</a>
-<a href="#514" id="514">514</a>
-<a href="#515" id="515">515</a>
-<a href="#516" id="516">516</a>
-<a href="#517" id="517">517</a>
-<a href="#518" id="518">518</a>
-<a href="#519" id="519">519</a>
-<a href="#520" id="520">520</a>
-<a href="#521" id="521">521</a>
-<a href="#522" id="522">522</a>
-<a href="#523" id="523">523</a>
-<a href="#524" id="524">524</a>
-<a href="#525" id="525">525</a>
-<a href="#526" id="526">526</a>
-<a href="#527" id="527">527</a>
-<a href="#528" id="528">528</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt;
-<span class="kw">use </span>std::hash::Hasher <span class="kw">as _</span>;
-<span class="kw">use </span>std::{borrow::Cow, error::Error};
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::hash::Hasher <span class="kw">as _</span>;
 
 <span class="kw">use </span>hash32::{FnvHasher, Hasher <span class="kw">as _</span>};
-<span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>relay_base_schema::metrics::{
-    CustomUnit, DurationUnit, FractionUnit, InformationUnit, MetricUnit, ParseMetricUnitError,
+    CustomUnit, DurationUnit, FractionUnit, InformationUnit, MetricName, MetricNamespace,
+    MetricResourceIdentifier, MetricType, MetricUnit, ParseMetricError, ParseMetricUnitError,
 };
 <span class="attr">#[doc(inline)]
 </span><span class="kw">pub use </span>relay_common::time::UnixTimestamp;
+<span class="attr">#[doc(inline)]
+</span><span class="kw">pub use </span>unescaper::Error <span class="kw">as </span>UnescapeError;
+
+<span class="kw">use crate</span>::{Bucket, FiniteF64, MetricTags};
 
 <span class="doccomment">/// Type used for Counter metric
-</span><span class="kw">pub type </span>CounterType = f64;
+</span><span class="kw">pub type </span>CounterType = FiniteF64;
 
 <span class="doccomment">/// Type of distribution entries
-</span><span class="kw">pub type </span>DistributionType = f64;
+</span><span class="kw">pub type </span>DistributionType = FiniteF64;
 
 <span class="doccomment">/// Type used for set elements in Set metric
 </span><span class="kw">pub type </span>SetType = u32;
 
 <span class="doccomment">/// Type used for Gauge entries
-</span><span class="kw">pub type </span>GaugeType = f64;
+</span><span class="kw">pub type </span>GaugeType = FiniteF64;
 
-<span class="doccomment">/// The type of a [`BucketValue`](crate::BucketValue), determining its aggregation and evaluation.
-</span><span class="attr">#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
-</span><span class="kw">pub enum </span>MetricType {
-    <span class="doccomment">/// Counts instances of an event.
-    ///
-    /// Counters can be incremented and decremented. The default operation is to increment a counter
-    /// by `1`, although increments by larger values are equally possible.
-    ///
-    /// Counters are declared as `&quot;c&quot;`. Alternatively, `&quot;m&quot;` is allowed.
-    </span>Counter,
-    <span class="doccomment">/// Builds a statistical distribution over values reported.
-    ///
-    /// Based on individual reported values, distributions allow to query the maximum, minimum, or
-    /// average of the reported values, as well as statistical quantiles. With an increasing number
-    /// of values in the distribution, its accuracy becomes approximate.
-    ///
-    /// Distributions are declared as `&quot;d&quot;`. Alternatively, `&quot;d&quot;` and `&quot;ms&quot;` are allowed.
-    </span>Distribution,
-    <span class="doccomment">/// Counts the number of unique reported values.
-    ///
-    /// Sets allow sending arbitrary discrete values, including strings, and store the deduplicated
-    /// count. With an increasing number of unique values in the set, its accuracy becomes
-    /// approximate. It is not possible to query individual values from a set.
-    ///
-    /// Sets are declared as `&quot;s&quot;`.
-    </span>Set,
-    <span class="doccomment">/// Stores absolute snapshots of values.
-    ///
-    /// In addition to plain [counters](Self::Counter), gauges store a snapshot of the maximum,
-    /// minimum and sum of all values, as well as the last reported value.
-    ///
-    /// Gauges are declared as `&quot;g&quot;`.
-    </span>Gauge,
+<span class="doccomment">/// Error returned from [`normalize_bucket`].
+</span><span class="attr">#[derive(Debug, thiserror::Error)]
+</span><span class="kw">pub enum </span>NormalizationError {
+    <span class="doccomment">/// The metric name includes an invalid or unsupported metric namespace.
+    </span><span class="attr">#[error(<span class="string">"unsupported metric namespace"</span>)]
+    </span>UnsupportedNamespace,
+    <span class="doccomment">/// The metric name cannot be parsed and is invalid.
+    </span><span class="attr">#[error(<span class="string">"invalid metric name: {0:?}"</span>)]
+    </span>InvalidMetricName(MetricName),
 }
 
-<span class="kw">impl </span>MetricType {
-    <span class="doccomment">/// Return the shortcode for this metric type.
-    </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
-        <span class="kw">match </span><span class="self">self </span>{
-            MetricType::Counter =&gt; <span class="string">&quot;c&quot;</span>,
-            MetricType::Distribution =&gt; <span class="string">&quot;d&quot;</span>,
-            MetricType::Set =&gt; <span class="string">&quot;s&quot;</span>,
-            MetricType::Gauge =&gt; <span class="string">&quot;g&quot;</span>,
+<span class="doccomment">/// Normalizes a bucket.
+///
+/// The passed metric will have its name and tags normalized and tested for validity.
+/// Invalid characters in the metric name may be replaced,
+/// see [`relay_base_schema::metrics::try_normalize_metric_name`].
+///
+/// Invalid tags are removed and tag keys are normalized, for example control characters are
+/// removed from tag keys.
+</span><span class="kw">pub fn </span>normalize_bucket(bucket: <span class="kw-2">&amp;mut </span>Bucket) -&gt; <span class="prelude-ty">Result</span>&lt;(), NormalizationError&gt; {
+    normalize_metric_name(<span class="kw-2">&amp;mut </span>bucket.name)<span class="question-mark">?</span>;
+    normalize_metric_tags(<span class="kw-2">&amp;mut </span>bucket.tags);
+    <span class="prelude-val">Ok</span>(())
+}
+
+<span class="doccomment">/// Normalizes a metric name.
+///
+/// Normalization includes expanding valid metric names without a namespace to the default
+/// namespace.
+///
+/// Invalid metric names are rejected with [`NormalizationError`].
+</span><span class="kw">fn </span>normalize_metric_name(name: <span class="kw-2">&amp;mut </span>MetricName) -&gt; <span class="prelude-ty">Result</span>&lt;(), NormalizationError&gt; {
+    <span class="kw-2">*</span>name = <span class="kw">match </span>MetricResourceIdentifier::parse(name) {
+        <span class="prelude-val">Ok</span>(mri) =&gt; {
+            <span class="kw">if </span><span class="macro">matches!</span>(mri.namespace, MetricNamespace::Unsupported) {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(NormalizationError::UnsupportedNamespace);
+            }
+
+            <span class="comment">// We can improve this code part, by not always re-creating the name, if the name is
+            // already a valid MRI with namespace we can use the original name instead.
+            </span>mri.to_string().into()
         }
-    }
-}
-
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>MetricType {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.write_str(<span class="self">self</span>.as_str())
-    }
-}
-
-<span class="kw">impl </span>std::str::FromStr <span class="kw">for </span>MetricType {
-    <span class="kw">type </span><span class="prelude-val">Err </span>= ParseMetricError;
-
-    <span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
-        <span class="prelude-val">Ok</span>(<span class="kw">match </span>s {
-            <span class="string">&quot;c&quot; </span>| <span class="string">&quot;m&quot; </span>=&gt; <span class="self">Self</span>::Counter,
-            <span class="string">&quot;h&quot; </span>| <span class="string">&quot;d&quot; </span>| <span class="string">&quot;ms&quot; </span>=&gt; <span class="self">Self</span>::Distribution,
-            <span class="string">&quot;s&quot; </span>=&gt; <span class="self">Self</span>::Set,
-            <span class="string">&quot;g&quot; </span>=&gt; <span class="self">Self</span>::Gauge,
-            <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(ParseMetricError(())),
-        })
-    }
-}
-
-<span class="macro">relay_common::impl_str_serde!</span>(MetricType, <span class="string">&quot;a metric type string&quot;</span>);
-
-<span class="doccomment">/// An error returned when metrics or MRIs cannot be parsed.
-</span><span class="attr">#[derive(Clone, Copy, Debug)]
-</span><span class="kw">pub struct </span>ParseMetricError(<span class="kw">pub</span>(<span class="kw">crate</span>) ());
-
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>ParseMetricError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;failed to parse metric&quot;</span>)
-    }
-}
-
-<span class="kw">impl </span>Error <span class="kw">for </span>ParseMetricError {}
-
-<span class="doccomment">/// The namespace of a metric.
-///
-/// Namespaces allow to identify the product entity that the metric got extracted from, and identify
-/// the use case that the metric belongs to. These namespaces cannot be defined freely, instead they
-/// are defined by Sentry. Over time, there will be more namespaces as we introduce new
-/// metrics-based functionality.
-///
-/// # Parsing
-///
-/// Parsing a metric namespace from strings is infallible. Unknown strings are mapped to
-/// [`MetricNamespace::Unsupported`]. Metrics with such a namespace will be dropped.
-///
-/// # Ingestion
-///
-/// During ingestion, the metric namespace is validated against a list of known and enabled
-/// namespaces. Metrics in disabled namespaces are dropped during ingestion.
-///
-/// At a later stage, namespaces are used to route metrics to their associated infra structure and
-/// enforce usecase-specific configuration.
-</span><span class="attr">#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
-</span><span class="kw">pub enum </span>MetricNamespace {
-    <span class="doccomment">/// Metrics extracted from sessions.
-    </span>Sessions,
-    <span class="doccomment">/// Metrics extracted from transaction events.
-    </span>Transactions,
-    <span class="doccomment">/// Metrics extracted from spans.
-    </span>Spans,
-    <span class="doccomment">/// User-defined metrics directly sent by SDKs and applications.
-    </span>Custom,
-    <span class="doccomment">/// An unknown and unsupported metric.
-    ///
-    /// Metrics that Relay either doesn&#39;t know or recognize the namespace of will be dropped before
-    /// aggregating. For instance, an MRI of `c:something_new/foo@none` has the namespace
-    /// `something_new`, but as Relay doesn&#39;t support that namespace, it gets deserialized into
-    /// this variant.
-    ///
-    /// Relay currently drops all metrics whose namespace ends up being deserialized as
-    /// `unsupported`. We may revise that in the future.
-    </span>Unsupported,
-}
-
-<span class="kw">impl </span>MetricNamespace {
-    <span class="doccomment">/// Returns the string representation for this metric type.
-    </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
-        <span class="kw">match </span><span class="self">self </span>{
-            MetricNamespace::Sessions =&gt; <span class="string">&quot;sessions&quot;</span>,
-            MetricNamespace::Transactions =&gt; <span class="string">&quot;transactions&quot;</span>,
-            MetricNamespace::Spans =&gt; <span class="string">&quot;spans&quot;</span>,
-            MetricNamespace::Custom =&gt; <span class="string">&quot;custom&quot;</span>,
-            MetricNamespace::Unsupported =&gt; <span class="string">&quot;unsupported&quot;</span>,
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(NormalizationError::InvalidMetricName(name.clone()));
         }
-    }
+    };
+
+    <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">impl </span>std::str::FromStr <span class="kw">for </span>MetricNamespace {
-    <span class="kw">type </span><span class="prelude-val">Err </span>= ParseMetricError;
-
-    <span class="kw">fn </span>from_str(ns: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
-        <span class="kw">match </span>ns {
-            <span class="string">&quot;sessions&quot; </span>=&gt; <span class="prelude-val">Ok</span>(MetricNamespace::Sessions),
-            <span class="string">&quot;transactions&quot; </span>=&gt; <span class="prelude-val">Ok</span>(MetricNamespace::Transactions),
-            <span class="string">&quot;spans&quot; </span>=&gt; <span class="prelude-val">Ok</span>(MetricNamespace::Spans),
-            <span class="string">&quot;custom&quot; </span>=&gt; <span class="prelude-val">Ok</span>(MetricNamespace::Custom),
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(MetricNamespace::Unsupported),
+<span class="doccomment">/// Removes tags with invalid characters in the key, and validates tag values.
+///
+/// Tag values are validated with [`normalize_tag_value`].
+</span><span class="kw">fn </span>normalize_metric_tags(tags: <span class="kw-2">&amp;mut </span>MetricTags) {
+    tags.retain(|tag_key, tag_value| {
+        <span class="kw">if </span>!is_valid_tag_key(tag_key) {
+            <span class="macro">relay_log::debug!</span>(<span class="string">"invalid metric tag key {tag_key:?}"</span>);
+            <span class="kw">return </span><span class="bool-val">false</span>;
         }
-    }
-}
 
-<span class="macro">relay_common::impl_str_serde!</span>(MetricNamespace, <span class="string">&quot;a valid metric namespace&quot;</span>);
+        normalize_tag_value(tag_value);
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>MetricNamespace {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.write_str(<span class="self">self</span>.as_str())
-    }
-}
-
-<span class="doccomment">/// A unique identifier for metrics including typing and namespacing.
-///
-/// MRIs have the format `&lt;type&gt;:&lt;namespace&gt;/&lt;name&gt;[@&lt;unit&gt;]`. The unit is optional and defaults to
-/// [`MetricUnit::None`].
-///
-/// # Statsd Format
-///
-/// In the statsd submission payload, MRIs are sent in a more relaxed format:
-/// `[&lt;namespace&gt;/]&lt;name&gt;[@&lt;unit&gt;]`. The differences to the internal MRI format are:
-///  - Types are not part of metric naming. Instead, the type is declared in a separate field
-///    following the value.
-///  - The namespace is optional. If missing, `&quot;custom&quot;` is assumed.
-///
-/// # Background
-///
-/// MRIs follow three core principles:
-///
-/// 1. **Robustness:** Metrics must be addressed via a stable identifier. During ingestion in Relay
-///    and Snuba, metrics are preaggregated and bucketed based on this identifier, so it cannot
-///    change over time without breaking bucketing.
-/// 2. **Uniqueness:** The identifier for metrics must be unique across variations of units and
-///    metric types, within and across use cases, as well as between projects and organizations.
-/// 3. **Abstraction:** The user-facing product changes its terminology over time, and splits
-///    concepts into smaller parts. The internal metric identifiers must abstract from that, and
-///    offer sufficient granularity to allow for such changes.
-///
-/// # Example
-///
-/// ```
-/// use relay_metrics::MetricResourceIdentifier;
-///
-/// let string = &quot;c:custom/test@second&quot;;
-/// let mri = MetricResourceIdentifier::parse(string).expect(&quot;should parse&quot;);
-/// assert_eq!(mri.to_string(), string);
-/// ```
-</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-</span><span class="kw">pub struct </span>MetricResourceIdentifier&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="doccomment">/// The type of a metric, determining its aggregation and evaluation.
-    ///
-    /// In MRIs, the type is specified with its short name: counter (`c`), set (`s`), distribution
-    /// (`d`), and gauge (`g`). See [`MetricType`] for more information.
-    </span><span class="kw">pub </span>ty: MetricType,
-
-    <span class="doccomment">/// The namespace for this metric.
-    ///
-    /// In statsd submissions payloads, the namespace is optional and defaults to `&quot;custom&quot;`.
-    /// Otherwise, the namespace must be declared explicitly.
-    ///
-    /// Note that in Sentry the namespace is also referred to as &quot;use case&quot; or &quot;usecase&quot;. There is a
-    /// list of known and enabled namespaces. Metrics of unknown or disabled namespaces are dropped
-    /// during ingestion.
-    </span><span class="kw">pub </span>namespace: MetricNamespace,
-
-    <span class="doccomment">/// The display name of the metric in the allowed character set.
-    </span><span class="kw">pub </span>name: Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;,
-
-    <span class="doccomment">/// The verbatim unit name of the metric value.
-    ///
-    /// The unit is optional and defaults to [`MetricUnit::None`] (`&quot;none&quot;`).
-    </span><span class="kw">pub </span>unit: MetricUnit,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; MetricResourceIdentifier&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="doccomment">/// Parses and validates an MRI.
-    </span><span class="kw">pub fn </span>parse(name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ParseMetricError&gt; {
-        <span class="comment">// Note that this is NOT `VALUE_SEPARATOR`:
-        </span><span class="kw">let </span>(raw_ty, rest) = name.split_once(<span class="string">&#39;:&#39;</span>).ok_or(ParseMetricError(()))<span class="question-mark">?</span>;
-        <span class="kw">let </span>ty = raw_ty.parse()<span class="question-mark">?</span>;
-
-        <span class="self">Self</span>::parse_with_type(rest, ty)
-    }
-
-    <span class="doccomment">/// Parses an MRI from a string and a separate type.
-    ///
-    /// The given string must be a part of the MRI, including the following components:
-    ///  - (optional) The namespace. If missing, it is defaulted to `&quot;custom&quot;`
-    ///  - (required) The metric name.
-    ///  - (optional) The unit. If missing, it is defaulted to &quot;none&quot;.
-    ///
-    /// The metric type is never part of this string and must be supplied separately.
-    ///
-    /// This is exposed to the crate for [`crate::Bucket::parse_str`].
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>parse_with_type(
-        string: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
-        ty: MetricType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ParseMetricError&gt; {
-        <span class="kw">let </span>(name_and_namespace, unit) = parse_name_unit(string).ok_or(ParseMetricError(()))<span class="question-mark">?</span>;
-
-        <span class="kw">let </span>(namespace, name) = <span class="kw">match </span>name_and_namespace.split_once(<span class="string">&#39;/&#39;</span>) {
-            <span class="prelude-val">Some</span>((raw_namespace, name)) =&gt; (raw_namespace.parse()<span class="question-mark">?</span>, name),
-            <span class="prelude-val">None </span>=&gt; (MetricNamespace::Custom, name_and_namespace),
-        };
-
-        <span class="kw">let </span>name = relay_base_schema::metrics::try_normalize_metric_name(name)
-            .ok_or(ParseMetricError(()))<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(MetricResourceIdentifier {
-            ty,
-            name,
-            namespace,
-            unit,
-        })
-    }
-
-    <span class="doccomment">/// Converts the MRI into an owned version with a static lifetime.
-    </span><span class="kw">pub fn </span>into_owned(<span class="self">self</span>) -&gt; MetricResourceIdentifier&lt;<span class="lifetime">&#39;static</span>&gt; {
-        MetricResourceIdentifier {
-            ty: <span class="self">self</span>.ty,
-            namespace: <span class="self">self</span>.namespace,
-            name: Cow::Owned(<span class="self">self</span>.name.into_owned()),
-            unit: <span class="self">self</span>.unit,
-        }
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>MetricResourceIdentifier&lt;<span class="lifetime">&#39;static</span>&gt; {
-    <span class="kw">fn </span>deserialize&lt;D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt;
-    <span class="kw">where
-        </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
-    {
-        <span class="comment">// Deserialize without allocation, if possible.
-        </span><span class="kw">let </span>string = &lt;Cow&lt;<span class="lifetime">&#39;de</span>, str&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
-        <span class="kw">let </span>result = MetricResourceIdentifier::parse(<span class="kw-2">&amp;</span>string)
-            .map_err(serde::de::Error::custom)<span class="question-mark">?
-            </span>.into_owned();
-
-        <span class="prelude-val">Ok</span>(result)
-    }
-}
-
-<span class="kw">impl </span>Serialize <span class="kw">for </span>MetricResourceIdentifier&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
-    <span class="kw">where
-        </span>S: serde::Serializer,
-    {
-        serializer.collect_str(<span class="self">self</span>)
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; fmt::Display <span class="kw">for </span>MetricResourceIdentifier&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="comment">// `&lt;ty&gt;:&lt;ns&gt;/&lt;name&gt;@&lt;unit&gt;`
-        </span><span class="macro">write!</span>(
-            f,
-            <span class="string">&quot;{}:{}/{}@{}&quot;</span>,
-            <span class="self">self</span>.ty, <span class="self">self</span>.namespace, <span class="self">self</span>.name, <span class="self">self</span>.unit
-        )
-    }
+        <span class="bool-val">true
+    </span>});
 }
 
 <span class="doccomment">/// Validates a tag key.
 ///
 /// Tag keys currently only need to not contain ASCII control characters. This might change.
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>is_valid_tag_key(tag_key: <span class="kw-2">&amp;</span>str) -&gt; bool {
-    <span class="comment">// iterating over bytes produces better asm, and we&#39;re only checking for ascii chars
+    <span class="comment">// iterating over bytes produces better asm, and we're only checking for ascii chars
     </span><span class="kw">for </span><span class="kw-2">&amp;</span>byte <span class="kw">in </span>tag_key.as_bytes() {
         <span class="kw">if </span>(byte <span class="kw">as </span>char).is_ascii_control() {
             <span class="kw">return </span><span class="bool-val">false</span>;
@@ -872,28 +435,54 @@
     <span class="bool-val">true
 </span>}
 
-<span class="doccomment">/// Validates a tag value.
+<span class="doccomment">/// Replaces restricted characters with escape sequences.
 ///
-/// Tag values are never entirely rejected, but invalid characters (ASCII control characters) are
-/// stripped out.
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>validate_tag_value(tag_value: <span class="kw-2">&amp;mut </span>String) {
-    tag_value.retain(|c| !c.is_ascii_control());
+/// All other characters are replaced with the following rules:
+///  - Tab is escaped as `\t`.
+///  - Carriage return is escaped as `\r`.
+///  - Line feed is escaped as `\n`.
+///  - Backslash is escaped as `\\`.
+///  - Commas and pipes are given unicode escapes in the form `\u{2c}` and `\u{7c}`, respectively.
+</span><span class="attr">#[allow(unused)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>escape_tag_value(raw: <span class="kw-2">&amp;</span>str) -&gt; String {
+    <span class="kw">let </span><span class="kw-2">mut </span>escaped = String::with_capacity(raw.len());
+
+    <span class="kw">for </span>c <span class="kw">in </span>raw.chars() {
+        <span class="kw">match </span>c {
+            <span class="string">'\t' </span>=&gt; escaped.push_str(<span class="string">"\\t"</span>),
+            <span class="string">'\n' </span>=&gt; escaped.push_str(<span class="string">"\\n"</span>),
+            <span class="string">'\r' </span>=&gt; escaped.push_str(<span class="string">"\\r"</span>),
+            <span class="string">'\\' </span>=&gt; escaped.push_str(<span class="string">"\\\\"</span>),
+            <span class="string">'|' </span>=&gt; escaped.push_str(<span class="string">"\\u{7c}"</span>),
+            <span class="string">',' </span>=&gt; escaped.push_str(<span class="string">"\\u{2c}"</span>),
+            <span class="kw">_ if </span>c.is_control() =&gt; (),
+            <span class="kw">_ </span>=&gt; escaped.push(c),
+        }
+    }
+
+    escaped
 }
 
-<span class="doccomment">/// Parses the `name[@unit]` part of a metric string.
+<span class="doccomment">/// Decodes and normalizes a potentially escaped tag value into a raw string.
 ///
-/// Returns [`MetricUnit::None`] if no unit is specified. Returns `None` if value is invalid.
-/// The name is not normalized.
-</span><span class="kw">fn </span>parse_name_unit(string: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;</span>str, MetricUnit)&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>components = string.split(<span class="string">&#39;@&#39;</span>);
-    <span class="kw">let </span>name = components.next()<span class="question-mark">?</span>;
+/// This replaces escape sequences following the rules of [`escape_tag_value`] with their original
+/// unicode characters. In addition to that, unicode escape sequences for all characters will be
+/// resolved.
+///
+/// Control characters are stripped from the resulting string. This is equivalent to
+/// [`normalize_tag_value`].
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>unescape_tag_value(escaped: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String, UnescapeError&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>unescaped = unescaper::unescape(escaped)<span class="question-mark">?</span>;
+    normalize_tag_value(<span class="kw-2">&amp;mut </span>unescaped);
+    <span class="prelude-val">Ok</span>(unescaped)
+}
 
-    <span class="kw">let </span>unit = <span class="kw">match </span>components.next() {
-        <span class="prelude-val">Some</span>(s) =&gt; s.parse().ok()<span class="question-mark">?</span>,
-        <span class="prelude-val">None </span>=&gt; MetricUnit::default(),
-    };
-
-    <span class="prelude-val">Some</span>((name, unit))
+<span class="doccomment">/// Normalizes a tag value.
+///
+/// Tag values are never entirely rejected, but invalid characters (control characters) are stripped
+/// out.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>normalize_tag_value(tag_value: <span class="kw-2">&amp;mut </span>String) {
+    tag_value.retain(|c| !c.is_control());
 }
 
 <span class="doccomment">/// Hashes the given set value.
@@ -908,150 +497,165 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
-    <span class="kw">use </span>similar_asserts::assert_eq;
+    <span class="kw">use </span>insta::assert_json_snapshot;
+
+    <span class="kw">use </span><span class="kw">crate</span>::BucketValue;
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_sizeof_unit() {
-        <span class="macro">assert_eq!</span>(std::mem::size_of::&lt;MetricUnit&gt;(), <span class="number">16</span>);
-        <span class="macro">assert_eq!</span>(std::mem::align_of::&lt;MetricUnit&gt;(), <span class="number">1</span>);
+    </span><span class="kw">fn </span>test_unescape_tag_value() {
+        <span class="comment">// No escaping
+        </span><span class="macro">assert_eq!</span>(unescape_tag_value(<span class="string">"plain"</span>).unwrap(), <span class="string">"plain"</span>);
+        <span class="macro">assert_eq!</span>(unescape_tag_value(<span class="string">"plain text"</span>).unwrap(), <span class="string">"plain text"</span>);
+        <span class="macro">assert_eq!</span>(unescape_tag_value(<span class="string">"plain%text"</span>).unwrap(), <span class="string">"plain%text"</span>);
+
+        <span class="comment">// Escape sequences
+        </span><span class="macro">assert_eq!</span>(
+            unescape_tag_value(<span class="string">"plain \\\\ text"</span>).unwrap(),
+            <span class="string">"plain \\ text"
+        </span>);
+        <span class="macro">assert_eq!</span>(
+            unescape_tag_value(<span class="string">"plain\\u{2c}text"</span>).unwrap(),
+            <span class="string">"plain,text"
+        </span>);
+        <span class="macro">assert_eq!</span>(
+            unescape_tag_value(<span class="string">"plain\\u{7c}text"</span>).unwrap(),
+            <span class="string">"plain|text"
+        </span>);
+        <span class="macro">assert_eq!</span>(unescape_tag_value(<span class="string">"plain 😅"</span>).unwrap(), <span class="string">"plain 😅"</span>);
+
+        <span class="comment">// Alternate escape sequences
+        </span><span class="macro">assert_eq!</span>(
+            unescape_tag_value(<span class="string">"plain \\u{5c} text"</span>).unwrap(),
+            <span class="string">"plain \\ text"
+        </span>);
+
+        <span class="comment">// These are control characters and therefore stripped
+        </span><span class="macro">assert_eq!</span>(unescape_tag_value(<span class="string">"plain\\ntext"</span>).unwrap(), <span class="string">"plaintext"</span>);
+        <span class="macro">assert_eq!</span>(unescape_tag_value(<span class="string">"plain\\rtext"</span>).unwrap(), <span class="string">"plaintext"</span>);
+        <span class="macro">assert_eq!</span>(unescape_tag_value(<span class="string">"plain\\ttext"</span>).unwrap(), <span class="string">"plaintext"</span>);
+        <span class="macro">assert_eq!</span>(unescape_tag_value(<span class="string">"plain\u{7}text"</span>).unwrap(), <span class="string">"plaintext"</span>);
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_parse_mri_lenient() {
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:foo@none&quot;</span>).unwrap(),
-            MetricResourceIdentifier {
-                ty: MetricType::Counter,
-                namespace: MetricNamespace::Custom,
-                name: <span class="string">&quot;foo&quot;</span>.into(),
-                unit: MetricUnit::None,
-            },
-        );
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:foo&quot;</span>).unwrap(),
-            MetricResourceIdentifier {
-                ty: MetricType::Counter,
-                namespace: MetricNamespace::Custom,
-                name: <span class="string">&quot;foo&quot;</span>.into(),
-                unit: MetricUnit::None,
-            },
-        );
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:custom/foo&quot;</span>).unwrap(),
-            MetricResourceIdentifier {
-                ty: MetricType::Counter,
-                namespace: MetricNamespace::Custom,
-                name: <span class="string">&quot;foo&quot;</span>.into(),
-                unit: MetricUnit::None,
-            },
-        );
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:custom/foo@millisecond&quot;</span>).unwrap(),
-            MetricResourceIdentifier {
-                ty: MetricType::Counter,
-                namespace: MetricNamespace::Custom,
-                name: <span class="string">&quot;foo&quot;</span>.into(),
-                unit: MetricUnit::Duration(DurationUnit::MilliSecond),
-            },
-        );
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:something/foo&quot;</span>).unwrap(),
-            MetricResourceIdentifier {
-                ty: MetricType::Counter,
-                namespace: MetricNamespace::Unsupported,
-                name: <span class="string">&quot;foo&quot;</span>.into(),
-                unit: MetricUnit::None,
-            },
-        );
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:foo@something&quot;</span>).unwrap(),
-            MetricResourceIdentifier {
-                ty: MetricType::Counter,
-                namespace: MetricNamespace::Custom,
-                name: <span class="string">&quot;foo&quot;</span>.into(),
-                unit: MetricUnit::Custom(CustomUnit::parse(<span class="string">&quot;something&quot;</span>).unwrap()),
-            },
-        );
-        <span class="macro">assert!</span>(MetricResourceIdentifier::parse(<span class="string">&quot;foo&quot;</span>).is_err());
+    </span><span class="kw">fn </span>test_escape_tag_value() {
+        <span class="comment">// No escaping
+        </span><span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain"</span>), <span class="string">"plain"</span>);
+        <span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain text"</span>), <span class="string">"plain text"</span>);
+        <span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain%text"</span>), <span class="string">"plain%text"</span>);
+
+        <span class="comment">// Escape sequences
+        </span><span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain \\ text"</span>), <span class="string">"plain \\\\ text"</span>);
+        <span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain,text"</span>), <span class="string">"plain\\u{2c}text"</span>);
+        <span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain|text"</span>), <span class="string">"plain\\u{7c}text"</span>);
+        <span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain 😅"</span>), <span class="string">"plain 😅"</span>);
+
+        <span class="comment">// Escapable control characters (may be stripped by the parser)
+        </span><span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain\ntext"</span>), <span class="string">"plain\\ntext"</span>);
+        <span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain\rtext"</span>), <span class="string">"plain\\rtext"</span>);
+        <span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain\ttext"</span>), <span class="string">"plain\\ttext"</span>);
+
+        <span class="comment">// Unescapable control characters
+        </span><span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain\u{07}text"</span>), <span class="string">"plaintext"</span>);
+        <span class="macro">assert_eq!</span>(escape_tag_value(<span class="string">"plain\u{9c}text"</span>), <span class="string">"plaintext"</span>);
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_invalid_names_should_normalize() {
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:f?o&quot;</span>).unwrap().name,
-            <span class="string">&quot;f_o&quot;
-        </span>);
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:f??o&quot;</span>).unwrap().name,
-            <span class="string">&quot;f_o&quot;
-        </span>);
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:föo&quot;</span>).unwrap().name,
-            <span class="string">&quot;f_o&quot;
-        </span>);
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:custom/f?o&quot;</span>)
-                .unwrap()
-                .name,
-            <span class="string">&quot;f_o&quot;
-        </span>);
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:custom/f??o&quot;</span>)
-                .unwrap()
-                .name,
-            <span class="string">&quot;f_o&quot;
-        </span>);
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;c:custom/föo&quot;</span>)
-                .unwrap()
-                .name,
-            <span class="string">&quot;f_o&quot;
-        </span>);
+    </span><span class="kw">fn </span>test_normalize_invalid_name() {
+        <span class="kw">let </span><span class="kw-2">mut </span>bucket = Bucket {
+            timestamp: UnixTimestamp::from_secs(<span class="number">5000</span>),
+            width: <span class="number">0</span>,
+            name: <span class="string">"c:transactions/\0hergus.bergus@none"</span>.into(),
+            value: BucketValue::Counter(<span class="number">0</span>.into()),
+            tags: Default::default(),
+            metadata: Default::default(),
+        };
+
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            normalize_bucket(<span class="kw-2">&amp;mut </span>bucket),
+            <span class="prelude-val">Err</span>(NormalizationError::InvalidMetricName(<span class="kw">_</span>))
+        ));
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_normalize_dash_to_underscore() {
-        <span class="macro">assert_eq!</span>(
-            MetricResourceIdentifier::parse(<span class="string">&quot;d:foo.bar.blob-size@second&quot;</span>).unwrap(),
-            MetricResourceIdentifier {
-                ty: MetricType::Distribution,
-                namespace: MetricNamespace::Custom,
-                name: <span class="string">&quot;foo.bar.blob_size&quot;</span>.into(),
-                unit: MetricUnit::Duration(DurationUnit::Second),
+    </span><span class="kw">fn </span>test_normalize_invalid_namespace() {
+        <span class="kw">let </span><span class="kw-2">mut </span>bucket = Bucket {
+            timestamp: UnixTimestamp::from_secs(<span class="number">5000</span>),
+            width: <span class="number">0</span>,
+            name: <span class="string">"c:lol/hergus.bergus@none"</span>.into(),
+            value: BucketValue::Counter(<span class="number">0</span>.into()),
+            tags: Default::default(),
+            metadata: Default::default(),
+        };
+
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            normalize_bucket(<span class="kw-2">&amp;mut </span>bucket),
+            <span class="prelude-val">Err</span>(NormalizationError::UnsupportedNamespace)
+        ));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_normalize_name() {
+        <span class="kw">let </span><span class="kw-2">mut </span>bucket = Bucket {
+            timestamp: UnixTimestamp::from_secs(<span class="number">5000</span>),
+            width: <span class="number">0</span>,
+            name: <span class="string">"c:hergus\0\0bergus"</span>.into(),
+            value: BucketValue::Counter(<span class="number">0</span>.into()),
+            tags: Default::default(),
+            metadata: Default::default(),
+        };
+
+        normalize_bucket(<span class="kw-2">&amp;mut </span>bucket).unwrap();
+
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>bucket.name, <span class="string">"c:custom/hergus_bergus@none"</span>);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_normalize_tag_key_chars() {
+        <span class="kw">let </span><span class="kw-2">mut </span>bucket = Bucket {
+            timestamp: UnixTimestamp::from_secs(<span class="number">5000</span>),
+            width: <span class="number">0</span>,
+            name: <span class="string">"c:transactions/hergus.bergus"</span>.into(),
+            value: BucketValue::Counter(<span class="number">0</span>.into()),
+            tags: {
+                <span class="kw">let </span><span class="kw-2">mut </span>tags = MetricTags::new();
+                <span class="comment">// There are some SDKs which mess up content encodings, and interpret the raw bytes
+                // of an UTF-16 string as UTF-8. Leading to ASCII
+                // strings getting null-bytes interleaved.
+                //
+                // Somehow those values end up as release tag in sessions, while in error events we
+                // haven't observed this malformed encoding. We believe it's slightly better to
+                // strip out NUL-bytes instead of dropping the tag such that those values line up
+                // again across sessions and events. Should that cause too high cardinality we'll
+                // have to drop tags.
+                //
+                // Note that releases are validated separately against much stricter character set,
+                // but the above idea should still apply to other tags.
+                </span>tags.insert(
+                    <span class="string">"is_it_garbage"</span>.to_owned(),
+                    <span class="string">"a\0b\0s\0o\0l\0u\0t\0e\0l\0y"</span>.to_owned(),
+                );
+                tags.insert(<span class="string">"another\0garbage"</span>.to_owned(), <span class="string">"bye"</span>.to_owned());
+                tags
             },
-        );
-    }
+            metadata: Default::default(),
+        };
 
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_deserialize_mri() {
-        <span class="macro">assert_eq!</span>(
-            serde_json::from_str::&lt;MetricResourceIdentifier&lt;<span class="lifetime">&#39;static</span>&gt;&gt;(
-                <span class="string">&quot;\&quot;c:custom/foo@millisecond\&quot;&quot;
-            </span>)
-            .unwrap(),
-            MetricResourceIdentifier {
-                ty: MetricType::Counter,
-                namespace: MetricNamespace::Custom,
-                name: <span class="string">&quot;foo&quot;</span>.into(),
-                unit: MetricUnit::Duration(DurationUnit::MilliSecond),
-            },
-        );
-    }
+        normalize_bucket(<span class="kw-2">&amp;mut </span>bucket).unwrap();
 
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_serialize() {
-        <span class="macro">assert_eq!</span>(
-            serde_json::to_string(<span class="kw-2">&amp;</span>MetricResourceIdentifier {
-                ty: MetricType::Counter,
-                namespace: MetricNamespace::Custom,
-                name: <span class="string">&quot;foo&quot;</span>.into(),
-                unit: MetricUnit::Duration(DurationUnit::MilliSecond),
-            })
-            .unwrap(),
-            <span class="string">&quot;\&quot;c:custom/foo@millisecond\&quot;&quot;</span>.to_owned(),
-        );
+        <span class="macro">assert_json_snapshot!</span>(bucket, @<span class="string">r###"
+        {
+          "timestamp": 5000,
+          "width": 0,
+          "name": "c:transactions/hergus.bergus@none",
+          "type": "c",
+          "value": 0.0,
+          "tags": {
+            "is_it_garbage": "absolutely"
+          }
+        }
+        "###</span>);
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/http.rs`."><title>http.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../relay_server/index.html"><img src="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `relay-server/src/http.rs`."><title>http.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c5d6553a23f1e5a6.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="relay_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0 (eeb90cda1 2024-09-04)" data-channel="1.81.0" data-search-js="search-d234aafac6c221dd.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-d2fab2bf619172d3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/getsentry/relay/master/artwork/relay-icon.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -153,24 +153,15 @@
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
 <a href="#155" id="155">155</a>
-<a href="#156" id="156">156</a>
-<a href="#157" id="157">157</a>
-<a href="#158" id="158">158</a>
-<a href="#159" id="159">159</a>
-<a href="#160" id="160">160</a>
-<a href="#161" id="161">161</a>
-<a href="#162" id="162">162</a>
-<a href="#163" id="163">163</a>
-<a href="#164" id="164">164</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Abstractions for dealing with HTTP clients.
 //!
-//! All of it is implemented as enums because if they were traits, they&#39;d have to be boxed to be
+//! All of it is implemented as enums because if they were traits, they'd have to be boxed to be
 //! transferrable between actors. Trait objects in turn do not allow for consuming self, using
 //! generic methods or referencing the Self type in return values, all of which is very useful to
 //! do in builder types.
 //!
 //! Note: This literally does what the `http` crate is supposed to do. That crate has builder
-//! objects and common request objects, it&#39;s just that nobody bothers to implement the conversion
+//! objects and common request objects, it's just that nobody bothers to implement the conversion
 //! logic.
 </span><span class="kw">use </span>std::io;
 
@@ -182,13 +173,13 @@
 
 <span class="attr">#[derive(Debug, thiserror::Error)]
 </span><span class="kw">pub enum </span>HttpError {
-    <span class="attr">#[error(<span class="string">&quot;payload too large&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"payload too large"</span>)]
     </span>Overflow,
-    <span class="attr">#[error(<span class="string">&quot;could not send request&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"could not send request"</span>)]
     </span>Reqwest(<span class="attr">#[from] </span>reqwest::Error),
-    <span class="attr">#[error(<span class="string">&quot;failed to stream payload&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"failed to stream payload"</span>)]
     </span>Io(<span class="attr">#[from] </span>io::Error),
-    <span class="attr">#[error(<span class="string">&quot;failed to parse JSON response&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"failed to parse JSON response"</span>)]
     </span>Json(<span class="attr">#[from] </span>serde_json::Error),
 }
 
@@ -210,28 +201,24 @@
 
 <span class="kw">pub struct </span>RequestBuilder {
     builder: <span class="prelude-ty">Option</span>&lt;reqwest::RequestBuilder&gt;,
-    body: <span class="prelude-ty">Option</span>&lt;Bytes&gt;,
 }
 
 <span class="kw">impl </span>RequestBuilder {
     <span class="kw">pub fn </span>reqwest(builder: reqwest::RequestBuilder) -&gt; <span class="self">Self </span>{
         RequestBuilder {
             builder: <span class="prelude-val">Some</span>(builder),
-            body: <span class="prelude-val">None</span>,
         }
     }
 
     <span class="kw">pub fn </span>finish(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Request, HttpError&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>builder = <span class="self">self</span>.builder.unwrap();
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(body) = <span class="self">self</span>.body {
-            builder = builder.body(body);
-        }
-        <span class="prelude-val">Ok</span>(Request(builder.build()<span class="question-mark">?</span>))
+        <span class="comment">// The builder is not optional, instead the option is used inside `build` so that it can be
+        // moved temporarily. Therefore, the `unwrap` here is infallible.
+        </span><span class="prelude-val">Ok</span>(Request(<span class="self">self</span>.builder.unwrap().build()<span class="question-mark">?</span>))
     }
 
     <span class="kw">fn </span>build&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: F) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
     </span><span class="kw">where
-        </span>F: FnMut(reqwest::RequestBuilder) -&gt; reqwest::RequestBuilder,
+        </span>F: FnOnce(reqwest::RequestBuilder) -&gt; reqwest::RequestBuilder,
     {
         <span class="self">self</span>.builder = <span class="self">self</span>.builder.take().map(f);
         <span class="self">self
@@ -258,16 +245,11 @@
     }
 
     <span class="kw">pub fn </span>content_encoding(<span class="kw-2">&amp;mut </span><span class="self">self</span>, encoding: HttpEncoding) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.header_opt(<span class="string">&quot;content-encoding&quot;</span>, encoding.name())
+        <span class="self">self</span>.header_opt(<span class="string">"content-encoding"</span>, encoding.name())
     }
 
     <span class="kw">pub fn </span>body(<span class="kw-2">&amp;mut </span><span class="self">self</span>, body: Bytes) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.body = <span class="prelude-val">Some</span>(body);
-        <span class="self">self
-    </span>}
-
-    <span class="kw">pub fn </span>get_body(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt; {
-        <span class="self">self</span>.body.as_deref()
+        <span class="self">self</span>.build(|builder| builder.body(body))
     }
 }
 
@@ -279,8 +261,8 @@
     }
 
     <span class="kw">pub async fn </span>consume(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), HttpError&gt; {
-        <span class="comment">// Consume the request payload such that the underlying connection returns to a &quot;clean
-        // state&quot; and can be reused by the client. This is explicitly required, see:
+        <span class="comment">// Consume the request payload such that the underlying connection returns to a "clean
+        // state" and can be reused by the client. This is explicitly required, see:
         // https://github.com/seanmonstar/reqwest/issues/1272#issuecomment-839813308
         </span><span class="kw">while </span><span class="self">self</span>.<span class="number">0</span>.chunk().<span class="kw">await</span><span class="question-mark">?</span>.is_some() {}
         <span class="prelude-val">Ok</span>(())
@@ -320,7 +302,7 @@
 
     <span class="kw">pub async fn </span>json&lt;T&gt;(<span class="self">self</span>, limit: usize) -&gt; <span class="prelude-ty">Result</span>&lt;T, HttpError&gt;
     <span class="kw">where
-        </span>T: <span class="lifetime">&#39;static </span>+ DeserializeOwned,
+        </span>T: <span class="lifetime">'static </span>+ DeserializeOwned,
     {
         <span class="kw">let </span>bytes = <span class="self">self</span>.bytes(limit).<span class="kw">await</span><span class="question-mark">?</span>;
         serde_json::from_slice(<span class="kw-2">&amp;</span>bytes).map_err(HttpError::Json)
